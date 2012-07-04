@@ -1,0 +1,282 @@
+===========================
+GreekOCR toolkit for Gamera
+===========================
+
+:Editor: Christian Brandt, Christoph Dalitz
+
+:Version: 1.0.0
+
+Use the 'Addons' section on the `Gamera home page`__ for access to file
+releases of this toolkit.
+
+.. __: http://gamera.informatik.hsnr.de/addons/
+
+
+Overview
+'''''''''
+
+The purpose of the *GreekOCR Toolkit* is to help building optical character
+recognition (OCR) systems for text documents with polytonal Greek text, i.e.
+classical Greek with a wide variety of accents. It can be used as is, but
+can also be used as a building block for implementing a custom OCR system
+for polytonal Greek.
+
+The toolkit is based on and requires the `Gamera framework`_ for document
+analysis and recognition. Moreover it requires the `OCR toolkit for Gamera`_.
+As an addon package for Gamera, it provides
+
+.. _`Gamera framework`: http://gamera.sf.net/
+.. _`OCR toolkit for Gamera`: http://gamera.informatik.hsnr.de/addons/ocr4gamera/
+
+- a ready-to-run python script ``greekocr4gamera.py`` which acts as
+  a basic GreekOCR-system
+
+- python library functions for building a custom GreekOCR system
+
+Please note that the toolkit currently does not include any training data.
+This means that you must create a training data base of Greek characters
+before you can use the script ``greekocr4gamera.py``.
+
+Approaches for recognizing accents
+----------------------------------
+
+Compared to texts with Roman letters or modern (or *monotonal*) Greek,
+classical (or *polytonal*) Greek uses a large number of accents that
+can be used in a wide range of combinations. Compared to the ordinary
+OCR process, this requires a special treatment both for attaching accents
+to characters and for recognizing the resulting combinations. From a
+general point of view, two different approaches are possible:
+
+**Wholistic approach:**
+  Identify each character as a whole, including its accents.
+  This approach requires that all possible character/accents combinations
+  have been predefined and are present as samples in the training data.
+
+**Separatistic approach:**
+  Identify core characters and accents separately and combine them
+  subsequently. In this case, the training data contains the core
+  characters and the individual accents.
+
+This toolkit offers both possibilities. You must therefore make sure
+that your training data matches the chosen recognition approach.
+
+Output code
+-----------
+
+The toolkit can generate the OCR result in two different codes:
+
+- Unicode as specified in the Unicode standards `Greek`_
+  (Unicode range 0370-03FF) and `Combining Diacritical Marks`_
+  (Unicode range 0300-036F).
+
+- LaTeX code with the `Teubner style`_ for representing polytonal Greek accents
+  in combination with the Babel style option *polutonikogreek*.
+
+.. _Greek: http://unicode.org/charts/PDF/U0370.pdf
+.. _`Combining Diacritical Marks`: http://unicode.org/charts/PDF/U0300.pdf
+.. _`Teubner style`: http://www.ctan.org/tex-archive/macros/latex/contrib/teubner/
+
+The latter option is provided for generation of a human readable graphical
+representation as a Postscript or PDF file via LaTeX.
+
+Limitations
+-----------
+
+As the segmentation of the individual characters is based on a connected
+component analysis, the toolkit cannot deal with touching characters, unless
+they have been trained as combinations. It is therefore in general only 
+applicable to printed documents, rather than handwritten documents.
+
+From a user's perspective, there are some points to beware in this toolkit:
+
+- It does not provide prototypes of the Greek characters and accents.
+  This means that characters must be trained on sample pages before using
+  the toolkit.
+
+- The standard page segmentation algorithm for textline separation
+  is currently very basic.
+
+
+User's Manual
+''''''''''''''
+
+This documentation is written for those who want to use the toolkit
+for OCR, but are not interested in extending the toolkit itself.
+
+- `Using the toolkit`_: gives an explanation on how to use the toolkit.
+
+.. _`Using the toolkit`: usermanual.html
+
+
+Developer's Documentation
+'''''''''''''''''''''''''
+
+This documentation is for those who want to extend the functionality of
+the GreekOCR toolkit, or who want to write their own recognition script.
+
+- Classes_: reference for the classes involved in the segmentation process.
+  These are:
+
+  * GreekOCR_ for Greek OCR recognition
+
+- Functions_: the global functions defined by the toolkit
+
+.. _Functions: functions.html
+.. _Classes: classes.html
+.. _GreekOCR: gamera.toolkits.greekocr.greekocr.GreekOCR.html
+
+
+Installation
+''''''''''''
+
+We have only tested the toolkit on Linux and MacOS X, but as
+the toolkit is written entirely in Python, the following
+instructions should work for any operating system.
+
+
+Prerequisites
+-------------
+
+First you will need a working installation of the following software:
+
+- Gamera 3.x, as available from the `Gamera website`_. It is strongly
+  recommended that you use a recent version, preferably from SVN.
+
+- The `OCR toolkit for Gamera`_, as available from the "Addons" section
+  of the Gamera website.
+
+.. _`Gamera website`: http://gamera.sourceforge.net/
+.. _`OCR toolkit for Gamera`: http://gamera.informatik.hsnr.de/addons/ocr4gamera/
+
+If you want to generate the documentation, you will need two additional
+third-party Python libraries:
+
+  - docutils_ for handling reStructuredText documents.
+
+  - pygments_  for colorizing source code.
+
+.. _docutils: http://docutils.sourceforge.net/
+.. _pygments: http://pygments.org/
+
+.. note:: It is generally not necessary to generate the documentation 
+   because it is included in file releases of the toolkit.
+
+
+Building and Installing
+-----------------------
+
+To build and install this toolkit, go to the base directory of the toolkit
+distribution and run the ``setup.py`` script as follows::
+
+   # 1) compile
+   python setup.py build
+
+   # 2) install
+   sudo python setup.py install
+
+Command 1) compiles the toolkit from the sources and command 2) installs
+it. As the latter requires
+root privilegue, you need to use ``sudo`` on Linux and MacOS X. On Windows,
+``sudo`` is not necessary.
+
+Note that the script *greekocr4gamera.py* is installed into ``/usr/bin`` or
+``/usr/local/bin`` on Linux and newer versions of MacOS X, but into
+``/System/Library/Frameworks/Python.framework/Versions/2.x/bin``
+on older MacOS X versions. As the latter directory is not in the standard
+search path, you could either add it to your search path, or install the
+scripts additionally into ``/usr/bin`` on MacOS X with::
+
+   # install scripts into standard path (older MacOS X, optional)
+   sudo python setup.py install_scripts -d /usr/bin
+
+If you want to regenerate the documentation, go to the ``doc`` directory
+and run the ``gendoc.py`` script. The output will be placed in the ``doc/html/``
+directory.  The contents of this directory can be placed on a webserver
+for convenient viewing.
+
+.. note:: Before building the documentation you must install the
+   toolkit. Otherwise ``gendoc.py`` will not find the plugin documentation.
+
+
+Installing without root privileges
+----------------------------------
+
+The above installation with ``python setup.py install`` will install
+the toolkit system wide and thus requires root privileges. If you do
+not have root access (Linux) or are no sudoer (MacOS X), you can
+install the MusicStaves toolkit into your home directory. Note however
+that this also requires that Gamera is installed into your home directory.
+It is currently not possibole to install Gamera globally and only toolkits
+locally.
+
+Here are the steps to install both Gamera and the OCR toolkit into
+``~/python``::
+
+   # install Gamera locally
+   mkdir ~/python
+   python setup.py install --prefix=~/python
+
+   # build and install the OCR toolkit locally
+   export CFLAGS=-I~/python/include/python2.3/gamera
+   python setup.py build
+   python setup.py install --prefix=~/python
+
+Moreover you should set the following environment variables in your 
+``~/.profile``::
+
+   # search path for python modules
+   export PYTHONPATH=~/python/lib/python
+
+   # search path for executables (eg. greekocr4gamera.py)
+   export PATH=~/python/bin:$PATH
+
+
+Uninstallation
+--------------
+
+The installation uses the Python *distutils*, which do not support
+uninstallation. Thus you need to remove the installed files manually:
+
+- the installed Python library files of the toolkit
+
+- the installed standalone scripts
+
+
+Python Library Files
+````````````````````
+
+All python library files of this toolkit are installed into the 
+``gamera/toolkits/greekocr`` subdirectory of the Python library folder.
+Thus it is sufficient to remove this directory for an uninstallation.
+
+Where the python library folder is depends on your system and python version.
+Here are the folders that you need to remove on MacOS X and Debian Linux
+("2.x" stands for the python version; replace it with your actual version):
+
+  - MacOS X: ``/Library/Python/2.x/gamera/toolkits/greekocr``
+
+  - Debian Linux: ``/usr/lib/python2.x/site-packages/gamera/toolkits/greekocr``
+
+
+Standalone Scripts
+``````````````````
+
+The standalone scripts are installed into ``/usr/bin`` or ``/usr/local/bin``
+(Linux) or ``/System/Library/Frameworks/Python.framework/Versions/2.x/bin``
+(older MacOS X), unless you have explicitly chosen a different location with
+the options ``--prefix`` or ``--home`` during installation.
+
+For an uninstall, remove the following script:
+
+    - ``greekocr4gamera.py``
+
+
+About this documentation
+''''''''''''''''''''''''
+
+The documentation was written by Christoph Dalitz.
+Permission is granted to copy, distribute and/or modify this documentation
+under the terms of the `Creative Commons Attribution Share-Alike License (CC-BY-SA) v3.0`__. In addition, permission is granted to use and/or
+modify the code snippets from the documentation without restrictions.
+
+.. __: http://creativecommons.org/licenses/by-sa/3.0/

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
+<title>GreekOCR toolkit for Gamera</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="greekocr-toolkit-for-gamera">
+<h1 class="title">GreekOCR toolkit for Gamera</h1>
+<p><strong>Last modified</strong>: March 09, 2011</p>
+<div class="contents topic">
+<p class="topic-title first"><a id="contents" name="contents">Contents</a></p>
+<ul class="simple">
+<li><a class="reference" href="#overview" id="id4" name="id4">Overview</a><ul>
+<li><a class="reference" href="#approaches-for-recognizing-accents" id="id5" name="id5">Approaches for recognizing accents</a></li>
+<li><a class="reference" href="#output-code" id="id6" name="id6">Output code</a></li>
+<li><a class="reference" href="#limitations" id="id7" name="id7">Limitations</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#user-s-manual" id="id8" name="id8">User's Manual</a></li>
+<li><a class="reference" href="#developer-s-documentation" id="id9" name="id9">Developer's Documentation</a></li>
+<li><a class="reference" href="#installation" id="id10" name="id10">Installation</a><ul>
+<li><a class="reference" href="#prerequisites" id="id11" name="id11">Prerequisites</a></li>
+<li><a class="reference" href="#building-and-installing" id="id12" name="id12">Building and Installing</a></li>
+<li><a class="reference" href="#installing-without-root-privileges" id="id13" name="id13">Installing without root privileges</a></li>
+<li><a class="reference" href="#uninstallation" id="id14" name="id14">Uninstallation</a><ul>
+<li><a class="reference" href="#python-library-files" id="id15" name="id15">Python Library Files</a></li>
+<li><a class="reference" href="#standalone-scripts" id="id16" name="id16">Standalone Scripts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference" href="#about-this-documentation" id="id17" name="id17">About this documentation</a></li>
+</ul>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Editor:</th><td class="field-body">Christian Brandt, Christoph Dalitz</td>
+</tr>
+<tr class="field"><th class="field-name">Version:</th><td class="field-body">1.0.0</td>
+</tr>
+</tbody>
+</table>
+<p>Use the 'Addons' section on the <a class="reference" href="http://gamera.informatik.hsnr.de/addons/">Gamera home page</a> for access to file
+releases of this toolkit.</p>
+<div class="section">
+<h1><a class="toc-backref" href="#id4" id="overview" name="overview">Overview</a></h1>
+<p>The purpose of the <em>GreekOCR Toolkit</em> is to help building optical character
+recognition (OCR) systems for text documents with polytonal Greek text, i.e.
+classical Greek with a wide variety of accents. It can be used as is, but
+can also be used as a building block for implementing a custom OCR system
+for polytonal Greek.</p>
+<p>The toolkit is based on and requires the <a class="reference" href="http://gamera.sf.net/">Gamera framework</a> for document
+analysis and recognition. Moreover it requires the <a class="reference" href="http://gamera.informatik.hsnr.de/addons/ocr4gamera/">OCR toolkit for Gamera</a>.
+As an addon package for Gamera, it provides</p>
+<ul class="simple">
+<li>a ready-to-run python script <tt class="docutils literal"><span class="pre">greekocr4gamera.py</span></tt> which acts as
+a basic GreekOCR-system</li>
+<li>python library functions for building a custom GreekOCR system</li>
+</ul>
+<p>Please note that the toolkit currently does not include any training data.
+This means that you must create a training data base of Greek characters
+before you can use the script <tt class="docutils literal"><span class="pre">greekocr4gamera.py</span></tt>.</p>
+<div class="section">
+<h2><a class="toc-backref" href="#id5" id="approaches-for-recognizing-accents" name="approaches-for-recognizing-accents">Approaches for recognizing accents</a></h2>
+<p>Compared to texts with Roman letters or modern (or <em>monotonal</em>) Greek,
+classical (or <em>polytonal</em>) Greek uses a large number of accents that
+can be used in a wide range of combinations. Compared to the ordinary
+OCR process, this requires a special treatment both for attaching accents
+to characters and for recognizing the resulting combinations. From a
+general point of view, two different approaches are possible:</p>
+<dl class="docutils">
+<dt><strong>Wholistic approach:</strong></dt>
+<dd>Identify each character as a whole, including its accents.
+This approach requires that all possible character/accents combinations
+have been predefined and are present as samples in the training data.</dd>
+<dt><strong>Separatistic approach:</strong></dt>
+<dd>Identify core characters and accents separately and combine them
+subsequently. In this case, the training data contains the core
+characters and the individual accents.</dd>
+</dl>
+<p>This toolkit offers both possibilities. You must therefore make sure
+that your training data matches the chosen recognition approach.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id6" id="output-code" name="output-code">Output code</a></h2>
+<p>The toolkit can generate the OCR result in two different codes:</p>
+<ul class="simple">
+<li>Unicode as specified in the Unicode standards <a class="reference" href="http://unicode.org/charts/PDF/U0370.pdf">Greek</a>
+(Unicode range 0370-03FF) and <a class="reference" href="http://unicode.org/charts/PDF/U0300.pdf">Combining Diacritical Marks</a>
+(Unicode range 0300-036F).</li>
+<li>LaTeX code with the <a class="reference" href="http://www.ctan.org/tex-archive/macros/latex/contrib/teubner/">Teubner style</a> for representing polytonal Greek accents
+in combination with the Babel style option <em>polutonikogreek</em>.</li>
+</ul>
+<p>The latter option is provided for generation of a human readable graphical
+representation as a Postscript or PDF file via LaTeX.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id7" id="limitations" name="limitations">Limitations</a></h2>
+<p>As the segmentation of the individual characters is based on a connected
+component analysis, the toolkit cannot deal with touching characters, unless
+they have been trained as combinations. It is therefore in general only
+applicable to printed documents, rather than handwritten documents.</p>
+<p>From a user's perspective, there are some points to beware in this toolkit:</p>
+<ul class="simple">
+<li>It does not provide prototypes of the Greek characters and accents.
+This means that characters must be trained on sample pages before using
+the toolkit.</li>
+<li>The standard page segmentation algorithm for textline separation
+is currently very basic.</li>
+</ul>
+</div>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id8" id="user-s-manual" name="user-s-manual">User's Manual</a></h1>
+<p>This documentation is written for those who want to use the toolkit
+for OCR, but are not interested in extending the toolkit itself.</p>
+<ul class="simple">
+<li><a class="reference" href="usermanual.html">Using the toolkit</a>: gives an explanation on how to use the toolkit.</li>
+</ul>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id9" id="developer-s-documentation" name="developer-s-documentation">Developer's Documentation</a></h1>
+<p>This documentation is for those who want to extend the functionality of
+the GreekOCR toolkit, or who want to write their own recognition script.</p>
+<ul class="simple">
+<li><a class="reference" href="classes.html">Classes</a>: reference for the classes involved in the segmentation process.
+These are:<ul>
+<li><a class="reference" href="gamera.toolkits.greekocr.greekocr.GreekOCR.html">GreekOCR</a> for Greek OCR recognition</li>
+</ul>
+</li>
+<li><a class="reference" href="functions.html">Functions</a>: the global functions defined by the toolkit</li>
+</ul>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id10" id="installation" name="installation">Installation</a></h1>
+<p>We have only tested the toolkit on Linux and MacOS X, but as
+the toolkit is written entirely in Python, the following
+instructions should work for any operating system.</p>
+<div class="section">
+<h2><a class="toc-backref" href="#id11" id="prerequisites" name="prerequisites">Prerequisites</a></h2>
+<p>First you will need a working installation of the following software:</p>
+<ul class="simple">
+<li>Gamera 3.x, as available from the <a class="reference" href="http://gamera.sourceforge.net/">Gamera website</a>. It is strongly
+recommended that you use a recent version, preferably from SVN.</li>
+<li>The <a class="reference" href="http://gamera.informatik.hsnr.de/addons/ocr4gamera/">OCR toolkit for Gamera</a>, as available from the &quot;Addons&quot; section
+of the Gamera website.</li>
+</ul>
+<p>If you want to generate the documentation, you will need two additional
+third-party Python libraries:</p>
+<blockquote>
+<ul class="simple">
+<li><a class="reference" href="http://docutils.sourceforge.net/">docutils</a> for handling reStructuredText documents.</li>
+<li><a class="reference" href="http://pygments.org/">pygments</a>  for colorizing source code.</li>
+</ul>
+</blockquote>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is generally not necessary to generate the documentation
+because it is included in file releases of the toolkit.</p>
+</div>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id12" id="building-and-installing" name="building-and-installing">Building and Installing</a></h2>
+<p>To build and install this toolkit, go to the base directory of the toolkit
+distribution and run the <tt class="docutils literal"><span class="pre">setup.py</span></tt> script as follows:</p>
+<pre class="literal-block">
+# 1) compile
+python setup.py build
+
+# 2) install
+sudo python setup.py install
+</pre>
+<p>Command 1) compiles the toolkit from the sources and command 2) installs
+it. As the latter requires
+root privilegue, you need to use <tt class="docutils literal"><span class="pre">sudo</span></tt> on Linux and MacOS X. On Windows,
+<tt class="docutils literal"><span class="pre">sudo</span></tt> is not necessary.</p>
+<p>Note that the script <em>greekocr4gamera.py</em> is installed into <tt class="docutils literal"><span class="pre">/usr/bin</span></tt> or
+<tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt> on Linux and newer versions of MacOS X, but into
+<tt class="docutils literal"><span class="pre">/System/Library/Frameworks/Python.framework/Versions/2.x/bin</span></tt>
+on older MacOS X versions. As the latter directory is not in the standard
+search path, you could either add it to your search path, or install the
+scripts additionally into <tt class="docutils literal"><span class="pre">/usr/bin</span></tt> on MacOS X with:</p>
+<pre class="literal-block">
+# install scripts into standard path (older MacOS X, optional)
+sudo python setup.py install_scripts -d /usr/bin
+</pre>
+<p>If you want to regenerate the documentation, go to the <tt class="docutils literal"><span class="pre">doc</span></tt> directory
+and run the <tt class="docutils literal"><span class="pre">gendoc.py</span></tt> script. The output will be placed in the <tt class="docutils literal"><span class="pre">doc/html/</span></tt>
+directory.  The contents of this directory can be placed on a webserver
+for convenient viewing.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Before building the documentation you must install the
+toolkit. Otherwise <tt class="docutils literal"><span class="pre">gendoc.py</span></tt> will not find the plugin documentation.</p>
+</div>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id13" id="installing-without-root-privileges" name="installing-without-root-privileges">Installing without root privileges</a></h2>
+<p>The above installation with <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt> will install
+the toolkit system wide and thus requires root privileges. If you do
+not have root access (Linux) or are no sudoer (MacOS X), you can
+install the MusicStaves toolkit into your home directory. Note however
+that this also requires that Gamera is installed into your home directory.
+It is currently not possibole to install Gamera globally and only toolkits
+locally.</p>
+<p>Here are the steps to install both Gamera and the OCR toolkit into
+<tt class="docutils literal"><span class="pre">~/python</span></tt>:</p>
+<pre class="literal-block">
+# install Gamera locally
+mkdir ~/python
+python setup.py install --prefix=~/python
+
+# build and install the OCR toolkit locally
+export CFLAGS=-I~/python/include/python2.3/gamera
+python setup.py build
+python setup.py install --prefix=~/python
+</pre>
+<p>Moreover you should set the following environment variables in your
+<tt class="docutils literal"><span class="pre">~/.profile</span></tt>:</p>
+<pre class="literal-block">
+# search path for python modules
+export PYTHONPATH=~/python/lib/python
+
+# search path for executables (eg. greekocr4gamera.py)
+export PATH=~/python/bin:$PATH
+</pre>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id14" id="uninstallation" name="uninstallation">Uninstallation</a></h2>
+<p>The installation uses the Python <em>distutils</em>, which do not support
+uninstallation. Thus you need to remove the installed files manually:</p>
+<ul class="simple">
+<li>the installed Python library files of the toolkit</li>
+<li>the installed standalone scripts</li>
+</ul>
+<div class="section">
+<h3><a class="toc-backref" href="#id15" id="python-library-files" name="python-library-files">Python Library Files</a></h3>
+<p>All python library files of this toolkit are installed into the
+<tt class="docutils literal"><span class="pre">gamera/toolkits/greekocr</span></tt> subdirectory of the Python library folder.
+Thus it is sufficient to remove this directory for an uninstallation.</p>
+<p>Where the python library folder is depends on your system and python version.
+Here are the folders that you need to remove on MacOS X and Debian Linux
+(&quot;2.x&quot; stands for the python version; replace it with your actual version):</p>
+<blockquote>
+<ul class="simple">
+<li>MacOS X: <tt class="docutils literal"><span class="pre">/Library/Python/2.x/gamera/toolkits/greekocr</span></tt></li>
+<li>Debian Linux: <tt class="docutils literal"><span class="pre">/usr/lib/python2.x/site-packages/gamera/toolkits/greekocr</span></tt></li>
+</ul>
+</blockquote>
+</div>
+<div class="section">
+<h3><a class="toc-backref" href="#id16" id="standalone-scripts" name="standalone-scripts">Standalone Scripts</a></h3>
+<p>The standalone scripts are installed into <tt class="docutils literal"><span class="pre">/usr/bin</span></tt> or <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt>
+(Linux) or <tt class="docutils literal"><span class="pre">/System/Library/Frameworks/Python.framework/Versions/2.x/bin</span></tt>
+(older MacOS X), unless you have explicitly chosen a different location with
+the options <tt class="docutils literal"><span class="pre">--prefix</span></tt> or <tt class="docutils literal"><span class="pre">--home</span></tt> during installation.</p>
+<p>For an uninstall, remove the following script:</p>
+<blockquote>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">greekocr4gamera.py</span></tt></li>
+</ul>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id17" id="about-this-documentation" name="about-this-documentation">About this documentation</a></h1>
+<p>The documentation was written by Christoph Dalitz.
+Permission is granted to copy, distribute and/or modify this documentation
+under the terms of the <a class="reference" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution Share-Alike License (CC-BY-SA) v3.0</a>. In addition, permission is granted to use and/or
+modify the code snippets from the documentation without restrictions.</p>
+</div>
+</div>
+</body>
+</html>

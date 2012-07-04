@@ -1,0 +1,5 @@
+recursive-include src *.cpp *.c *.h makefile.* *.hpp *.hxx *.cxx *.txt ANNOUNCE CHANGES INSTALL KNOWNBUG LICENSE README TODO
+recursive-include include *.cpp *.c *.h makefile.* *.hpp *.hxx *.cxx *.txt ANNOUNCE CHANGES INSTALL KNOWNBUG LICENSE README TODO
+recursive-include scripts greekocr
+include ACKNOWLEDGEMENTS CHANGES TODO INSTALL LICENSE README KNOWN_BUGS MANIFEST.in version
+recursive-include doc *.txt *.html *.css *.py *.jpg *.jpeg *.png *.gif *.fig

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>GreekOCR Toolkit: Global Functions</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="greekocr-toolkit-global-functions">
+<h1 class="title">GreekOCR Toolkit: Global Functions</h1>
+
+<p><strong>Last modified</strong>: March 08, 2011</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#conversion-of-greek-unicode-to-latex" id="id1">Conversion of Greek Unicode to LaTeX</a><ul>
+<li><a class="reference internal" href="#unicode-to-teubner" id="id2"><tt class="docutils literal"><span class="pre">unicode_to_teubner</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#measuring-recognition-rates-with-ground-truth-data" id="id3">Measuring recognition rates with ground truth data</a><ul>
+<li><a class="reference internal" href="#levenshtein" id="id4"><tt class="docutils literal"><span class="pre">levenshtein</span></tt></a></li>
+<li><a class="reference internal" href="#errorrate" id="id5"><tt class="docutils literal"><span class="pre">errorrate</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>The toolkit defines a number of free function which are not image
+methods. These are defined in different modules  and can be imported
+in a python script with</p>
+<div class="highlight"><pre><span class="k">from</span> <span class="nn">gamera.toolkits.greekocr.compare</span> <span class="k">import</span> <span class="n">levenshtein</span><span class="p">,</span> <span class="n">errorrate</span>
+<span class="k">from</span> <span class="nn">gamera.toolkits.greekocr.unicode_teubner</span> <span class="k">import</span> <span class="n">unicode_to_teubner</span>
+</pre></div>
+<div class="section" id="conversion-of-greek-unicode-to-latex">
+<h1><a class="toc-backref" href="#id1">Conversion of Greek Unicode to LaTeX</a></h1>
+<div class="section" id="unicode-to-teubner">
+<h2><a class="toc-backref" href="#id2"><tt class="docutils literal"><span class="pre">unicode_to_teubner</span></tt></a></h2>
+<p>Returns the given unicode string to a LaTeX document body using
+the Teubner style for representing Greek characters and accents. Signature:</p>
+<blockquote>
+<tt class="docutils literal"><span class="pre">unicode_to_teubner</span> <span class="pre">(unicode_text)</span></tt></blockquote>
+<p>The returned LaTeX code does not contain the LaTeX header. To create
+a complete LaTeX document, you can use the following code:</p>
+<div class="highlight"><pre><span class="c"># LaTeX header</span>
+<span class="k">print</span> <span class="s">&quot;\documentclass[10pt]{article}&quot;</span>
+<span class="k">print</span> <span class="s">&quot;\usepackage[polutonikogreek]{babel}&quot;</span>
+<span class="k">print</span> <span class="s">&quot;\usepackage[or]{teubner}&quot;</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\\</span><span class="s">begin{document}&quot;</span>
+<span class="k">print</span> <span class="s">&quot;\selectlanguage{greek}&quot;</span>
+
+<span class="c"># document body</span>
+<span class="k">print</span> <span class="n">unicode_to_teubner</span><span class="p">(</span><span class="n">unicode_string</span><span class="p">)</span>
+
+<span class="c"># LaTex footer</span>
+<span class="k">print</span> <span class="s">&quot;\end{document}&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="measuring-recognition-rates-with-ground-truth-data">
+<h1><a class="toc-backref" href="#id3">Measuring recognition rates with ground truth data</a></h1>
+<div class="section" id="levenshtein">
+<h2><a class="toc-backref" href="#id4"><tt class="docutils literal"><span class="pre">levenshtein</span></tt></a></h2>
+<p>Computes the Levenshtein distance (aka edit distance) between
+the two Unicode strings <em>s1</em> and <em>s2</em>. Signature:</p>
+<blockquote>
+<tt class="docutils literal"><span class="pre">levenshtein(s1,</span> <span class="pre">s2)</span></tt></blockquote>
+<p>This implementation differs from the plugin <em>edit_distance</em> in the Gamera
+core in two points:</p>
+<blockquote>
+<ul class="simple">
+<li>the Gamera core function is implemented in C++ and currently only
+works with ASCII strings</li>
+<li>this implementation is written in pure Python and therefore somewhat
+slower, but it works with Unicode strings.</li>
+</ul>
+</blockquote>
+<p>For details about the algorithm see
+<a class="reference external" href="http://en.wikibooks.org/wiki/Algorithm_implementation/Strings/Levenshtein_distance">http://en.wikibooks.org/wiki/Algorithm_implementation/Strings/Levenshtein_distance</a></p>
+</div>
+<div class="section" id="errorrate">
+<h2><a class="toc-backref" href="#id5"><tt class="docutils literal"><span class="pre">errorrate</span></tt></a></h2>
+<p>For the two given Unicode strings, the edit distance divided by the
+length of the first string is returned.
+Signature:</p>
+<blockquote>
+<tt class="docutils literal"><span class="pre">errorrate(groundtruth,</span> <span class="pre">ocr)</span></tt></blockquote>
+</div>
+</div>
+</div>
+</body>
+</html>

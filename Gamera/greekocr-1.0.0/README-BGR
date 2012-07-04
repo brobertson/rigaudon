@@ -1,0 +1,16 @@
+This is a much-altered version of greekocr-1.0.0. It provides the following addtional features:
+- a 'split' switch, which allows elements identifed as _splitx or _splity to be properly split
+  as part of the classification process
+- an 'autogroup' switch, which causes the classifier to try to group up to four discrete elements
+  into recognized glyphs
+- a 'profile' switch, which will dump profiling information on the stdout
+
+To make the autogroup feature work properly, you need to alter line of 
+/usr/local/lib/python2.6/dist-packages/gamera/classify.py
+it should read "return found_unions, removed", omitting the reference to splits. Splitting performed
+at this stage will possibly perform splits on elements that subsequently will be identified as 
+elements of a grouped glyph. The result, in our workflow, is increased erroneous additional glyphs,
+especially accents.
+
+It wold be more efficient to change the classify.py code more extensively, 
+but for now this work-around is effective.

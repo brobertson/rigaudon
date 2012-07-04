@@ -1,0 +1,17 @@
+Tasks for future versions of the GreekOCR toolkit
+-------------------------------------------------
+
+ - optionally enable grouping for the separatistic approach
+
+ - add new wholistic recognition which attaches accents to
+   characters with Gamera's grouping algorithm
+
+ - do thorough tests for the different approaches and
+   measure the performances on various documents
+
+ - Why does the recognition result contain spurious additional lines?
+
+ - integrate the improved attachment of diacritical signs to
+   characters into the basic OCR toolkit
+
+ - disambiguate between quotes and accents

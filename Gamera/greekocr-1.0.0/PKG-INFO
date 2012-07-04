@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: greekocr
+Version: 1.0.0
+Summary: An addon Greek OCR toolkit for the Gamera framework for document analysis and recognition.
+Home-page: http://gamera.sourceforge.net/
+Author: Christian Brandt and Christoph Dalitz
+Author-email: UNKNOWN
+License: GNU GPL version 2
+Description: UNKNOWN
+Platform: UNKNOWN

@@ -1,0 +1,13 @@
+class ``GreekOCR``
+==================
+
+``GreekOCR``
+------------
+
+In module ``gamera.toolkits.greekocr.greekocr``
+
+.. docstring:: gamera.toolkits.greekocr.greekocr GreekOCR
+   :no_title:
+
+.. docstring:: gamera.toolkits.greekocr.greekocr GreekOCR __init__ load_trainingdata get_page_glyphs process_image save_debug_images save_text_unicode save_text_teubner
+

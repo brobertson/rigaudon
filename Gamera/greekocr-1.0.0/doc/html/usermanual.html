@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
+<title>GreekOCR Toolkit User's Manual</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="greekocr-toolkit-user-s-manual">
+<h1 class="title">GreekOCR Toolkit User's Manual</h1>
+<p><strong>Last modified</strong>: March 09, 2011</p>
+<div class="contents topic">
+<p class="topic-title first"><a id="contents" name="contents">Contents</a></p>
+<ul class="simple">
+<li><a class="reference" href="#overview" id="id6" name="id6">Overview</a></li>
+<li><a class="reference" href="#training" id="id7" name="id7">Training</a><ul>
+<li><a class="reference" href="#symbol-names-for-separatistic-recognition" id="id8" name="id8">Symbol names for &quot;separatistic&quot; recognition</a></li>
+<li><a class="reference" href="#symbol-names-for-wholistic-recognition" id="id9" name="id9">Symbol names for &quot;wholistic&quot; recognition</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#using-the-script-greekocr4gamera-py" id="id10" name="id10">Using the script <tt class="docutils literal"><span class="pre">greekocr4gamera.py</span></tt></a></li>
+<li><a class="reference" href="#writing-custom-scripts" id="id11" name="id11">Writing custom scripts</a></li>
+</ul>
+</div>
+<p>This documentation is for those who want to use the toolkit for
+polytonal Greek OCR, but are not interested in extending the toolkit itself.</p>
+<div class="section">
+<h1><a class="toc-backref" href="#id6" id="overview" name="overview">Overview</a></h1>
+<p>The toolkit provides the functionality to segment an image page into
+text lines, words and characters, to sort them in reading-order,
+and to generate an output string.</p>
+<p>Before you can use the OCR toolkit, you must first train characters
+from sample pages, which will then be used by the toolkit for classifying
+characters:</p>
+<img alt="images/overview.png" src="images/overview.png" />
+<p>Hence the proper use of this toolkit requires the following two steps:</p>
+<ul class="simple">
+<li>training of sample characters on representative document images.
+This step is interactive and is done with the Gamera GUI, as described
+in the <a class="reference" href="http://gamera.sourceforge.net/doc/html/training_tutorial.html">Gamera training tutorial</a></li>
+<li>recognition of documents with the aid of this training data.
+This step usually runs automatically without user interaction.
+For this purpose, the tools from the present toolkit can be used.</li>
+</ul>
+<p>There are two options to use this toolkit: you can either use the script
+<tt class="docutils literal"><span class="pre">greekocr4gamera.py</span></tt> as provided by the toolkit, or you can build your
+own recognition scripts with the aid of the python library functions
+provided by the toolkit. Both alternatives are described below.</p>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id7" id="training" name="training">Training</a></h1>
+<p>As explained in the <a class="reference" href="index.html#approaches-for-recognizing-accents">GreekOCR toolkit overview</a>, you must create different
+training data, depending on the approach for dealing with accents:</p>
+<ul class="simple">
+<li>for the <em>wholistic</em> approach, you must train all possible (or frequent)
+combinations characters and accents</li>
+<li>for the <em>separatistic</em> approach, you must train characters and accents
+separately</li>
+</ul>
+<p>The wholistic approach has the disadvantage that the training data
+will generally be incomplete because rare combinations are unlikely
+to appear in the samples used for training. Moreover, it requires
+much more training effort. Depending on the documents under consideration,
+it might however be that the one or the other approach yields better results;
+testing both approaches might therefore pay off.</p>
+<p>A list of CCs for training using the <em>wholistic</em> or <em>separatistic</em> algorithms
+on <em>image</em> can be created with:</p>
+<div class="highlight"><pre><span class="k">from</span> <span class="nn">gamera.toolkits.greekocr</span> <span class="k">import</span> <span class="n">GreekOCR</span>
+<span class="k">from</span> <span class="nn">gamera</span> <span class="k">import</span> <span class="n">knn</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">kNNInteractive</span><span class="p">()</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">GreekOCR</span><span class="p">(</span><span class="s">&quot;wholistic&quot;</span><span class="p">)</span> <span class="c">#or separatistic</span>
+<span class="n">ccs</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_page_glyphs</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">ccs</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+</pre></div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">When accents frequently touch the characters, you should train
+these combinations even for the <em>separatistic</em> approach, because
+the glyph segmentation is based on a connected component analysis,
+which cannot split touching symbols.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id8" id="symbol-names-for-separatistic-recognition" name="symbol-names-for-separatistic-recognition">Symbol names for &quot;separatistic&quot; recognition</a></h2>
+<p>For &quot;separatistic&quot; recognition, the characters and accents must be trained
+separately. The class names for the characters must correspond to the
+names in the Unicode table <a class="reference" href="http://unicode.org/charts/PDF/U0370.pdf">Greek</a>, and the names for the accents must
+correspond to the Unicode table <a class="reference" href="http://unicode.org/charts/PDF/U0300.pdf">Combining Diacritical Marks</a>.
+The latter typically start with the word <tt class="docutils literal"><span class="pre">COMBINING</span></tt>. For punctuation
+marks like &quot;full stop&quot;, the names from the Unicode table <a class="reference" href="http://unicode.org/charts/PDF/U0000.pdf">Basic Latin</a>
+can be used.</p>
+<p>The following table lists some examples. For touching characters or accents,
+you can combine their Unicode names with <tt class="docutils literal"><span class="pre">AND</span></tt>, as in the following
+table demonstrated for the touching <em>sigma</em> and <em>tau</em> and the touching
+<em>comma</em> and <em>acute</em>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="27%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Character</th>
+<th class="head">Unicode Name(s)</th>
+<th class="head">Class Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><img alt="images/sep1.png" class="first last" src="images/sep1.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">GREEK</span> <span class="pre">CAPITAL</span> <span class="pre">LETTER</span> <span class="pre">TAU</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">greek.capital.letter.tau</span></tt></td>
+</tr>
+<tr><td><img alt="images/sep2.png" class="first last" src="images/sep2.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">GREEK</span> <span class="pre">SMALL</span> <span class="pre">LETTER</span> <span class="pre">DELTA</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">greek.small.letter.delta</span></tt></td>
+</tr>
+<tr><td><img alt="images/sep4.png" class="first last" src="images/sep4.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">COMBINING</span> <span class="pre">GREEK</span> <span class="pre">PERISPOMENI</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">combining.greek.perispomeni</span></tt></td>
+</tr>
+<tr><td><img alt="images/sep5.png" class="first last" src="images/sep5.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">COMBINING</span> <span class="pre">COMMA</span> <span class="pre">ABOVE</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">combining.comma.above</span></tt></td>
+</tr>
+<tr><td><img alt="images/sep7.png" class="first last" src="images/sep7.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">HYPHEN-MINUS</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">hyphen-minus</span></tt></td>
+</tr>
+<tr><td><img alt="images/sep3.png" class="first last" src="images/sep3.png" />
+</td>
+<td><dl class="first last docutils">
+<dt><tt class="docutils literal"><span class="pre">GREEK</span> <span class="pre">SMALL</span> <span class="pre">LETTER</span> <span class="pre">SIGMA</span></tt>,</dt>
+<dd><tt class="docutils literal"><span class="pre">GREEK</span> <span class="pre">SMALL</span> <span class="pre">LETTER</span> <span class="pre">TAU</span></tt></dd>
+</dl>
+</td>
+<td><tt class="docutils literal"><span class="pre">greek.small.letter.sigma.and.greek.small.letter.tau</span></tt></td>
+</tr>
+<tr><td><img alt="images/sep6.png" class="first last" src="images/sep6.png" />
+</td>
+<td><dl class="first last docutils">
+<dt><tt class="docutils literal"><span class="pre">COMBINING</span> <span class="pre">COMMA</span> <span class="pre">ABOVE</span></tt>,</dt>
+<dd><tt class="docutils literal"><span class="pre">COMBINING</span> <span class="pre">ACUTE</span> <span class="pre">ACCENT</span></tt></dd>
+</dl>
+</td>
+<td><tt class="docutils literal"><span class="pre">combining.comma.above.and.combining.acute.accent</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id9" id="symbol-names-for-wholistic-recognition" name="symbol-names-for-wholistic-recognition">Symbol names for &quot;wholistic&quot; recognition</a></h2>
+<p>For &quot;wholistic&quot; recognition, no isolated accents are trianed. In contrast,
+each character is trained in all occuring combinations with accents.
+The Unicode names of the character and the accents are concatenated
+with the word <tt class="docutils literal"><span class="pre">and</span></tt>, as shown in the following examples:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Character</th>
+<th class="head">Class Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><img alt="images/who1.png" class="first last" src="images/who1.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">greek.small.letter.alpha</span></tt></td>
+</tr>
+<tr><td><img alt="images/who2.png" class="first last" src="images/who2.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">greek.small.letter.alpha.and.combining.acute.accent</span></tt></td>
+</tr>
+<tr><td><img alt="images/who3.png" class="first last" src="images/who3.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">greek.small.letter.alpha.and.combining.comma.above</span></tt></td>
+</tr>
+<tr><td><img alt="images/who4.png" class="first last" src="images/who4.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">greek.small.letter.alpha.and.combining.comma.above.and.combining.acute.accent</span></tt></td>
+</tr>
+<tr><td><img alt="images/who5.png" class="first last" src="images/who5.png" />
+</td>
+<td><tt class="docutils literal"><span class="pre">greek.small.letter.alpha.and.combining.greek.perispomeni</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>The order of the accents in the class names is not important, because the
+accent order will be normalized automatically during the recognition process.</p>
+</div>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id10" id="using-the-script-greekocr4gamera-py" name="using-the-script-greekocr4gamera-py">Using the script <tt class="docutils literal"><span class="pre">greekocr4gamera.py</span></tt></a></h1>
+<p>The <em>greekocr4gamera.py</em> script takes an image and already trained data and
+segments the picture into single glyphs. The training-data is used to
+classify those glyphs and converts them into an output code. The output
+code can be a Unicode string or a LaTeX document utilizing the
+<a class="reference" href="http://www.ctan.org/tex-archive/macros/latex/contrib/teubner/">Teubner style</a>. The output is written to standard-out or can optionally
+be stored in a file.</p>
+<p>The end user application <em>greekocr4gamera.py</em> will be installed to <tt class="docutils literal"><span class="pre">/usr/bin</span></tt>
+or <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt> unless you habe explicitly chosen a different location.
+Its synopsis is:</p>
+<pre class="literal-block">
+greekocr4gamera.py -x &lt;trainingdata&gt; [options] &lt;imagefile&gt;
+</pre>
+<p>Options can be in short (one dash, one character) or long form (two dashes,
+string). When called with <tt class="docutils literal"><span class="pre">-h</span></tt>, <tt class="docutils literal"><span class="pre">-?</span></tt> or any other invalid option,
+a usage message will be printed. The valid options are:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">-x</span></tt> <em>trainingdata</em>, <tt class="docutils literal"><span class="pre">--xml-file</span></tt>=<em>trainingdata</em></dt>
+<dd>This option is required. <em>trainingdata</em> must be an xml file created
+with <a class="reference" href="http://gamera.sourceforge.net/doc/html/training_tutorial.html">Gamera's training dialog</a>.</dd>
+</dl>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">-u</span></tt> <em>outfile</em>, <tt class="docutils literal"><span class="pre">--unicode</span></tt>=<em>outfile</em></dt>
+<dd>Writes the Unicode output to <em>outfile</em>.
+When neither <tt class="docutils literal"><span class="pre">-u</span></tt> nor <tt class="docutils literal"><span class="pre">-t</span></tt> are specified, the unicode
+output is written to stdout.</dd>
+<dt><tt class="docutils literal"><span class="pre">-t</span></tt> <em>outfile</em>, <tt class="docutils literal"><span class="pre">--teubner</span></tt>=<em>outfile</em></dt>
+<dd>Writes the LaTeX output to <em>outfile</em>.</dd>
+<dt><tt class="docutils literal"><span class="pre">-s</span></tt>, <tt class="docutils literal"><span class="pre">--separatistic</span></tt></dt>
+<dd>Use the separatistic approach for recognition.</dd>
+<dt><tt class="docutils literal"><span class="pre">-w</span></tt>, <tt class="docutils literal"><span class="pre">--wholistic</span></tt></dt>
+<dd>Use the wholistic approach for recognition (default).</dd>
+<dt><tt class="docutils literal"><span class="pre">--deskew</span></tt></dt>
+<dd>Do a skew correction.</dd>
+<dt><tt class="docutils literal"><span class="pre">--filter</span></tt></dt>
+<dd>Filter out very large (images) and very small (noise) components.</dd>
+<dt><tt class="docutils literal"><span class="pre">--debug</span></tt></dt>
+<dd>Write images <em>debug_lines.png</em>, <em>debug_words.png</em> and <em>debug_chars.png</em>
+to working directory for debugging purposes.</dd>
+</dl>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id11" id="writing-custom-scripts" name="writing-custom-scripts">Writing custom scripts</a></h1>
+<p>If you want to write your own scripts for recognition, you
+can use <tt class="docutils literal"><span class="pre">greekocr4gamera.py</span></tt> as a good starting point.</p>
+<p>In Greek OCR functionality is implemented in the class <a class="reference" href="gamera.toolkits.ocr.classes.GreekOCR.html">GreekOCR</a>,
+which must import at the beginning of your script:</p>
+<div class="highlight"><pre><span class="k">from</span> <span class="nn">gamera.toolkits.greekocr</span> <span class="k">import</span> <span class="n">GreekOCR</span>
+</pre></div>
+<p>After that you can instantiate a <em>GreekOCR</em> object and can recognize
+an image with the following methods:</p>
+<div class="highlight"><pre><span class="n">g</span> <span class="o">=</span> <span class="n">GreekOCR</span><span class="p">()</span>
+<span class="n">g</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">&quot;wholistic&quot;</span>  <span class="c"># or &quot;separatistic&quot;</span>
+<span class="n">g</span><span class="o">.</span><span class="n">load_trainingdata</span><span class="p">(</span><span class="s">&quot;wholistic.xml&quot;</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="s">&quot;imagefile.png&quot;</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">process_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">output</span>
+</pre></div>
+<p>This will print the Unicode result to stdout. To save it to a file
+either in Unicode or LaTeX with the Teubner style, use the following
+methods:</p>
+<div class="highlight"><pre><span class="n">g</span><span class="o">.</span><span class="n">save_text_unicode</span><span class="p">(</span><span class="s">&quot;unicode-output.txt&quot;</span><span class="p">)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">save_text_teubner</span><span class="p">(</span><span class="s">&quot;teubner-output.tex&quot;</span><span class="p">)</span>
+</pre></div>
+<p>For more information on how to fine control the recognition process,
+see the <a class="reference" href="index.html#developer-s-documentation">developer's documentation</a>.</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+==================================
+GreekOCR Toolkit: Global Functions
+==================================
+
+The toolkit defines a number of free function which are not image
+methods. These are defined in different modules  and can be imported
+in a python script with
+
+.. code:: Python
+
+   from gamera.toolkits.greekocr.compare import levenshtein, errorrate
+   from gamera.toolkits.greekocr.unicode_teubner import unicode_to_teubner
+
+
+Conversion of Greek Unicode to LaTeX
+''''''''''''''''''''''''''''''''''''
+
+.. docstring:: gamera.toolkits.greekocr.unicode_teubner unicode_to_teubner
+
+
+Measuring recognition rates with ground truth data
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. docstring:: gamera.toolkits.greekocr.compare levenshtein
+.. docstring:: gamera.toolkits.greekocr.compare errorrate

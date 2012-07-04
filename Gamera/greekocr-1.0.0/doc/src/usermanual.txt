@@ -1,0 +1,237 @@
+==============================
+GreekOCR Toolkit User's Manual
+==============================
+
+This documentation is for those who want to use the toolkit for
+polytonal Greek OCR, but are not interested in extending the toolkit itself.
+
+Overview
+''''''''
+
+The toolkit provides the functionality to segment an image page into
+text lines, words and characters, to sort them in reading-order,
+and to generate an output string.
+
+Before you can use the OCR toolkit, you must first train characters
+from sample pages, which will then be used by the toolkit for classifying
+characters:
+
+.. image:: images/overview.png
+
+Hence the proper use of this toolkit requires the following two steps:
+
+- training of sample characters on representative document images.
+  This step is interactive and is done with the Gamera GUI, as described
+  in the `Gamera training tutorial`__
+- recognition of documents with the aid of this training data.
+  This step usually runs automatically without user interaction.
+  For this purpose, the tools from the present toolkit can be used.
+
+.. __: http://gamera.sourceforge.net/doc/html/training_tutorial.html
+
+There are two options to use this toolkit: you can either use the script
+``greekocr4gamera.py`` as provided by the toolkit, or you can build your
+own recognition scripts with the aid of the python library functions
+provided by the toolkit. Both alternatives are described below.
+
+Training
+''''''''
+
+As explained in the `GreekOCR toolkit overview`__, you must create different
+training data, depending on the approach for dealing with accents:
+
+- for the *wholistic* approach, you must train all possible (or frequent)
+  combinations characters and accents
+
+- for the *separatistic* approach, you must train characters and accents
+  separately
+
+.. __: index.html#approaches-for-recognizing-accents
+
+The wholistic approach has the disadvantage that the training data
+will generally be incomplete because rare combinations are unlikely
+to appear in the samples used for training. Moreover, it requires
+much more training effort. Depending on the documents under consideration,
+it might however be that the one or the other approach yields better results;
+testing both approaches might therefore pay off.
+
+A list of CCs for training using the *wholistic* or *separatistic* algorithms 
+on *image* can be created with:
+
+.. code:: Python
+
+   from gamera.toolkits.greekocr import GreekOCR
+   from gamera import knn
+   classifier = knn.kNNInteractive()
+   g = GreekOCR("wholistic") #or separatistic
+   ccs = g.get_page_glyphs(image)
+   classifier.display(ccs, image)
+
+
+.. note:: When accents frequently touch the characters, you should train
+   these combinations even for the *separatistic* approach, because
+   the glyph segmentation is based on a connected component analysis,
+   which cannot split touching symbols.
+
+
+Symbol names for "separatistic" recognition
+-------------------------------------------
+
+For "separatistic" recognition, the characters and accents must be trained
+separately. The class names for the characters must correspond to the
+names in the Unicode table `Greek`_, and the names for the accents must
+correspond to the Unicode table `Combining Diacritical Marks`_.
+The latter typically start with the word ``COMBINING``. For punctuation
+marks like "full stop", the names from the Unicode table `Basic Latin`_
+can be used.
+
+.. _Greek: http://unicode.org/charts/PDF/U0370.pdf
+.. _`Combining Diacritical Marks`: http://unicode.org/charts/PDF/U0300.pdf
+.. _`Basic Latin`: http://unicode.org/charts/PDF/U0000.pdf
+
+The following table lists some examples. For touching characters or accents,
+you can combine their Unicode names with ``AND``, as in the following
+table demonstrated for the touching *sigma* and *tau* and the touching
+*comma* and *acute*:
+
++----------------------------+-------------------------------+-------------------------------------------------------+
+| Character                  | Unicode Name(s)               | Class Name                                            |
++============================+===============================+=======================================================+
+| .. image:: images/sep1.png | ``GREEK CAPITAL LETTER TAU``  | ``greek.capital.letter.tau``                          |
++----------------------------+-------------------------------+-------------------------------------------------------+
+| .. image:: images/sep2.png | ``GREEK SMALL LETTER DELTA``  | ``greek.small.letter.delta``                          |
++----------------------------+-------------------------------+-------------------------------------------------------+
+| .. image:: images/sep4.png |``COMBINING GREEK PERISPOMENI``| ``combining.greek.perispomeni``                       |
++----------------------------+-------------------------------+-------------------------------------------------------+
+| .. image:: images/sep5.png | ``COMBINING COMMA ABOVE``     | ``combining.comma.above``                             |
++----------------------------+-------------------------------+-------------------------------------------------------+
+| .. image:: images/sep7.png | ``HYPHEN-MINUS``              | ``hyphen-minus``                                      |
++----------------------------+-------------------------------+-------------------------------------------------------+
+| .. image:: images/sep3.png | ``GREEK SMALL LETTER SIGMA``, |``greek.small.letter.sigma.and.greek.small.letter.tau``|
+|                            |   ``GREEK SMALL LETTER TAU``  |                                                       |
++----------------------------+-------------------------------+-------------------------------------------------------+
+| .. image:: images/sep6.png | ``COMBINING COMMA ABOVE``,    | ``combining.comma.above.and.combining.acute.accent``  |
+|                            |   ``COMBINING ACUTE ACCENT``  |                                                       |
++----------------------------+-------------------------------+-------------------------------------------------------+
+
+
+Symbol names for "wholistic" recognition
+----------------------------------------
+
+For "wholistic" recognition, no isolated accents are trianed. In contrast,
+each character is trained in all occuring combinations with accents.
+The Unicode names of the character and the accents are concatenated
+with the word ``and``, as shown in the following examples:
+
++----------------------------+---------------------------------------------------------------------------------------+
+| Character                  | Class Name                                                                            |
++============================+=======================================================================================+
+| .. image:: images/who1.png | ``greek.small.letter.alpha``                                                          |
++----------------------------+---------------------------------------------------------------------------------------+
+| .. image:: images/who2.png | ``greek.small.letter.alpha.and.combining.acute.accent``                               |
++----------------------------+---------------------------------------------------------------------------------------+
+| .. image:: images/who3.png | ``greek.small.letter.alpha.and.combining.comma.above``                                |
++----------------------------+---------------------------------------------------------------------------------------+
+| .. image:: images/who4.png | ``greek.small.letter.alpha.and.combining.comma.above.and.combining.acute.accent``     |
++----------------------------+---------------------------------------------------------------------------------------+
+| .. image:: images/who5.png | ``greek.small.letter.alpha.and.combining.greek.perispomeni``                          |
++----------------------------+---------------------------------------------------------------------------------------+
+
+The order of the accents in the class names is not important, because the
+accent order will be normalized automatically during the recognition process.
+
+
+Using the script ``greekocr4gamera.py``
+'''''''''''''''''''''''''''''''''''''''
+
+The *greekocr4gamera.py* script takes an image and already trained data and 
+segments the picture into single glyphs. The training-data is used to 
+classify those glyphs and converts them into an output code. The output
+code can be a Unicode string or a LaTeX document utilizing the 
+`Teubner style`_. The output is written to standard-out or can optionally
+be stored in a file. 
+
+.. _`Teubner style`: http://www.ctan.org/tex-archive/macros/latex/contrib/teubner/
+
+The end user application *greekocr4gamera.py* will be installed to ``/usr/bin`` 
+or ``/usr/local/bin`` unless you habe explicitly chosen a different location.
+Its synopsis is::
+
+    greekocr4gamera.py -x <trainingdata> [options] <imagefile> 
+
+Options can be in short (one dash, one character) or long form (two dashes,
+string). When called with ``-h``, ``-?`` or any other invalid option,
+a usage message will be printed. The valid options are:
+
+``-x`` *trainingdata*, ``--xml-file``\ =\ *trainingdata*
+  This option is required. *trainingdata* must be an xml file created
+  with `Gamera's training dialog`__.
+
+.. __: http://gamera.sourceforge.net/doc/html/training_tutorial.html
+
+``-u`` *outfile*, ``--unicode``\ =\ *outfile*
+  Writes the Unicode output to *outfile*.
+  When neither ``-u`` nor ``-t`` are specified, the unicode
+  output is written to stdout.
+
+``-t`` *outfile*, ``--teubner``\ =\ *outfile*
+  Writes the LaTeX output to *outfile*.
+
+``-s``, ``--separatistic``
+  Use the separatistic approach for recognition.
+
+``-w``, ``--wholistic``
+  Use the wholistic approach for recognition (default).
+
+``--deskew``
+  Do a skew correction.
+
+``--filter``
+  Filter out very large (images) and very small (noise) components.
+
+``--debug``
+  Write images *debug_lines.png*, *debug_words.png* and *debug_chars.png*
+  to working directory for debugging purposes.
+
+
+Writing custom scripts
+''''''''''''''''''''''
+
+If you want to write your own scripts for recognition, you
+can use ``greekocr4gamera.py`` as a good starting point.
+
+In Greek OCR functionality is implemented in the class GreekOCR__,
+which must import at the beginning of your script:
+
+.. __:  gamera.toolkits.ocr.classes.GreekOCR.html
+
+.. code:: Python
+
+   from gamera.toolkits.greekocr import GreekOCR
+
+After that you can instantiate a *GreekOCR* object and can recognize
+an image with the following methods:
+
+
+.. code:: Python
+
+   g = GreekOCR()
+   g.mode = "wholistic"  # or "separatistic"
+   g.load_trainingdata("wholistic.xml")
+   image = load_image("imagefile.png")
+   output = g.process_image(image)
+   print output
+
+This will print the Unicode result to stdout. To save it to a file
+either in Unicode or LaTeX with the Teubner style, use the following
+methods:
+
+.. code:: Python
+
+   g.save_text_unicode("unicode-output.txt")
+   g.save_text_teubner("teubner-output.tex")
+
+For more information on how to fine control the recognition process,
+see the `developer's documentation`__.
+
+.. __: index.html#developer-s-documentation
