@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/local/python/bin/python
 # -*- mode: python; indent-tabs-mode: nil; tab-width: 3 -*-
 # vim: set tabstop=3 shiftwidth=3 expandtab:
 
@@ -66,8 +66,9 @@ def usage():
 
 def performGreekOCR(options):
 #   features = ["aspect_ratio", "volume64regions", "moments", "nholes_extended"]   
-   features = ["aspect_ratio","moments","nholes","nholes_extended","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
- #  features = ["aspect_ratio","moments","ncols_feature","nholes","nholes_extended","nrows_feature","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
+#I think these are size-invariant
+#   features = ["aspect_ratio","moments","nholes","nholes_extended","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
+   features = ["aspect_ratio","moments","ncols_feature","nholes","nholes_extended","nrows_feature","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
    image_files = []
    g = GreekOCR(splits=options["split"],feats=features)
    g.mode = options["mode"]
