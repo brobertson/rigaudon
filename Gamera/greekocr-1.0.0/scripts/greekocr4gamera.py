@@ -29,7 +29,12 @@ from gamera.toolkits.ocr.classes import Page
 
 class MyPage(Page):
    def page_to_lines(self):
-       self.ccs_lines = self.img.bbox_merging(1,10)
+      #offset_x = 566, offset_y = 105, ncols = 622, nrows = 28
+      self.ccs_lines = []
+      label  = 1
+      seg_rect = Rect(Point(556, 105), Dim(622, 28))
+      new_seg = Cc(self, label, seg_rect.ul, seg_rect.lr)
+      self.ccs_lines.append(new_seg)
 
 
 
@@ -306,9 +311,9 @@ if options["profile"]:
 else:
    performGreekOCR(options)
 
-class MyPage(Page):
-   def page_to_lines(self):
-       self.ccs_lines = self.img.bbox_merging(1,10)
+#class MyPage(Page):
+#   def page_to_lines(self):
+#       self.ccs_lines = self.img.bbox_merging(1,10)
 
 
 

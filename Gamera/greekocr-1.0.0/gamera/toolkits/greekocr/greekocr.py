@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-
+import pprint
 from gamera.core import * 
 init_gamera()    
 from gamera import knn   
@@ -60,8 +60,13 @@ def clean_classifier(cknn):
 
 class AgressivePager(SinglePage):
    def page_to_lines(self):
-      self.ccs_lines = self.img.bbox_mcmillan(section_search_size=6)
-
+      #self.ccs_lines = self.img.bbox_mcmillan(section_search_size=6)
+      #offset_x = 566, offset_y = 105, ncols = 622, nrows = 28
+      self.ccs_lines = []
+      label  = 1
+      seg_rect = Rect(Point(556, 105), Dim(622, 28))
+      new_seg = Cc(self.img, label, seg_rect.ul, seg_rect.lr)
+      self.ccs_lines.append(new_seg)
 
 class GreekOCR(object):
    """Provides the functionality for GreekOCR. The following parameters
@@ -123,13 +128,17 @@ or separatistic).
         autogroup.grouping_distance = max([2,median_cc / 2])
         if self.debug:
           print "autogroup distance: ", autogroup.grouping_distance
-       # self.page = AgressivePager(self.img, classify_ccs=autogroup)
-        self.page = SinglePage(self.img, classify_ccs=autogroup)
+        self.page = AgressivePager(self.img, classify_ccs=autogroup)
+       # self.page = SinglePage(self.img, classify_ccs=autogroup)
       else:
         self.page = SinglePage(self.img, classify_ccs=autogroup)
        # self.page = AgressivePager(self.img)
       self.page.segment()
-
+      pp = pprint.PrettyPrinter(indent=4,depth=10)
+      if self.debug:
+         print "Page representation: "
+         print self.page.__dict__
+         print self.page.textlines[0].__dict__
       if self.debug:
          t = time.time() - t
          print "\t segmentation done [",t,"sec]"
