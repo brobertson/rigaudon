@@ -14,3 +14,6 @@ especially accents.
 
 It wold be more efficient to change the classify.py code more extensively, 
 but for now this work-around is effective.
+
+I like to build this locally, and avoid spamming the source tree with:
+python setup.py build -b /tmp/pybuild/greekocr install --prefix=/home/broberts/python
