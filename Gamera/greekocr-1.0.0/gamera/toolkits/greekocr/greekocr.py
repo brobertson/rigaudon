@@ -62,12 +62,21 @@ class AgressivePager(SinglePage):
    def page_to_lines(self):
       #self.ccs_lines = self.img.bbox_mcmillan(section_search_size=6)
       #offset_x = 566, offset_y = 105, ncols = 622, nrows = 28
+      #bbox 566 105 1360 140
       self.ccs_lines = []
       label  = 1
-      seg_rect = Rect(Point(556, 105), Dim(622, 28))
-      new_seg = Cc(self.img, label, seg_rect.ul, seg_rect.lr)
+      #seg_rect = Rect(Point(556, 105), Dim(622, 28))
+      new_seg = Cc(self.img, label, Point(566,105), Point(1360,140))
       self.ccs_lines.append(new_seg)
-
+      #<gameracore.Image: offset_x = 1339, offset_y = 108, ncols = 21, nrows = 32>
+      #bbox 404 192 1358 239
+      #seg_rect2 = Rect(Point(1339,108), Dim(21,32))
+      new_seg2 = Cc(self.img, 2, Point(404,192), Point(1358, 239))
+      self.ccs_lines.append(new_seg2)
+      # <gameracore.Image: offset_x = 404, offset_y = 192, ncols = 954, nrows = 47>,
+      #seg_rect3 = Rect(Point(404,192), Dim(954,47))
+      #new_seg3 = Cc(self.img, 3, seg_rect3.ul, seg_rect3.lr)
+      #self.ccs_lines.append(new_seg3)
 class GreekOCR(object):
    """Provides the functionality for GreekOCR. The following parameters
 control the recognition process:
