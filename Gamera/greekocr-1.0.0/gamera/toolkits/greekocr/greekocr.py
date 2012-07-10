@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-
+import pprint
 from gamera.core import * 
 init_gamera()    
 from gamera import knn   
@@ -129,7 +129,11 @@ or separatistic).
         self.page = SinglePage(self.img, classify_ccs=autogroup)
        # self.page = AgressivePager(self.img)
       self.page.segment()
-
+      pp = pprint.PrettyPrinter(indent=4,depth=10)
+      if self.debug:
+         print "Page representation: "
+         print self.page.__dict__
+         print self.page.textlines[0].__dict__
       if self.debug:
          t = time.time() - t
          print "\t segmentation done [",t,"sec]"
