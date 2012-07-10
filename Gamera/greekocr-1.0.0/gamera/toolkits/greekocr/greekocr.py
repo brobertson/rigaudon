@@ -293,11 +293,11 @@ Make sure that you have called load_trainingdata_ before!
       if self.debug:
          print "Classifying Text"
       self.classify_text()
-      if self.debug:
-         print "storing to database"
+      #if self.debug:
+      #   print "storing to database"
      # self.store_sql()
-      if self.debug:
-         print "Returning Output"
+      #if self.debug:
+      #   print "Returning Output"
       return self.get_text()
       
 

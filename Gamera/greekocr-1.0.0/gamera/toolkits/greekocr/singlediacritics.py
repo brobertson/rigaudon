@@ -79,9 +79,9 @@ class Character(object):
 class SingleTextline(Textline):
    def sort_glyphs(self):
       self.glyphs.sort(lambda x,y: cmp(x.ul_x, y.ul_x))
-      print "Raw Sorted Glyphs:"
-      for g in self.glyphs:
-         print g.id_name,g 
+      #print "Raw Sorted Glyphs:"
+      #for g in self.glyphs:
+       #  print g.id_name,g 
       #begin calculating threshold for word-spacing
       glyphs = []
       printing_glyphs = []
@@ -101,11 +101,11 @@ class SingleTextline(Textline):
       spacelist = []
       total_space = 0
       for i in range(len(glyphs) - 1):
-         print "between ", glyphs[i].id_name, " and ", glyphs[i+1].id_name, (glyphs[i + 1].ul_x - glyphs[i].lr_x)
+      #   print "between ", glyphs[i].id_name, " and ", glyphs[i+1].id_name, (glyphs[i + 1].ul_x - glyphs[i].lr_x)
          spacelist.append(glyphs[i + 1].ul_x - glyphs[i].lr_x)
       if(len(spacelist) > 0):
          threshold = median(spacelist)
-         print "threshold: ", threshold
+       #  print "threshold: ", threshold
          threshold = threshold * 3 
       else:
          threshold  = 0
@@ -120,15 +120,15 @@ class SingleTextline(Textline):
          if i > 0:
             if not self.is_combining_glyph(printing_glyphs[i]):
               previousNonCombining = currentNonCombining
-              print "PNC now: ",
-              if previousNonCombining:
-                print previousNonCombining.id_name
-              else:
-                print "NONE"
+              #print "PNC now: ",
+              #if previousNonCombining:
+              #  print previousNonCombining.id_name
+              #else:
+              #  print "NONE"
               currentNonCombining = printing_glyphs[i]
-              print "CNC now: ", currentNonCombining.id_name
+              #print "CNC now: ", currentNonCombining.id_name
             if(previousNonCombining and currentNonCombining and ((currentNonCombining.ul_x - previousNonCombining.lr_x) > threshold)):
-               print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
+               #print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
                wordlist.append(word)
                word = []
               # previousNonCombining = None

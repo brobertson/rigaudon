@@ -73,7 +73,7 @@ def performGreekOCR(options):
    g = GreekOCR(splits=options["split"],feats=features)
    g.mode = options["mode"]
    g.autogroup = options["autogroup"]
-   g.debug = True
+   g.debug = options["debug"] 
    g.load_trainingdata(options['trainingdata'])
    if options.has_key("settingsfile"):
       g.load_settings(options["settingsfile"])
@@ -84,7 +84,7 @@ def performGreekOCR(options):
       image_files = filter(test.search, image_files)
       image_files.sort()
    elif options.has_key("imagefile"):
-      image_files = [options["imagefile"]]
+      image_files = options["imagefile"]
    image_file_count = 1;
    image_path = os.path.abspath(image_files[0])
    image_split_path = os.path.split(image_path)
@@ -93,11 +93,11 @@ def performGreekOCR(options):
    if options.has_key("sql") and options["sql"]:
       book_id = sql_make_book_and_return_id(book_code)
    for image_file in image_files:
-      print "Now working with image number: " + image_file_count
       image_path = os.path.abspath(image_file)
       image_split_path = os.path.split(image_path)
       book_code = os.path.split(image_split_path[0])[1]#directory name
       image_file_name = image_split_path[1]
+      print "Now working with image: " + image_file_name
       internal_image_file_path = os.path.join(book_code, image_file_name) 
       image = load_image(image_file)
       if image.data.pixel_type != ONEBIT:
@@ -233,6 +233,7 @@ options = {}
 args = sys.argv[1:]
 
 i = 0
+options["imagefile"] = []
 while i < len(args):
    if args[i] in ("-x", "--trainingdata"):
       i += 1
@@ -254,7 +255,7 @@ while i < len(args):
    elif args[i] in ("--deskew"):
       options["deskew"] = True
    elif args[i] in ("--filter"):
-      print("filtering!")
+     # print("filtering!")
       options["filter"] = True
    elif args[i] in ("--split"):
       options["split"] = 1 
@@ -274,9 +275,11 @@ while i < len(args):
       i += 1
       options["directory"] = args[i]
    else:
-      options["imagefile"] = args[i]
+      options["imagefile"].append(args[i])
    i += 1
 
+if not options.has_key("debug"):
+   options["debug"] = True
 if not options.has_key("split"):
    options["split"] = 0
 if not options.has_key("trainingdata"):
@@ -293,6 +296,7 @@ if not options.has_key("imagefile"):
    print "No filename given"
    usage()
    exit(2)
+#print "Image files: " + options("imagefile")
 if options["profile"]:
    import cProfile
    import pstats
