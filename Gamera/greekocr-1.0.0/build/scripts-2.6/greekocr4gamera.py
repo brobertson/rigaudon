@@ -4,7 +4,6 @@
 
 # Copyright (C) 2010-2011 Christian Brandt
 #
-# Hi there
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -67,8 +66,9 @@ def usage():
 
 def performGreekOCR(options):
 #   features = ["aspect_ratio", "volume64regions", "moments", "nholes_extended"]   
-   features = ["aspect_ratio","moments","nholes","nholes_extended","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
- #  features = ["aspect_ratio","moments","ncols_feature","nholes","nholes_extended","nrows_feature","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
+#I think these are size-invariant
+#   features = ["aspect_ratio","moments","nholes","nholes_extended","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
+   features = ["aspect_ratio","moments","ncols_feature","nholes","nholes_extended","nrows_feature","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
    image_files = []
    g = GreekOCR(splits=options["split"],feats=features)
    g.mode = options["mode"]
