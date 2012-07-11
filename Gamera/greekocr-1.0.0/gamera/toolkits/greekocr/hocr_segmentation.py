@@ -15,18 +15,14 @@ class SpanLister(HTMLParser):
             bar = [j for i, j in attrs if i=='title']
             if foo:
 		if foo[0] == self.id_string:
-                	print foo[0]
                 	self.spans.extend(bar)
 
 def generateCCsFromHocr(parser,image):
 	from gamera.core import Point
 	ccs_lines = []
 	label  = 1
-	#seg_rect = Rect(Point(556, 105), Dim(622, 28))
 	for span in parser.spans: 
 		boxes =  span.split(';')[0].split()
-		print boxes#draw the word boxes
-		#point1 = Point(2,3)
 		point1 = Point(int(boxes[1]),int(boxes[2]))
 		point2 = Point(int(boxes[3]),int(boxes[4]))
 		ccs_lines.append(Cc(image, label, point1, point2))

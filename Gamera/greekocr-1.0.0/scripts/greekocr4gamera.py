@@ -20,7 +20,7 @@
 
 
 # This just simply runs the greekocr toolkits main function
-import re, sys, os
+import string, re, sys, os
 from gamera.core import *
 from gamera.plugins.listutilities import median
 from gamera.toolkits.greekocr import GreekOCR
@@ -113,7 +113,13 @@ def performGreekOCR(options):
       image_split_path = os.path.split(image_path)
       book_code = os.path.split(image_split_path[0])[1]#directory name
       image_file_name = image_split_path[1]
+      imageBase, imageEx = os.path.splitext(image_file_name)
       print "Now working with image: " + image_file_name
+      if options["hocrfile"]:
+         hocr_to_use = string.replace(options["hocrfile"],"%s",imageBase)
+         g.hocr = hocr_to_use
+         if options["debug"]:
+            print "using '" + hocr_to_use + "' as hocr file"
       internal_image_file_path = os.path.join(book_code, image_file_name) 
       image = load_image(image_file)
       if image.data.pixel_type != ONEBIT:
@@ -137,7 +143,6 @@ def performGreekOCR(options):
           if options.has_key("debug") and options["debug"] == True:
              print "filter done.",len(ccs)-count,"elements left."
       
-      
       if options.has_key("deskew") and options["deskew"] == True:
         #from gamera.toolkits.otr.otr_staff import *
         if options.has_key("debug") and options["debug"] == True:
@@ -147,26 +152,9 @@ def performGreekOCR(options):
         if options.has_key("debug") and options["debug"] == True:
           print "rotated with",rotation,"angle"
       
-      
-      if options.has_key("columns") and options["columns"] == True:
-         blocks = image.bbox_merging(1,10) 
-         output = ""
-         # these aren't actually 'lines', they are probably parts of 
-         # the page
-         print "doing blocks. Count " + str(len(blocks))
-         #partial_images = [block.image_copy() for block in blocks]
-         partial_images = []
-         for block in blocks:
-            im = block.image_copy()
-            im.reset_onebit_image()
-            partial_images.append(im)
-         print("Hello everyone")
-         for partial_image in partial_images:
-            output = g.process_image(partial_image)
-      else:      
-         output = g.process_image(image)
+      output = g.process_image(image)
       if options.has_key("debug") and options["debug"] == True:
-         g.save_debug_images()
+         g.save_debug_images(imageBase)
          
       if options.has_key("sql") and options["sql"]:
          page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
@@ -294,9 +282,7 @@ while i < len(args):
    i += 1
 
 if options.has_key("directory"):
-   try:
-      with open(options["directory"]) as f: pass
-   except IOError as e:
+   if (not os.path.isdir(options["directory"])):
       print 'Directory "{0}" not accesible.'.format(options["directory"])
       usage()
       exit(1)
@@ -319,12 +305,15 @@ else:
    options["settingsfile"] = None
 
 if options.has_key("hocrfile"):
-   try:
-      with open(options["hocrfile"]) as f: pass
-   except IOError as e:
-      print 'Hocr file "{0}" not accesible.'.format(options["hocrfile"])
-      usage()
-      exit(1)
+   #Don't test for a real file if the input contains a substitution
+   #variable. 
+   if (not "%s" in options["hocrfile"]):
+      try:
+         with open(options["hocrfile"]) as f: pass
+      except IOError as e:
+         print 'Hocr file "{0}" not accesible.'.format(options["hocrfile"])
+         usage()
+         exit(1)
 else:
    options["hocrfile"] = None
 

@@ -66,7 +66,12 @@ class HocrPager(SinglePage):
       SinglePage.__init__(self,image,glyphs,classify_ccs)
    def page_to_lines(self):
       lineParser = SpanLister('ocr_line')
-      lineParser.feed(open(self.hocr).read())
+      try:
+         lineParser.feed(open(self.hocr).read())
+      except IOError as e:
+         print "Error: could not open hocr file '" + self.hocr + "'"
+         print "Exiting."
+         exit(1) 
       self.ccs_lines =  generateCCsFromHocr(lineParser,self.img)
 
 class GreekOCR(object):
@@ -117,7 +122,7 @@ or separatistic).
          self.page = WholisticPage(self.img)
 
       if self.debug:
-         print "start page segmentation..."
+         #time start of page segmentation
          t = time.time()
       the_ccs = self.img.cc_analysis()
       median_cc = int(median([cc.nrows for cc in the_ccs]))
@@ -137,11 +142,6 @@ or separatistic).
         else:
           self.page = SinglePage(self.img)
       self.page.segment()
-      pp = pprint.PrettyPrinter(indent=4,depth=10)
-      if self.debug:
-         print "Page representation: "
-         print self.page.__dict__
-         print self.page.textlines[0].__dict__
       if self.debug:
          t = time.time() - t
          print "\t segmentation done [",t,"sec]"
@@ -170,7 +170,7 @@ where *image* is a Gamera image.
       return glyphs
 
       
-   def save_debug_images(self):
+   def save_debug_images(self, imageBase):
       """Saves the following images to the current working directory:
 
   **debug_lines.png**
@@ -182,15 +182,15 @@ where *image* is a Gamera image.
   **debug_words.png**
     Has a frame drawn around each detected word.
 """
-      rgbfilename = "debug_lines.png"
+      rgbfilename = imageBase + "_debug_lines.png"
       rgb = self.page.show_lines()
       rgb.save_PNG(rgbfilename)
       print "file '%s' written" % rgbfilename
-      rgbfilename = "debug_chars.png"
+      rgbfilename = imageBase + "_debug_chars.png"
       rgb = self.page.show_glyphs()
       rgb.save_PNG(rgbfilename)
       print "file '%s' written" % rgbfilename
-      rgbfilename = "debug_words.png"
+      rgbfilename = imageBase + "_debug_words.png"
       rgb = self.page.show_words()
       rgb.save_PNG(rgbfilename)
       print "file '%s' written" % rgbfilename
@@ -300,7 +300,7 @@ Make sure that you have called load_trainingdata_ before!
          image = image.to_onebit()
       self.img = image
       if self.debug:
-         print "Doing page Segmentation"
+         print "Doing page Segmentation..."
       self.segment_page()
       if self.debug:
          print "Classifying Text"
