@@ -67,6 +67,15 @@ def usage():
    usage += "                        attempts to join discrete elements into known\n"
    usage += "                        glyphs. This is very costly, but necessary when\n"
    usage += "                        when the scan is light. (Added by BGR)"
+   
+   usage += "\n"
+   usage += "  --hocr               specify a filename or filenames for hocr input\n"
+
+   usage += "                       this xhtml file's line-splitting data will be\n"
+   usage += "                       then used rather than Gamera's own. If using\n"
+   usage += "                       the --dir option, a %s in this paramter will\n"
+   usage += "                       be substituted with the basename of the current\n"
+   usage += "                       input file.\n" 
    sys.stderr.write(usage)
 
 def performGreekOCR(options):
@@ -80,15 +89,17 @@ def performGreekOCR(options):
    g.autogroup = options["autogroup"]
    g.debug = options["debug"] 
    g.load_trainingdata(options['trainingdata'])
-   if options.has_key("settingsfile"):
+   if options["hocrfile"]:
+      g.hocr = (options["hocrfile"])
+   if options["settingsfile"]:
       g.load_settings(options["settingsfile"])
-   if options.has_key("directory"):
+   if options["directory"]:
       image_files = os.listdir(options["directory"])
       image_files = [os.path.join(options["directory"],x) for x in image_files]
       test = re.compile(".png$",re.IGNORECASE)
       image_files = filter(test.search, image_files)
       image_files.sort()
-   elif options.has_key("imagefile"):
+   elif options["imagefile"]:
       image_files = options["imagefile"]
    image_file_count = 1;
    image_path = os.path.abspath(image_files[0])
@@ -260,7 +271,6 @@ while i < len(args):
    elif args[i] in ("--deskew"):
       options["deskew"] = True
    elif args[i] in ("--filter"):
-     # print("filtering!")
       options["filter"] = True
    elif args[i] in ("--split"):
       options["split"] = 1 
@@ -270,9 +280,9 @@ while i < len(args):
       options["profile"] = True
    elif args[i] in ("--sql"):
       options["sql"] = True      
-   elif args[i] in ("--columns"):
-      options["columns"] = True
-      print("doing columns, apparently")
+   elif args[i] in ("--hocr"):
+      i += 1
+      options["hocrfile"] = args[i]
    elif args[i] in ("--settings"):
       i += 1
       options["settingsfile"] = args[i]
@@ -283,25 +293,58 @@ while i < len(args):
       options["imagefile"].append(args[i])
    i += 1
 
+if options.has_key("directory"):
+   try:
+      with open(options["directory"]) as f: pass
+   except IOError as e:
+      print 'Directory "{0}" not accesible.'.format(options["directory"])
+      usage()
+      exit(1)
+else:
+   options["directory"] = None
+
+if not (options.has_key("imagefile") or options.has_key("directory")):
+   print 'Input image file or directory not provided.'
+   usage()
+   exit(1)
+
+if options.has_key("settingsfile"):
+   try:
+      with open(options["settingsfile"]) as f: pass
+   except IOError as e:
+      print 'Settings file "{0}" not accesible.'.format(options["settingsfile"])
+      usage()
+      exit(1)
+else:
+   options["settingsfile"] = None
+
+if options.has_key("hocrfile"):
+   try:
+      with open(options["hocrfile"]) as f: pass
+   except IOError as e:
+      print 'Hocr file "{0}" not accesible.'.format(options["hocrfile"])
+      usage()
+      exit(1)
+else:
+   options["hocrfile"] = None
+
 if not options.has_key("debug"):
-   options["debug"] = True
+   options["debug"] = False 
 if not options.has_key("split"):
    options["split"] = 0
 if not options.has_key("trainingdata"):
    print "No Trainingdata given"
    usage()
    exit(1)
+
 if not options.has_key("mode"):
-   options["mode"] = "wholistic"
+   options["mode"] = "separatistic"
 if not options.has_key("autogroup"):
    options["autogroup"] = False
 if not options.has_key("profile"):
    options["profile"] = False
-if not options.has_key("imagefile"):
-   print "No filename given"
-   usage()
-   exit(2)
-#print "Image files: " + options("imagefile")
+
+#an option to profile the process
 if options["profile"]:
    import cProfile
    import pstats
@@ -310,10 +353,3 @@ if options["profile"]:
    p.sort_stats('cumulative').print_stats(20)
 else:
    performGreekOCR(options)
-
-#class MyPage(Page):
-#   def page_to_lines(self):
-#       self.ccs_lines = self.img.bbox_merging(1,10)
-
-
-

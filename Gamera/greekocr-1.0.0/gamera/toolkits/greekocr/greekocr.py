@@ -59,30 +59,16 @@ def clean_classifier(cknn):
    print "new after cnn: %d" % len(cknn.get_glyphs())
    return cknn
 
-class AgressivePager(SinglePage):
+class HocrPager(SinglePage):
+   hocr = None
+   def __init__(self, image, glyphs=None, classify_ccs=None, hocr="hi there"):
+      self.hocr = hocr
+      SinglePage.__init__(self,image,glyphs,classify_ccs)
    def page_to_lines(self):
-      filename="/home/broberts/scratch/Tesseract_3_01_output_2012_03_30/0EQOAAAAYAAJ/0EQOAAAAYAAJ_00000085_tess.html"
       lineParser = SpanLister('ocr_line')
-      lineParser.feed(open(filename).read())
+      lineParser.feed(open(self.hocr).read())
       self.ccs_lines =  generateCCsFromHocr(lineParser,self.img)
 
-      #self.ccs_lines = self.img.bbox_mcmillan(section_search_size=6)
-      #offset_x = 566, offset_y = 105, ncols = 622, nrows = 28
-      #bbox 566 105 1360 140
-      #self.ccs_lines = []
-      #label  = 1
-      #seg_rect = Rect(Point(556, 105), Dim(622, 28))
-      #new_seg = Cc(self.img, label, Point(566,105), Point(1360,140))
-      #self.ccs_lines.append(new_seg)
-      #<gameracore.Image: offset_x = 1339, offset_y = 108, ncols = 21, nrows = 32>
-      #bbox 404 192 1358 239
-      #seg_rect2 = Rect(Point(1339,108), Dim(21,32))
-      #new_seg2 = Cc(self.img, 2, Point(404,192), Point(1358, 239))
-      #self.ccs_lines.append(new_seg2)
-      # <gameracore.Image: offset_x = 404, offset_y = 192, ncols = 954, nrows = 47>,
-      #seg_rect3 = Rect(Point(404,192), Dim(954,47))
-      #new_seg3 = Cc(self.img, 3, seg_rect3.ul, seg_rect3.lr)
-      #self.ccs_lines.append(new_seg3)
 class GreekOCR(object):
    """Provides the functionality for GreekOCR. The following parameters
 control the recognition process:
@@ -94,7 +80,7 @@ control the recognition process:
     The mode for dealing with accents.
     Can be ``wholistic`` or ``separatistic``.
 """
-   def __init__(self, mode="wholistic", splits=0, feats=["aspect_ratio", "volume64regions", "moments", "nholes_extended"]):
+   def __init__(self, mode="wholistic", splits=0, feats=["aspect_ratio", "volume64regions", "moments", "nholes_extended"], hocr=None):
       """Signature:
 
    ``init (mode="wholistic")``
@@ -107,6 +93,7 @@ where *mode* can be "wholistic" or "separatistic".
       self.autogroup = False
       self.output = ""
       self.mode = mode
+      self.hocr = hocr
       
 
 
@@ -132,9 +119,6 @@ or separatistic).
       if self.debug:
          print "start page segmentation..."
          t = time.time()
-
-      #cknn = knn.kNNInteractive([], ["aspect_ratio", "volume64regions", "moments", "nholes_extended"], 0)
-      #cknn.from_xml_filename(trainfile)
       the_ccs = self.img.cc_analysis()
       median_cc = int(median([cc.nrows for cc in the_ccs]))
       if (self.autogroup):
@@ -143,11 +127,15 @@ or separatistic).
         autogroup.grouping_distance = max([2,median_cc / 2])
         if self.debug:
           print "autogroup distance: ", autogroup.grouping_distance
-        self.page = AgressivePager(self.img, classify_ccs=autogroup)
-       # self.page = SinglePage(self.img, classify_ccs=autogroup)
-      else:
-        self.page = SinglePage(self.img, classify_ccs=autogroup)
-       # self.page = AgressivePager(self.img)
+        if self.hocr:
+          self.page = HocrPager(self.img, hocr=self.hocr, classify_ccs=autogroup)
+        else:
+          self.page = SinglePage(self.img, classify_ccs=autogroup)
+      else:#not autogrouped
+        if self.hocr:
+          self.page = HocrPager(self.img, hocr=self.hocr)
+        else:
+          self.page = SinglePage(self.img)
       self.page.segment()
       pp = pprint.PrettyPrinter(indent=4,depth=10)
       if self.debug:
