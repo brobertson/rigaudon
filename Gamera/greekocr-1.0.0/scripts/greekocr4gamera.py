@@ -160,7 +160,7 @@ def performGreekOCR(options):
          page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
          g.store_sql(image_path,page_id) 
       if options.has_key("unicodeoutfile"):
-         g.save_text_unicode(options["unicodeoutfile"] + str(image_file_count) + ".txt")
+         g.save_text_unicode(options["unicodeoutfile"] + imageBase + ".txt")
       elif options.has_key("teubneroutfile"):
          g.save_text_teubner(options["teubneroutfile"])
       else:

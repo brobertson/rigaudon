@@ -25,6 +25,11 @@ def generateCCsFromHocr(parser,image):
 		boxes =  span.split(';')[0].split()
 		point1 = Point(int(boxes[1]),int(boxes[2]))
 		point2 = Point(int(boxes[3]),int(boxes[4]))
-		ccs_lines.append(Cc(image, label, point1, point2))
+		try:
+			ccs_lines.append(Cc(image, label, point1, point2))
+		except RuntimeError as e:
+		#TODO we should do something here
+		#	print "failed to make Cc from Hocr box: "
+		#	print boxes 
 		label = label + 1
 	return ccs_lines
