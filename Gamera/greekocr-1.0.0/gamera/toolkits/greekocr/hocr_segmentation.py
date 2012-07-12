@@ -31,5 +31,6 @@ def generateCCsFromHocr(parser,image):
 		#TODO we should do something here
 		#	print "failed to make Cc from Hocr box: "
 		#	print boxes 
+			pass
 		label = label + 1
 	return ccs_lines
