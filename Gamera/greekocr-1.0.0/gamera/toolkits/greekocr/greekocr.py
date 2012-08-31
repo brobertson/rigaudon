@@ -229,6 +229,26 @@ where *image* is a Gamera image.
    def get_text(self):
       return self.output
 
+   def store_hocr(self,hocr_tree):
+      x = 0 
+      print "processing tuples for hocr..."
+      pageDiv = etree.SubElement(xhtmlBodyElement,"{http://www.w3.org/1999/xhtml}div"}
+      pageDiv.set("class","ocr_page")
+      pageDiv.set("id",page_path)
+      print "processing tuples for hocr output ..."
+      for t in self.word_tuples:
+         if not (t[0] == u'\n'):
+            #foo = self.lowerStripAccents(t[0]).encode('utf-8')
+            bar = t[0].encode('utf-8')
+            #myCursor.execute("INSERT INTO scanned_words (polyForm,form,page_id,number,meanConfidence,tlX,tlY,brX,brY) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",(bar,foo,3,x,0.55,t[1][0].ul_x,t[1][0].ul_y,t[1][len(t[1])-1].lr_x,t[1][len(t[1])-1].lr_y))
+            #print t[0].encode('utf-8')
+            wordSpan = etree.SubElement(pageDiv,"{http://www.w3.org/1999/xhtml}span")
+            wordSpan.set("class","ocrx_word")
+            titleText = "bbox " + t[1][0].ul_x + " " + t[1][0].ul_y + " " + t[1][len(t[1])-1].lr_x + " " + t[1][len(t[1])-1].lr_y
+            wordSpan.set("title", titleText)
+            wordSpan.text(bar)
+            x = x + 1
+
    def store_sql(self,image_path,page_id):
       myDb,myCursor = self.getCursor()
       x = 0 
