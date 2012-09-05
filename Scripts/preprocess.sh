@@ -1,4 +1,8 @@
 #!/bin/bash
+#To do
+#This can't take a path on the input image. Ugh. 
+#this can't deal with input our output images that have spaces in their filenames
+
 
 #play with these yourself
 LEPT_DIR=~/Downloads/leptonica-1.68
@@ -23,7 +27,7 @@ unpapered_pbm=$TMP_DIR/unpapered_${filenamebase_noext}.pbm
 
 $LEPT_DIR/prog/skewtest $1 $lept_out
 convert $lept_out $pgm
-unpaper --overwrite $pgm $unpapered_pgm
+unpaper --no-deskew --overwrite $pgm $unpapered_pgm
 convert $unpapered_pgm $unpapered_pbm
 convert $unpapered_pbm $2
 
