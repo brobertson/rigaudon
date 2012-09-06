@@ -39,3 +39,5 @@ An2e8cdΙ.nnomsatrrg. .́̓t. ισI IωIς .Εpὐ. φ3 4υλ3ί .δην se2d
 1 
 1 
 1 
+Gamera version:  3.3.0
+The Python version is 2.6.2
