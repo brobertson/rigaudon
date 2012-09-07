@@ -158,13 +158,16 @@ def performGreekOCR(options):
       if options.has_key("debug") and options["debug"] == True:
          g.save_debug_images(imageBase)
       if options.has_key("hocrout") and options["hocrout"]:
-         hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
-         g.store_hocr(hocr_tree)
+         #hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
+         g.store_hocr(internal_image_file_path,hocr_tree)
       if options.has_key("sql") and options["sql"]:
          page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
          g.store_sql(image_path,page_id) 
       if options.has_key("unicodeoutfile"):
-         g.save_text_unicode(options["unicodeoutfile"] + imageBase + ".txt")
+         if options.has_key("hocrout") and options["hocrout"]:
+            g.save_text_hocr(hocr_tree,options["unicodeoutfile"] + imageBase + ".html")
+         else:
+            g.save_text_unicode(options["unicodeoutfile"] + imageBase + ".txt")
       elif options.has_key("teubneroutfile"):
          g.save_text_teubner(options["teubneroutfile"])
       else:
@@ -175,8 +178,7 @@ def hocr_make_tree_and_return(book_code):
    import lxml
    from lxml import etree
    import StringIO
-   tree = etree.parse(StringIO.StringIO('''\
-   <?xml version="1.0"?>
+   tree = etree.parse(StringIO.StringIO('''<?xml version="1.0"?>
    <!DOCTYPE html
    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -192,40 +194,13 @@ def hocr_make_tree_and_return(book_code):
     </html>
     '''))
    root = tree.getroot()
-   body = root.find("{http://www.w3.org/1999/xhtml}body")
-   para = etree.SubElement(body, "{http://www.w3.org/1999/xhtml}p")
-   para2 = etree.SubElement(body, "{http://www.w3.org/1999/xhtml}p")
-   para2.text="two"
-   para2.set("class","foo")
-   para2.set("title","a b c d e")
-   #print(etree.tostring(tree)) 
-   return xhtmlBodyElement  
-  
-def hocr_make_page_and_return_div(page_path,number,book_id,xhtmlBodyElement):
-   def store_sql(self):
-      #import mySQLdb
-      #myDb,myCursor = self.getCursor()
-      #x = 0
-      print "setting up hocr output for page" + page_path " ..."
-      pageDiv = etree.SubElement(xhtmlBodyElement,"{http://www.w3.org/1999/xhtml}div"}
-      pageDiv.set("class","ocr_page")
-      pageDiv.set("id",page_path)
-      print "processing tuples for hocr output ..."
-      for t in self.word_tuples:
-         if not (t[0] == u'\n'):
-            #foo = self.lowerStripAccents(t[0]).encode('utf-8')
-            bar = t[0].encode('utf-8')
-            #myCursor.execute("INSERT INTO scanned_words (polyForm,form,page_id,number,meanConfidence,tlX,tlY,brX,brY) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",(bar,foo,3,x,0.55,t[1][0].ul_x,t[1][0].ul_y,t[1][len(t[1])-1].lr_x,t[1][len(t[1])-1].lr_y))
-            #print t[0].encode('utf-8')
-            wordSpan = etree.SubElement(pageDiv,"{http://www.w3.org/1999/xhtml}span")
-            wordSpan.set("class","ocrx_word")
-            titleText = "bbox " + t[1][0].ul_x + " " + t[1][0].ul_y + " " + t[1][len(t[1])-1].lr_x + " " + t[1][len(t[1])-1].lr_y
-            wordSpan.set("title", titleText)
-            wordSpan.text(bar)
-            x = x + 1
-     # myDb.commit()
-     # myCursor.close()
-      return xhtmlBodyElement
+   body= root.find("{http://www.w3.org/1999/xhtml}body")
+#   para = etree.SubElement(body, "{http://www.w3.org/1999/xhtml}p")
+#   para2 = etree.SubElement(body, "{http://www.w3.org/1999/xhtml}p")
+#   para2.text="two"
+#   para2.set("class","foo")
+#   para2.set("title","a b c d e")
+   return body
  
 
 def sql_make_book_and_return_id(book_code):
