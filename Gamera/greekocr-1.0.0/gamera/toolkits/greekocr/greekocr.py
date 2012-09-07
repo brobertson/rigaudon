@@ -231,11 +231,13 @@ where *image* is a Gamera image.
    def store_hocr(self,page_path,hocr_tree):
       import lxml
       from lxml import etree
+      import string
       x = 0 
       root = hocr_tree.getroot()
       body = root.find("{http://www.w3.org/1999/xhtml}body")
       pageDiv = etree.SubElement(body,"{http://www.w3.org/1999/xhtml}div")
       pageDiv.set("class","ocr_page")
+      page_path = page_path.translate(None,'/')#strip out slashes, which aren't allowed on ids
       pageDiv.set("id",page_path)
       for line in self.page.textlines:
          lineSpan = etree.SubElement(pageDiv,"{http://www.w3.org/1999/xhtml}span")
