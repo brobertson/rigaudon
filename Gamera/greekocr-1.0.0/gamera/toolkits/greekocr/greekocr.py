@@ -238,8 +238,6 @@ where *image* is a Gamera image.
       pageDiv.set("class","ocr_page")
       pageDiv.set("id",page_path)
       for line in self.page.textlines:
-         print dir(line)
-         print dir(line.bbox)
          lineSpan = etree.SubElement(pageDiv,"{http://www.w3.org/1999/xhtml}span")
          lineSpan.set("class","ocr_line")
          titleText = "bbox " + str(line.bbox.ul_x) + " " + str(line.bbox.ul_y) + " " + str(line.bbox.lr_x) + " " + str(line.bbox.lr_y)
@@ -250,7 +248,11 @@ where *image* is a Gamera image.
                word_unicode = unicode(t[0])
                wordSpan = etree.SubElement(lineSpan,"{http://www.w3.org/1999/xhtml}span")
                wordSpan.set("class","ocr_word")
-               titleText = "bbox " + str(t[1][0].ul_x) + " " + str(t[1][0].ul_y) + " " + str(t[1][len(t[1])-1].lr_x) + " " + str(t[1][len(t[1])-1].lr_y)
+               word_ul_x_glyph =  min(t[1], key=lambda glyph: glyph.ul_x)
+               word_ul_y_glyph =  min(t[1], key=lambda glyph: glyph.ul_y)
+               word_lr_x_glyph =  max(t[1], key=lambda glyph: glyph.lr_x)
+               word_lr_y_glyph =  max(t[1], key=lambda glyph: glyph.lr_y)
+               titleText = "bbox " + str(word_ul_x_glyph.ul_x) + " " + str(word_ul_y_glyph.ul_y) + " " + str(word_lr_x_glyph.lr_x) + " " + str(word_lr_y_glyph.lr_y)
                wordSpan.set("title", titleText)
                wordSpan.text = word_unicode
                wordSpan.tail = " "
