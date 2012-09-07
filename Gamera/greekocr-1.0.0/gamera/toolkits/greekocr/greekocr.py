@@ -241,17 +241,12 @@ where *image* is a Gamera image.
          word_tuples=line.to_word_tuples()
          for t in word_tuples:
             if not (t[0] == u'\n'):
-               foo = self.lowerStripAccents(t[0]).encode('utf-8')
-               bar = unicode(t[0]) #unicode(t[0].encode('utf-8'))
-              # bar = self._normalize(bar)
-               print "current bar: " + bar
-               #myCursor.execute("INSERT INTO scanned_words (polyForm,form,page_id,number,meanConfidence,tlX,tlY,brX,brY) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",(bar,foo,3,x,0.55,t[1][0].ul_x,t[1][0].ul_y,t[1][len(t[1])-1].lr_x,t[1][len(t[1])-1].lr_y))
-               #print t[0].encode('utf-8')
+               word_unicode = unicode(t[0])
                wordSpan = etree.SubElement(lineDiv,"{http://www.w3.org/1999/xhtml}span")
                wordSpan.set("class","ocrx_word")
                titleText = "bbox " + str(t[1][0].ul_x) + " " + str(t[1][0].ul_y) + " " + str(t[1][len(t[1])-1].lr_x) + " " + str(t[1][len(t[1])-1].lr_y)
                wordSpan.set("title", titleText)
-               wordSpan.text = bar
+               wordSpan.text = word_unicode
                wordSpan.tail = " "
                x = x + 1
 
