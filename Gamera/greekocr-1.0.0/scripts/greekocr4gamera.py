@@ -193,14 +193,13 @@ def hocr_make_tree_and_return(book_code):
    <body/>
     </html>
     '''))
-   root = tree.getroot()
-   body= root.find("{http://www.w3.org/1999/xhtml}body")
+   
 #   para = etree.SubElement(body, "{http://www.w3.org/1999/xhtml}p")
 #   para2 = etree.SubElement(body, "{http://www.w3.org/1999/xhtml}p")
 #   para2.text="two"
 #   para2.set("class","foo")
 #   para2.set("title","a b c d e")
-   return body
+   return tree
  
 
 def sql_make_book_and_return_id(book_code):

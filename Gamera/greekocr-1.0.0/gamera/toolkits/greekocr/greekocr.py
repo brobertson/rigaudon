@@ -232,23 +232,30 @@ where *image* is a Gamera image.
       import lxml
       from lxml import etree
       x = 0 
-      pageDiv = etree.SubElement(hocr_tree,"{http://www.w3.org/1999/xhtml}div")
+      root = hocr_tree.getroot()
+      body = root.find("{http://www.w3.org/1999/xhtml}body")
+      pageDiv = etree.SubElement(body,"{http://www.w3.org/1999/xhtml}div")
       pageDiv.set("class","ocr_page")
       pageDiv.set("id",page_path)
       for line in self.page.textlines:
-         lineDiv = etree.SubElement(pageDiv,"{http://www.w3.org/1999/xhtml}div")
-         lineDiv.set("class","ocrx_line")
+         print dir(line)
+         print dir(line.bbox)
+         lineSpan = etree.SubElement(pageDiv,"{http://www.w3.org/1999/xhtml}span")
+         lineSpan.set("class","ocr_line")
+         titleText = "bbox " + str(line.bbox.ul_x) + " " + str(line.bbox.ul_y) + " " + str(line.bbox.lr_x) + " " + str(line.bbox.lr_y)
+         lineSpan.set("title", titleText)
          word_tuples=line.to_word_tuples()
          for t in word_tuples:
             if not (t[0] == u'\n'):
                word_unicode = unicode(t[0])
-               wordSpan = etree.SubElement(lineDiv,"{http://www.w3.org/1999/xhtml}span")
-               wordSpan.set("class","ocrx_word")
+               wordSpan = etree.SubElement(lineSpan,"{http://www.w3.org/1999/xhtml}span")
+               wordSpan.set("class","ocr_word")
                titleText = "bbox " + str(t[1][0].ul_x) + " " + str(t[1][0].ul_y) + " " + str(t[1][len(t[1])-1].lr_x) + " " + str(t[1][len(t[1])-1].lr_y)
                wordSpan.set("title", titleText)
                wordSpan.text = word_unicode
                wordSpan.tail = " "
                x = x + 1
+         brElement = etree.SubElement(pageDiv,"{http://www.w3.org/1999/xhtml}br")
 
    def store_sql(self,image_path,page_id):
       myDb,myCursor = self.getCursor()
