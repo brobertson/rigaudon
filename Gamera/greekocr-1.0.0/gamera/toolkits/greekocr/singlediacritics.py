@@ -116,15 +116,15 @@ class SingleTextline(Textline):
       for i in range(len(printing_glyphs)):   
             if not self.is_combining_glyph(printing_glyphs[i]): 
               previousNonCombining = currentNonCombining
-              print "PNC now: ",
-              if previousNonCombining:
-                print previousNonCombining.id_name
-              else:
-                print "NONE"
+              #print "PNC now: ",
+             # if previousNonCombining:
+               # print previousNonCombining.id_name
+             # else:
+                #print "NONE"
               currentNonCombining = printing_glyphs[i]
-              print "CNC now: ", currentNonCombining.id_name
+              #print "CNC now: ", currentNonCombining.id_name
               if(previousNonCombining and currentNonCombining and ((currentNonCombining.ul_x - previousNonCombining.lr_x) > threshold)):
-                  print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
+               #   print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
                   wordlist.append(word)
                   word = []
             word.append(printing_glyphs[i])
