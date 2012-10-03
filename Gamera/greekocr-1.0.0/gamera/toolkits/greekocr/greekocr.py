@@ -115,7 +115,8 @@ or separatistic).
       if self.optimizeknn:
          self.cknn = clean_classifier(self.cknn)
      
-
+   def load_settings(self, settingsfile):
+      self.cknn.load_settings(settingsfile)
 
    def segment_page(self):
       if (self.mode != "separatistic"):
