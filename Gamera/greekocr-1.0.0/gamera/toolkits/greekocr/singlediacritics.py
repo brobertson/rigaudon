@@ -135,7 +135,12 @@ class SingleTextline(Textline):
 
 
    def is_combining_glyph(self, glyph):
-      ret =  glyph.get_main_id().find("combining") != -1
+      #must both have word 'combining', and not have word 'letter'
+      # the latter to avoid grouped things, like 
+      #greek.small.letter.eta.and.combining.acute.accent
+      #which could get treated as combining, alas, forcing a
+      #space on the output
+      ret =  (glyph.get_main_id().find("combining") != -1) and (glyph.get_main_id().find("letter") == -1)
       return ret
    def is_joined_glyph(self, glyph):
       ret = glyph.get_main_id().find(".and.") != -1
