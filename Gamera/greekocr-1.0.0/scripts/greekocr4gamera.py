@@ -108,9 +108,11 @@ def performGreekOCR(options):
    book_id = 0
    if options.has_key("sql") and options["sql"]:
       book_id = sql_make_book_and_return_id(book_code)
-   if options.has_key("hocrout") and options["hocrout"]:
-       hocr_tree = hocr_make_tree_and_return(book_code)
+  # if options.has_key("hocrout") and options["hocrout"]:
+  #     hocr_tree = hocr_make_tree_and_return(book_code)
    for image_file in image_files:
+      if options.has_key("hocrout") and options["hocrout"]:
+         hocr_tree = hocr_make_tree_and_return(book_code)
       image_path = os.path.abspath(image_file)
       image_split_path = os.path.split(image_path)
       book_code = os.path.split(image_split_path[0])[1]#directory name
