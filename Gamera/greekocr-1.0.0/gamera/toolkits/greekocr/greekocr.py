@@ -229,6 +229,19 @@ where *image* is a Gamera image.
    def get_text(self):
       return self.output
 
+   def correct_common_errors(self,unicode_input):
+      import re
+      import unicodedata
+      smooth_breathing = unicode(u"\N{COMBINING COMMA ABOVE}")
+      apostrophe = unicode(u"\N{APOSTROPHE}")
+      consonants =  unicode(u"\N{GREEK SMALL LETTER BETA}\N{GREEK SMALL LETTER DELTA}\N{GREEK SMALL LETTER ZETA}\N{GREEK SMALL LETTER THETA}\N{GREEK SMALL LETTER KAPPA}\N{GREEK SMALL LETTER LAMDA}\N{GREEK SMALL LETTER MU}\N{GREEK SMALL LETTER NU}\N{GREEK SMALL LETTER XI}\N{GREEK SMALL LETTER PI}\N{GREEK SMALL LETTER RHO}\N{GREEK SMALL LETTER SIGMA}\N{GREEK SMALL LETTER TAU}\N{GREEK SMALL LETTER PHI}\N{GREEK SMALL LETTER CHI}\N{GREEK SMALL LETTER PSI}")
+      #this regex replaces final combining commas (i.e. 'smooth breathing') 
+      #with apostrophes, if they appear after a consonant
+      print "input: " + unicode_input.encode('utf-8')
+      out = re.sub(ur'(.*[' + consonants + ur'])' + smooth_breathing,r'\1' + apostrophe,unicode_input)
+      print "outpu: " + out.encode('utf-8')
+      return out
+
    def store_hocr(self,page_path,hocr_tree):
       import lxml
       from lxml import etree
@@ -249,6 +262,7 @@ where *image* is a Gamera image.
          for t in word_tuples:
             if not (t[0] == u'\n'):
                word_unicode = unicode(t[0])
+               word_unicode = self.correct_common_errors(word_unicode)
                wordSpan = etree.SubElement(lineSpan,"{http://www.w3.org/1999/xhtml}span")
                wordSpan.set("class","ocr_word")
                word_ul_x_glyph =  min(t[1], key=lambda glyph: glyph.ul_x)
