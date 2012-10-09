@@ -125,7 +125,10 @@ def performGreekOCR(options):
          if options["debug"]:
             print "using '" + hocr_to_use + "' as hocr file"
       internal_image_file_path = os.path.join(book_code, image_file_name) 
-      image = load_image(image_file)
+      try:
+         image = load_image(image_file)
+      except:
+         continue
       if image.data.pixel_type != ONEBIT:
          image = image.to_onebit()
       if options.has_key("filter") and options["filter"] == True:
