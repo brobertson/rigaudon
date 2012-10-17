@@ -28,11 +28,18 @@ import sys
 
 class SinglePage(Page):      
    def lines_to_chars(self):
+      #import pprint 
+      #print "inside linestochars"
+      #pp = pprint.PrettyPrinter(indent=4, depth=4)
+      #print "cc_lines:"
+      #print pp.pprint(self.ccs_lines)
       subccs = self.img.sub_cc_analysis(self.ccs_lines)
-      
+      #print "subccs:"
+      #print pp.pprint(subccs) 
       for i,segment in enumerate(self.ccs_lines):
          self.textlines.append(SingleTextline(segment, subccs[1][i]))
-
+      #print "textlines"
+      #pp.pprint(self.textlines)
 
 
 class Character(object):

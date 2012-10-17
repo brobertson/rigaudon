@@ -18,19 +18,48 @@ class SpanLister(HTMLParser):
                 	self.spans.extend(bar)
 
 def generateCCsFromHocr(parser,image):
-	from gamera.core import Point
-	ccs_lines = []
-	label  = 1
+	from gamera.core import Point, Cc, Rect
+	extended_segs = []
 	for span in parser.spans: 
 		boxes =  span.split(';')[0].split()
 		point1 = Point(int(boxes[1]),int(boxes[2]))
 		point2 = Point(int(boxes[3]),int(boxes[4]))
 		try:
-			ccs_lines.append(Cc(image, label, point1, point2))
+			extended_segs.append(Rect(point1, point2))
 		except RuntimeError as e:
 		#TODO we should do something here
 		#	print "failed to make Cc from Hocr box: "
 		#	print boxes 
 			pass
-		label = label + 1
-	return ccs_lines
+        page = image.image_copy()
+        ccs = page.cc_analysis()
+	#The following copied from bbox_merging. Simply making Ccs with
+	#the appropriate dimensions does not seem to work, but did in a 
+	#previous version...
+
+	# build new merged CCs
+        tmplist = ccs[:]
+        dellist = []
+        seg_ccs = []
+        seg_cc = []
+        if(len(extended_segs) > 0):
+            label = 1
+            for seg in extended_segs:
+                label += 1
+                for cc in tmplist:
+                    if(seg.intersects(cc)):
+                        # mark original image with segment label
+                        image.highlight(cc, label)
+                        seg_cc.append(cc)
+                        dellist.append(cc)
+                if len(seg_cc) == 0:
+                    continue
+                seg_rect = seg_cc[0].union_rects(seg_cc)
+                new_seg = Cc(image, label, seg_rect.ul, seg_rect.lr)
+                seg_cc = []
+                for item in dellist:
+                    tmplist.remove(item)
+                dellist = []
+                seg_ccs.append(new_seg)
+
+        return seg_ccs
