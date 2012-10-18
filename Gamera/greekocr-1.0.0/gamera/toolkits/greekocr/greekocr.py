@@ -233,6 +233,8 @@ where *image* is a Gamera image.
    def correct_common_errors(self,unicode_input):
       import re
       import unicodedata
+      left_single_quote = unicode(u"\N{LEFT SINGLE QUOTATION MARK}")
+      righ_single_quote = unicode(u"\N{RIGHT SINGLE QUOTATION MARK}")
       smooth_breathing = unicode(u"\N{COMBINING COMMA ABOVE}")
       rough_breathing = unicode(u"\N{COMBINING REVERSED COMMA ABOVE}")
       circumflex = unicode(u"\N{COMBINING GREEK PERISPOMENI}")
@@ -257,6 +259,14 @@ where *image* is a Gamera image.
       #arranges it as vowel+accent+consonant
       #certain consonants tend to 'steal' the acute
       out = re.sub(ur'(.*[' + vowels + ur'])([' + consonants + ur'])' + acute_accent,r'\1'+acute_accent+r'\2',out)
+     
+      #replace vowel + left_single_quote with vowel and acute accent. 
+      
+      # A left single quote should appear at the beginning of a word only, so this is ok.
+      out = re.sub(ur'(.*[' + vowels + ur'])(' + left_single_quote + ur')' ,r'\1'+rough_breathing,out)
+      
+      
+      #out = re.sub(ur'(.*[' + vowels + ur'])(' + right_single_quote + ur')' ,r'\1'+rough_breathing,out)
       #print "outpu: " + out.encode('utf-8')
       return out
 

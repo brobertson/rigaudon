@@ -198,6 +198,10 @@ class SingleTextline(Textline):
             elif mainid == "combining.greek.ypogegrammeni":
                if glyph.center.y < self.bbox.center.y:
                   glyph.classify_automatic("combining.acute.accent")
+            elif mainid == "right.single.quotation.mark":
+               if glyph.center.y > self.bbox.center.y:
+                  #too low to be a quotation mark, must be a comma
+                  glyph.classify_automatic("comma")
             elif mainid.find("manual") != -1 or mainid.find("split") != -1:
                continue
             
