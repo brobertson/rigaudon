@@ -148,27 +148,6 @@ or separatistic).
          print "\t segmentation done [",t,"sec]"
 
 
-
-   def get_page_glyphs(self, image):
-      """Returns a list of segmented CCs using the selected segmentation 
-approach on the given image. This list can be used for creating training data.
-Signature:
-
-   ``get_page_glyphs (image)``
-
-where *image* is a Gamera image. 
-"""
-      if image.data.pixel_type != ONEBIT:
-         image = image.to_onebit()
-      self.img = image
-
-      self.segment_page()
-      glyphs = [] 
-      for line in self.page.textlines:
-         for g in line.glyphs:
-            glyphs.append(g)
-      return glyphs
-
       
    def save_debug_images(self, imageBase):
       """Saves the following images to the current working directory:
