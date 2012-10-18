@@ -40,6 +40,11 @@ class SinglePage(Page):
          self.textlines.append(SingleTextline(segment, subccs[1][i]))
       #print "textlines"
       #pp.pprint(self.textlines)
+      
+   # Implement a simple vertical ordering
+   def order_lines(self):
+      self.ccs_lines.sort(lambda s,t: s.offset_y - t.offset_y)
+
 
 
 class Character(object):
