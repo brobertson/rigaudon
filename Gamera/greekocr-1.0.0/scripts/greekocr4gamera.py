@@ -163,6 +163,7 @@ def performGreekOCR(options):
       if options.has_key("debug") and options["debug"] == True:
          g.save_debug_images(imageBase)
       if options.has_key("hocrout") and options["hocrout"]:
+         #if we turned this on, we would make a separate div for each page of input
          #hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
          g.store_hocr(internal_image_file_path,hocr_tree)
       if options.has_key("sql") and options["sql"]:

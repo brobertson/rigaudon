@@ -209,7 +209,8 @@ where *image* is a Gamera image.
          self.output = self.output + t[0]
          if not (t[0] == u'\n'):
             self.output = self.output + " "
-      self.output = self._normalize(self.output) 
+      self.output = self.correct_common_errors(self.output)
+      #self.output = self._normalize(self.output) 
 
    def lowerStripAccents(self,word):
       import unicodedata
@@ -233,18 +234,29 @@ where *image* is a Gamera image.
       import re
       import unicodedata
       smooth_breathing = unicode(u"\N{COMBINING COMMA ABOVE}")
+      rough_breathing = unicode(u"\N{COMBINING REVERSED COMMA ABOVE}")
+      circumflex = unicode(u"\N{COMBINING GREEK PERISPOMENI}")
       acute_accent = unicode(u"\N{COMBINING ACUTE ACCENT}")
+      grave_accent = unicode(u"\N{COMBINING GRAVE ACCENT}")
       apostrophe = unicode(u"\N{APOSTROPHE}")
       vowels =  unicode(u"\N{GREEK SMALL LETTER ALPHA}\N{GREEK SMALL LETTER EPSILON}\N{GREEK SMALL LETTER ETA}\N{GREEK SMALL LETTER IOTA}\N{GREEK SMALL LETTER OMICRON}\N{GREEK SMALL LETTER UPSILON}\N{GREEK SMALL LETTER OMEGA}")
       consonants =  unicode(u"\N{GREEK SMALL LETTER BETA}\N{GREEK SMALL LETTER DELTA}\N{GREEK SMALL LETTER ZETA}\N{GREEK SMALL LETTER THETA}\N{GREEK SMALL LETTER KAPPA}\N{GREEK SMALL LETTER LAMDA}\N{GREEK SMALL LETTER MU}\N{GREEK SMALL LETTER NU}\N{GREEK SMALL LETTER XI}\N{GREEK SMALL LETTER PI}\N{GREEK SMALL LETTER RHO}\N{GREEK SMALL LETTER SIGMA}\N{GREEK SMALL LETTER TAU}\N{GREEK SMALL LETTER PHI}\N{GREEK SMALL LETTER CHI}\N{GREEK SMALL LETTER PSI}")
+     
+      #These try to produce canonical ordering of accents and breathing
+      #this regex reorders breathing + accent to accent + breathing
+      out = re.sub(ur'(['+smooth_breathing+rough_breathing + ur'])([' + acute_accent + grave_accent + ur'])',r'\2' + r'\1',unicode_input)
+      #this regex reorders circumflex + breathing to breathing + circumflex
+      out = re.sub(ur'([' + circumflex +  ur'])([' +smooth_breathing+rough_breathing + ur'])',r'\2' + r'\1',out)
       #this regex replaces final combining commas (i.e. 'smooth breathing') 
       #with apostrophes, if they appear after a consonant
       #print "input: " + unicode_input.encode('utf-8')
-      out_half = re.sub(ur'(.*[' + consonants + ur'])' + smooth_breathing,r'\1' + apostrophe,unicode_input)
+      out = re.sub(ur'(.*[' + consonants + ur'])' + smooth_breathing,r'\1' + apostrophe,out)
+     
+     
       #this regex takes the sequence vowel+consonant+acute accent and 
       #arranges it as vowel+accent+consonant
       #certain consonants tend to 'steal' the acute
-      out = re.sub(ur'(.*[' + vowels + ur'])([' + consonants + ur'])' + acute_accent,r'\1'+acute_accent+r'\2',out_half)
+      out = re.sub(ur'(.*[' + vowels + ur'])([' + consonants + ur'])' + acute_accent,r'\1'+acute_accent+r'\2',out)
       #print "outpu: " + out.encode('utf-8')
       return out
 
