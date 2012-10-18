@@ -44,29 +44,7 @@ class SinglePage(Page):
    # Implement a simple vertical ordering
    def order_lines(self):
       self.ccs_lines.sort(lambda s,t: s.offset_y - t.offset_y)
-   def sort_glyphs(self):
-      print "sorting glyphs"
-      self.glyphs.sort(lambda x,y: cmp(x.ul_x, y.ul_x))
-      #scan for breathing + (accent) + capital letter
-      glyphs_out = []
-      reordered_glyphs = []
-      just_reordered = False
-      for glyph in self.glyphs:
-         if just_reordered == False and len(glyphs_out) > 0 and is_upper_case_greek_letter(glyph) and is_combining_glyph(glyphs_out[-1]):
-            just_reordered = True
-            reordered_glyphs = []
-            reordered_glyphs.append(glyph)
-            reordered_glyphs.append(glyphs_out[-1])
-            glyphs_out = glyphs_out[:-1] #strip the last glyph off of this stack
-            print "reordered " + glyph.get_main_id()
-            if len(glyphs_out) > 0 and is_combining_glyph(glyphs_out[-1]):
-               reordered_glyphs.append(glyphs_out[-1])
-               glyphs_out = glyphs_out[:-1]
-            glyphs_out = glyphs_out + reordered_glyphs
-         else:
-            glyphs_out.append(glyph)
-            just_reordered = False
-      self.glyphs = glyphs_out
+
                
                
 
@@ -137,24 +115,24 @@ class SingleTextline(Textline):
       for glyph in printing_glyphs:
          if just_reordered == False and len(glyphs_out) > 0 and self.is_greek_capital_letter(glyph) and self.is_combining_glyph(glyphs_out[-1]):#and the previous accent isn't too far away...
             capital_char_width = (glyph.lr_x - glyph.ul_x)
-            print "width: ", capital_char_width
+           # print "width: ", capital_char_width
             distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
-            print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+            #print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+            reordered_glyphs = []
+            reordered_glyphs.append(glyph)
             if distance_to_accent < capital_char_width:
                just_reordered = True
-               reordered_glyphs = []
-               reordered_glyphs.append(glyph)
                reordered_glyphs.append(glyphs_out[-1])
                glyphs_out = glyphs_out[:-1] #strip the last glyph off of this stack
-               print "reordered " + glyph.get_main_id()
+               #print "reordered " + glyph.get_main_id()
                if len(glyphs_out) > 0 and self.is_combining_glyph(glyphs_out[-1]):#and it isn't too far away
                   distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
-                  print "possibly two accents"
-                  print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+                  #print "possibly two accents"
+                  #print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
                   if distance_to_accent < capital_char_width:
                      reordered_glyphs.append(glyphs_out[-1])
                      glyphs_out = glyphs_out[:-1]
-               glyphs_out = glyphs_out + reordered_glyphs
+            glyphs_out = glyphs_out + reordered_glyphs
          else:
             glyphs_out.append(glyph)
             just_reordered = False
