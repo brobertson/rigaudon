@@ -190,7 +190,11 @@ class SingleTextline(Textline):
                   glyph.classify_automatic("comma")
                else:
                   glyph.classify_automatic("combining.comma.above")
-            
+            elif mainid == "full.stop" or mainid == "middle.dot":
+               if glyph.center.y > self.bbox.center.y:
+                  glyph.classify_automatic("full.stop")
+               else:
+                  glyph.classify_automatic("middle.dot")
             elif mainid.find("manual") != -1 or mainid.find("split") != -1:
                continue
             
