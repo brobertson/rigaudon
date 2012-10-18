@@ -195,6 +195,9 @@ class SingleTextline(Textline):
                   glyph.classify_automatic("full.stop")
                else:
                   glyph.classify_automatic("middle.dot")
+            elif mainid == "combining.greek.ypogegrammeni":
+               if glyph.center.y < self.bbox.center.y:
+                  glyph.classify_automatic("combining.acute.accent")
             elif mainid.find("manual") != -1 or mainid.find("split") != -1:
                continue
             
