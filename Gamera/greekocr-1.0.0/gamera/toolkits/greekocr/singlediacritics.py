@@ -44,7 +44,31 @@ class SinglePage(Page):
    # Implement a simple vertical ordering
    def order_lines(self):
       self.ccs_lines.sort(lambda s,t: s.offset_y - t.offset_y)
-
+   def sort_glyphs(self):
+      print "sorting glyphs"
+      self.glyphs.sort(lambda x,y: cmp(x.ul_x, y.ul_x))
+      #scan for breathing + (accent) + capital letter
+      glyphs_out = []
+      reordered_glyphs = []
+      just_reordered = False
+      for glyph in self.glyphs:
+         if just_reordered == False and len(glyphs_out) > 0 and is_upper_case_greek_letter(glyph) and is_combining_glyph(glyphs_out[-1]):
+            just_reordered = True
+            reordered_glyphs = []
+            reordered_glyphs.append(glyph)
+            reordered_glyphs.append(glyphs_out[-1])
+            glyphs_out = glyphs_out[:-1] #strip the last glyph off of this stack
+            print "reordered " + glyph.get_main_id()
+            if len(glyphs_out) > 0 and is_combining_glyph(glyphs_out[-1]):
+               reordered_glyphs.append(glyphs_out[-1])
+               glyphs_out = glyphs_out[:-1]
+            glyphs_out = glyphs_out + reordered_glyphs
+         else:
+            glyphs_out.append(glyph)
+            just_reordered = False
+      self.glyphs = glyphs_out
+               
+               
 
 
 class Character(object):
@@ -105,8 +129,36 @@ class SingleTextline(Textline):
          if self.is_skip(g):
             continue
          # print g.id_name, g.ul_x
-         printing_glyphs.append(g) 
-  
+         printing_glyphs.append(g)  
+      #scan for breathing + (accent) + capital letter
+      glyphs_out = []
+      reordered_glyphs = []
+      just_reordered = False
+      for glyph in printing_glyphs:
+         if just_reordered == False and len(glyphs_out) > 0 and self.is_greek_capital_letter(glyph) and self.is_combining_glyph(glyphs_out[-1]):#and the previous accent isn't too far away...
+            capital_char_width = (glyph.lr_x - glyph.ul_x)
+            print "width: ", capital_char_width
+            distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
+            print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+            if distance_to_accent < capital_char_width:
+               just_reordered = True
+               reordered_glyphs = []
+               reordered_glyphs.append(glyph)
+               reordered_glyphs.append(glyphs_out[-1])
+               glyphs_out = glyphs_out[:-1] #strip the last glyph off of this stack
+               print "reordered " + glyph.get_main_id()
+               if len(glyphs_out) > 0 and self.is_combining_glyph(glyphs_out[-1]):#and it isn't too far away
+                  distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
+                  print "possibly two accents"
+                  print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+                  if distance_to_accent < capital_char_width:
+                     reordered_glyphs.append(glyphs_out[-1])
+                     glyphs_out = glyphs_out[:-1]
+               glyphs_out = glyphs_out + reordered_glyphs
+         else:
+            glyphs_out.append(glyph)
+            just_reordered = False
+      printing_glyphs = glyphs_out
       spacelist = []
       total_space = 0
       for i in range(len(glyphs) - 1):
@@ -125,7 +177,7 @@ class SingleTextline(Textline):
       word = []
       previousNonCombining = None
       currentNonCombining = None
-      for i in range(len(printing_glyphs)):   
+      for i in range(len(printing_glyphs)):
             if not self.is_combining_glyph(printing_glyphs[i]): 
               previousNonCombining = currentNonCombining
               #print "PNC now: ",
@@ -145,7 +197,9 @@ class SingleTextline(Textline):
       self.words= wordlist
 
 
-
+   def is_greek_capital_letter(self, glyph):
+      return (glyph.get_main_id().find("greek") != -1) and (glyph.get_main_id().find("capital") != -1) and (glyph.get_main_id().find("letter") != -1)
+      
    def is_combining_glyph(self, glyph):
       #must both have word 'combining', and not have word 'letter'
       # the latter to avoid grouped things, like 
@@ -195,6 +249,9 @@ class SingleTextline(Textline):
                   glyph.classify_automatic("comma")
                else:
                   glyph.classify_automatic("combining.comma.above")
+            elif mainid == "apostrophe":
+               if glyph.center.y > self.bbox.center.y:
+                  glyph.classify_automatic("comma")
             elif mainid == "full.stop" or mainid == "middle.dot":
                if glyph.center.y > self.bbox.center.y:
                   glyph.classify_automatic("full.stop")
