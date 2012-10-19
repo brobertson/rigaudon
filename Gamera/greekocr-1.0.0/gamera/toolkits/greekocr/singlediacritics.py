@@ -113,23 +113,29 @@ class SingleTextline(Textline):
       reordered_glyphs = []
       just_reordered = False
       for glyph in printing_glyphs:
+#         if self.is_greek_capital_letter(glyph) and len(glyphs_out):
+#            print "Cap:" 
+#            print glyph.id_name
+#            print glyphs_out[-1].id_name
          if just_reordered == False and len(glyphs_out) > 0 and self.is_greek_capital_letter(glyph) and self.is_combining_glyph(glyphs_out[-1]):#and the previous accent isn't too far away...
+           # print "Reorder cap?"
             capital_char_width = (glyph.lr_x - glyph.ul_x)
-           # print "width: ", capital_char_width
+            max_distance = capital_char_width / 2
+        #    print "width: ", capital_char_width
             distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
-            #print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+       #     print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
             reordered_glyphs = []
             reordered_glyphs.append(glyph)
-            if distance_to_accent < capital_char_width:
+            if distance_to_accent < max_distance:
                just_reordered = True
                reordered_glyphs.append(glyphs_out[-1])
                glyphs_out = glyphs_out[:-1] #strip the last glyph off of this stack
-               #print "reordered " + glyph.get_main_id()
+          #     print "reordered " + glyph.get_main_id()
                if len(glyphs_out) > 0 and self.is_combining_glyph(glyphs_out[-1]):#and it isn't too far away
                   distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
-                  #print "possibly two accents"
-                  #print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
-                  if distance_to_accent < capital_char_width:
+        #          print "possibly two accents"
+         #         print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+                  if distance_to_accent < max_distance:
                      reordered_glyphs.append(glyphs_out[-1])
                      glyphs_out = glyphs_out[:-1]
             glyphs_out = glyphs_out + reordered_glyphs
@@ -238,6 +244,9 @@ class SingleTextline(Textline):
             elif mainid == "combining.greek.ypogegrammeni":
                if glyph.center.y < self.bbox.center.y:
                   glyph.classify_automatic("combining.acute.accent")
+            elif mainid == "combining.acute.accent":
+               if glyph.center.y > self.bbox.center.y:
+                  glyph.classify_automatic("combining.greek.ypogegrammeni")
             elif mainid == "right.single.quotation.mark":
                if glyph.center.y > self.bbox.center.y:
                   #too low to be a quotation mark, must be a comma

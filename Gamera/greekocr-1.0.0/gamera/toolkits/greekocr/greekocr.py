@@ -247,6 +247,11 @@ or separatistic).
       #with apostrophes, if they appear after a consonant
       #print "input: " + out.encode('utf-8')
       out = re.sub(ur'([' + consonants + ur'])' + smooth_breathing,r'\1' + apostrophe,out)
+      
+      #this regex replaces vowel + apostrophe + letter with vowel + acute + letter
+      out = re.sub(ur'([' + vowels + ur'])' + apostrophe + ur'([' + vowels + consonants + ur'])' ,r'\1' + smooth_breathing + r'\2',out)
+      #this regex replaces (full.stop + smooth_breathing + end of word) with full.stop + right.single.quote
+      out = re.sub(ur'\.' + smooth_breathing ,r".'",out)
       #print "output: " + out.encode('utf-8')
       return out
 
