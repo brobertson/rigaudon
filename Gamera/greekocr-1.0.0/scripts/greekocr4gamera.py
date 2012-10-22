@@ -79,6 +79,11 @@ def usage():
    sys.stderr.write(usage)
 
 def performGreekOCR(options):
+   import mahotas as mh
+   import numpy as np
+   from pylab import imshow, gray, show
+   #from os import path
+   from gamera.plugins import numpy_io
 #   features = ["aspect_ratio", "volume64regions", "moments", "nholes_extended"]   
 #I think these are size-invariant
 #   features = ["aspect_ratio","moments","nholes","nholes_extended","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
@@ -119,18 +124,30 @@ def performGreekOCR(options):
       image_file_name = image_split_path[1]
       imageBase, imageEx = os.path.splitext(image_file_name)
       print "Now working with image: " + image_file_name
+      internal_image_file_path = os.path.join(book_code, image_file_name) 
+      print "imageEx: " + imageEx
+      if imageEx == ".jp2":
+         try:
+            print "doing jp2"
+            jp2Image = mh.imread(image_file, as_grey=True)
+            jp2Image = jp2Image.astype(np.uint8)
+            #Load the image
+            image = numpy_io.from_numpy(jp2Image)
+         except:
+            print "Unexpected error:", sys.exc_info()[0]
+            raise
+      else:
+         try:
+            image = load_image(image_file)
+         except:
+            continue
+      if image.data.pixel_type != ONEBIT:
+         image = image.to_onebit()
       if options["hocrfile"]:
          hocr_to_use = string.replace(options["hocrfile"],"%s",imageBase)
          g.hocr = hocr_to_use
          if options["debug"]:
             print "using '" + hocr_to_use + "' as hocr file"
-      internal_image_file_path = os.path.join(book_code, image_file_name) 
-      try:
-         image = load_image(image_file)
-      except:
-         continue
-      if image.data.pixel_type != ONEBIT:
-         image = image.to_onebit()
       if options.has_key("filter") and options["filter"] == True:
           count = 0
           ccs = image.cc_analysis()
