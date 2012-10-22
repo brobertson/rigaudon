@@ -123,6 +123,7 @@ def performGreekOCR(options):
       book_code = os.path.split(image_split_path[0])[1]#directory name
       image_file_name = image_split_path[1]
       imageBase, imageEx = os.path.splitext(image_file_name)
+      threshold_info = ""
       print "Now working with image: " + image_file_name
       internal_image_file_path = os.path.join(book_code, image_file_name) 
       print "imageEx: " + imageEx
@@ -142,6 +143,7 @@ def performGreekOCR(options):
          except:
             continue
       if image.data.pixel_type == ONEBIT:
+         threshold_info = "onebit"
          if options["debug"]:
             print "image is ONEBIT; doing no threshold optimization."
       else:
@@ -149,6 +151,7 @@ def performGreekOCR(options):
          thresh_low = int(thresh* 0.90)
          thresh_mid = int(thresh * 1.05)
          thresh_plus = int(thresh * 1.15)
+         threshold_info = "thresh_" + str(thresh_plus)
          image = image.threshold(thresh_plus)
       if options["hocrfile"]:
          hocr_to_use = string.replace(options["hocrfile"],"%s",imageBase)
@@ -184,8 +187,9 @@ def performGreekOCR(options):
           print "rotated with",rotation,"angle"
       
       output = g.process_image(image)
+      output_file_name_base = options["unicodeoutfile"] + imageBase + "_" +imageEx[1:] + "_" + threshold_info
       if options.has_key("debug") and options["debug"] == True:
-         g.save_debug_images(imageBase)
+         g.save_debug_images(output_file_name_base)
       if options.has_key("hocrout") and options["hocrout"]:
          #if we turned this on, we would make a separate div for each page of input
          #hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
@@ -194,10 +198,11 @@ def performGreekOCR(options):
          page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
          g.store_sql(image_path,page_id) 
       if options.has_key("unicodeoutfile"):
+          
          if options.has_key("hocrout") and options["hocrout"]:
-            g.save_text_hocr(hocr_tree,options["unicodeoutfile"] + imageBase + ".html")
+            g.save_text_hocr(hocr_tree, output_file_name_base + ".html")
          else:
-            g.save_text_unicode(options["unicodeoutfile"] + imageBase + ".txt")
+            g.save_text_unicode( output_file_name_base + ".txt")
       elif options.has_key("teubneroutfile"):
          g.save_text_teubner(options["teubneroutfile"])
       else:
