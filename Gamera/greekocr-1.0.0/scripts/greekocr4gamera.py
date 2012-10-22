@@ -141,8 +141,15 @@ def performGreekOCR(options):
             image = load_image(image_file)
          except:
             continue
-      if image.data.pixel_type != ONEBIT:
-         image = image.to_onebit()
+      if image.data.pixel_type == ONEBIT:
+         if options["debug"]:
+            print "image is ONEBIT; doing no threshold optimization."
+      else:
+         thresh = image.otsu_find_threshold()
+         thresh_low = int(thresh* 0.90)
+         thresh_mid = int(thresh * 1.05)
+         thresh_plus = int(thresh * 1.15)
+         image = image.threshold(thresh_plus)
       if options["hocrfile"]:
          hocr_to_use = string.replace(options["hocrfile"],"%s",imageBase)
          g.hocr = hocr_to_use
