@@ -76,6 +76,11 @@ def usage():
    usage += "                       the --dir option, a %s in this paramter will\n"
    usage += "                       be substituted with the basename of the current\n"
    usage += "                       input file.\n" 
+   usage += "\n"
+   usage += "  --otsu               specify a comma-separated list of factors by\n
+   usage += "                       which the Otsu threshold will be multiplied \n
+   usage += "                       to make a new binary image.\n
+   
    sys.stderr.write(usage)
 
 def performGreekOCR(options):
@@ -98,6 +103,14 @@ def performGreekOCR(options):
       g.hocr = (options["hocrfile"])
    if options["settingsfile"]:
       g.load_settings(options["settingsfile"])
+   if options["otsu"]:
+      print "options on otsu: " + options["otsu"]
+      otsu_factors_string = options["otsu"].split(',')
+      print otsu_factors_string
+      otsu_factors = [float(x) for x in otsu_factors_string]
+      print otsu_factors
+   else:
+      otsu_factors = [0]
    if options["directory"]:
       image_files = os.listdir(options["directory"])
       image_files = [os.path.join(options["directory"],x) for x in image_files]
@@ -133,80 +146,82 @@ def performGreekOCR(options):
             jp2Image = mh.imread(image_file, as_grey=True)
             jp2Image = jp2Image.astype(np.uint8)
             #Load the image
-            image = numpy_io.from_numpy(jp2Image)
+            imageIn = numpy_io.from_numpy(jp2Image)
          except:
             print "Unexpected error:", sys.exc_info()[0]
             raise
       else:
          try:
-            image = load_image(image_file)
+            imageIn = load_image(image_file)
+            otsu_factors = [0]
          except:
             continue
-      if image.data.pixel_type == ONEBIT:
-         threshold_info = "onebit"
-         if options["debug"]:
-            print "image is ONEBIT; doing no threshold optimization."
-      else:
-         thresh = image.otsu_find_threshold()
-         thresh_low = int(thresh* 0.90)
-         thresh_mid = int(thresh * 1.05)
-         thresh_plus = int(thresh * 1.15)
-         threshold_info = "thresh_" + str(thresh_plus)
-         image = image.threshold(thresh_plus)
-      if options["hocrfile"]:
-         hocr_to_use = string.replace(options["hocrfile"],"%s",imageBase)
-         g.hocr = hocr_to_use
-         if options["debug"]:
-            print "using '" + hocr_to_use + "' as hocr file"
-      if options.has_key("filter") and options["filter"] == True:
-          count = 0
-          ccs = image.cc_analysis()
-          if options.has_key("debug") and options["debug"] == True:
-             print "filter started on",len(ccs) ,"elements..."
-          median_black_area = median([cc.black_area()[0] for cc in ccs])
-          for cc in ccs:
-            if(cc.black_area()[0] > (median_black_area * 10)):
-              cc.fill_white()
-              del cc
-              count = count + 1
-          for cc in ccs:
-            if(cc.black_area()[0] < (median_black_area / 10)):
-              cc.fill_white()
-              del cc
-              count = count + 1
-          if options.has_key("debug") and options["debug"] == True:
-             print "filter done.",len(ccs)-count,"elements left."
-      
-      if options.has_key("deskew") and options["deskew"] == True:
-        #from gamera.toolkits.otr.otr_staff import *
-        if options.has_key("debug") and options["debug"] == True:
-          print "\ntry to skew correct..."
-        rotation = image.rotation_angle_projections(-10,10)[0]
-        img = image.rotate(rotation,0)
-        if options.has_key("debug") and options["debug"] == True:
-          print "rotated with",rotation,"angle"
-      
-      output = g.process_image(image)
-      output_file_name_base = options["unicodeoutfile"] + imageBase + "_" +imageEx[1:] + "_" + threshold_info
-      if options.has_key("debug") and options["debug"] == True:
-         g.save_debug_images(output_file_name_base)
-      if options.has_key("hocrout") and options["hocrout"]:
-         #if we turned this on, we would make a separate div for each page of input
-         #hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
-         g.store_hocr(internal_image_file_path,hocr_tree)
-      if options.has_key("sql") and options["sql"]:
-         page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
-         g.store_sql(image_path,page_id) 
-      if options.has_key("unicodeoutfile"):
-          
+      if imageIn.data.pixel_type != ONEBIT:
+         otsu_thresh = imageIn.otsu_find_threshold()
+      for otsu_factor in otsu_factors:
+         if imageIn.data.pixel_type == ONEBIT:
+            threshold_info = "onebit"
+            if options["debug"]:
+               print "image is ONEBIT; doing no threshold optimization."
+         current_thresh = otsu_thresh * otsu_factor
+         if current_thresh > 253.0:
+            current_thresh = 253.0
+         threshold_info = "thresh_" + str(int(current_thresh))
+         image = imageIn.threshold(current_thresh)
+         if options["hocrfile"]:
+            hocr_to_use = string.replace(options["hocrfile"],"%s",imageBase)
+            g.hocr = hocr_to_use
+            if options["debug"]:
+               print "using '" + hocr_to_use + "' as hocr file"
+         if options.has_key("filter") and options["filter"] == True:
+             count = 0
+             ccs = image.cc_analysis()
+             if options.has_key("debug") and options["debug"] == True:
+                print "filter started on",len(ccs) ,"elements..."
+             median_black_area = median([cc.black_area()[0] for cc in ccs])
+             for cc in ccs:
+               if(cc.black_area()[0] > (median_black_area * 10)):
+                 cc.fill_white()
+                 del cc
+                 count = count + 1
+             for cc in ccs:
+               if(cc.black_area()[0] < (median_black_area / 10)):
+                 cc.fill_white()
+                 del cc
+                 count = count + 1
+             if options.has_key("debug") and options["debug"] == True:
+                print "filter done.",len(ccs)-count,"elements left."
+         
+         if options.has_key("deskew") and options["deskew"] == True:
+           #from gamera.toolkits.otr.otr_staff import *
+           if options.has_key("debug") and options["debug"] == True:
+             print "\ntry to skew correct..."
+           rotation = image.rotation_angle_projections(-10,10)[0]
+           img = image.rotate(rotation,0)
+           if options.has_key("debug") and options["debug"] == True:
+             print "rotated with",rotation,"angle"
+         
+         output = g.process_image(image)
+         output_file_name_base = options["unicodeoutfile"] + imageBase + "_" +imageEx[1:] + "_" + threshold_info
+         if options.has_key("debug") and options["debug"] == True:
+            g.save_debug_images(output_file_name_base)
          if options.has_key("hocrout") and options["hocrout"]:
-            g.save_text_hocr(hocr_tree, output_file_name_base + ".html")
+            #if we turned this on, we would make a separate div for each page of input
+            #hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
+            g.store_hocr(internal_image_file_path,hocr_tree)
+         if options.has_key("sql") and options["sql"]:
+            page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
+            g.store_sql(image_path,page_id) 
+         if options.has_key("unicodeoutfile"):
+             
+            if options.has_key("hocrout") and options["hocrout"]:
+               g.save_text_hocr(hocr_tree, output_file_name_base + ".html")
+            else:
+               g.save_text_unicode( output_file_name_base + ".txt")
+         elif options.has_key("teubneroutfile"):
+            g.save_text_teubner(options["teubneroutfile"])
          else:
-            g.save_text_unicode( output_file_name_base + ".txt")
-      elif options.has_key("teubneroutfile"):
-         g.save_text_teubner(options["teubneroutfile"])
-      else:
-         print output
+            print output
       image_file_count += 1
 
 def hocr_make_tree_and_return(book_code):
@@ -347,6 +362,9 @@ while i < len(args):
    elif args[i] in ("--dir"):
       i += 1
       options["directory"] = args[i]
+   elif args[i] in ("--otsu"):
+      i+= 1
+      options["otsu"] = args[i]
    elif args[i] in ("--hocrout"):
       options["hocrout"] = True
    else:
