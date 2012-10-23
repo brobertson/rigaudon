@@ -77,9 +77,9 @@ def usage():
    usage += "                       be substituted with the basename of the current\n"
    usage += "                       input file.\n" 
    usage += "\n"
-   usage += "  --otsu               specify a comma-separated list of factors by\n
-   usage += "                       which the Otsu threshold will be multiplied \n
-   usage += "                       to make a new binary image.\n
+   usage += "  --otsu               specify a comma-separated list of factors by\n"
+   usage += "                       which the Otsu threshold will be multiplied \n"
+   usage += "                       to make a new binary image.\n"
    
    sys.stderr.write(usage)
 
@@ -104,11 +104,8 @@ def performGreekOCR(options):
    if options["settingsfile"]:
       g.load_settings(options["settingsfile"])
    if options["otsu"]:
-      print "options on otsu: " + options["otsu"]
       otsu_factors_string = options["otsu"].split(',')
-      print otsu_factors_string
       otsu_factors = [float(x) for x in otsu_factors_string]
-      print otsu_factors
    else:
       otsu_factors = [0]
    if options["directory"]:
@@ -139,13 +136,10 @@ def performGreekOCR(options):
       threshold_info = ""
       print "Now working with image: " + image_file_name
       internal_image_file_path = os.path.join(book_code, image_file_name) 
-      print "imageEx: " + imageEx
       if imageEx == ".jp2":
          try:
-            print "doing jp2"
             jp2Image = mh.imread(image_file, as_grey=True)
             jp2Image = jp2Image.astype(np.uint8)
-            #Load the image
             imageIn = numpy_io.from_numpy(jp2Image)
          except:
             print "Unexpected error:", sys.exc_info()[0]
@@ -153,10 +147,12 @@ def performGreekOCR(options):
       else:
          try:
             imageIn = load_image(image_file)
-            otsu_factors = [0]
          except:
             continue
-      if imageIn.data.pixel_type != ONEBIT:
+      imageType = imageIn.data.pixel_type
+      if imageType != ONEBIT:
+         if imageType != GREYSCALE:
+            imageIn = imageIn.to_greyscale()
          otsu_thresh = imageIn.otsu_find_threshold()
       for otsu_factor in otsu_factors:
          if imageIn.data.pixel_type == ONEBIT:
@@ -166,6 +162,7 @@ def performGreekOCR(options):
          current_thresh = otsu_thresh * otsu_factor
          if current_thresh > 253.0:
             current_thresh = 253.0
+         current_thresh = int(current_thresh)
          threshold_info = "thresh_" + str(int(current_thresh))
          image = imageIn.threshold(current_thresh)
          if options["hocrfile"]:
@@ -384,6 +381,8 @@ if not (options.has_key("imagefile") or options.has_key("directory")):
    usage()
    exit(1)
 
+if not options.has_key("otsu"):
+   options["otsu"] = "1" 
 if options.has_key("settingsfile"):
    try:
       with open(options["settingsfile"]) as f: pass
