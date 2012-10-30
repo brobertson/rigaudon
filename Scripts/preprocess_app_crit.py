@@ -22,15 +22,24 @@ class FindAppCrit(Page):
 		#this cuts up app. crit into lines
 		#self.ccs_lines = self.img.projection_cutting(Tx=25, Ty=8, noise=3)	
 		#self.ccs_lines = self.img.projection_cutting(Tx=2000, Ty=5, noise=15)
-		self.ccs_lines = self.img.bbox_merging(Ey=10)#this finds app. crit
+		self.ccs_lines = self.img.bbox_merging(Ey=8)#this finds app. crit
 		
 		#word-by-word body of teubner
 		#self.ccs_lines = self.img.bbox_merging(Ex=15,Ey=5)
 		#self.ccs_lines = self.img.bbox_mcmillan(None,2,4,20,5)
 
+class AppCrit(Page):
+	def page_to_lines(self):
+		#this cuts up app. crit into lines
+		self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=25)
+	
+class Body(Page):
+	def page_to_lines(self):
+		#word-by-word body of teubner
+		self.ccs_lines = self.img.bbox_merging(Ex=30,Ey=2)
 	
 def my_filter(imageIn):
-	MAX_CCS = 3000
+	MAX_CCS = 4000
 	count = 0
 	image = imageIn
 	#imageIn.remove_border()
@@ -95,29 +104,33 @@ def filter_and_bbox(imageIn):
    		print str(cc.ncols) + "x" + str(cc.offset_y)
    		cc.fill_white()
    		break
+   
    im = imageIn.image_copy()
    im.reset_onebit_image()
-   p = Page(im)
+   p = Body(im)
    p.segment()
+   print "x = " + str(x)
+   print len(s)
+   if x == len(s):
+   	#then there wasn't an app. crit found
+   	print "no app crit found"
    q = only_app_crit(image2, x)
-   return (show_lines(p),show_lines(q))
+   return (show_lines(p),q)
 
 def only_app_crit(imageIn, xIn):
    from gamera.toolkits.ocr.classes import Page
    p = FindAppCrit(imageIn)
    p.segment()
-   print "image width: " + str(imageIn.ncols)
    s = sorted(p.ccs_lines, key=lambda cc: cc.offset_y)
    s.reverse()
    x = 0 
    for cc in s:
-   	#has to be reasonably wide, and not higher than 2/3 down the page
    	x = x + 1
    	if not (x == xIn):
    		cc.fill_white()
    im = imageIn.image_copy()
    im.reset_onebit_image()
-   p = Page(im)
+   p = AppCrit(im)
    p.segment()
    return show_lines(p)
    
@@ -138,7 +151,7 @@ def my_application():
    ots = image.otsu_threshold()
    thresh = image.otsu_find_threshold()
    #thresh_low = int(thresh* 1.05)
-   thresh_mid = thresh_plus = int(thresh * 1.0)
+   thresh_mid = thresh_plus = int(thresh * 1.1)
    ots_mid = image.threshold(thresh_mid)
    my_filter(ots_mid)
    ots_up = ots_mid.image_copy()#image.threshold(thresh_plus)

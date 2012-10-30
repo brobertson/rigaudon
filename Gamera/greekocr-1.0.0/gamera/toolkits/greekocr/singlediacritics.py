@@ -45,8 +45,34 @@ class SinglePage(Page):
    def order_lines(self):
       self.ccs_lines.sort(lambda s,t: s.offset_y - t.offset_y)
 
+class ImageSegmentationError(Exception):
+	def __init__(self, value):
+		self.value = value
+	def __str__(self):
+		return repr(self.value)
                
-               
+class FindAppCrit(Page):
+	def page_to_lines(self):
+		#this subdivides app. crit. in teubners
+		
+		#this cuts up app. crit into lines
+		#self.ccs_lines = self.img.projection_cutting(Tx=25, Ty=8, noise=3)	
+		#self.ccs_lines = self.img.projection_cutting(Tx=2000, Ty=5, noise=15)
+		self.ccs_lines = self.img.bbox_merging(Ey=8)#this finds app. crit
+		
+		#word-by-word body of teubner
+		#self.ccs_lines = self.img.bbox_merging(Ex=15,Ey=5)
+		#self.ccs_lines = self.img.bbox_mcmillan(None,2,4,20,5)
+
+class AppCrit(Page):
+	def page_to_lines(self):
+		#this cuts up app. crit into lines
+		self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=25)
+	
+class Body(Page):
+	def page_to_lines(self):
+		#word-by-word body of teubner
+		self.ccs_lines = self.img.bbox_merging(Ex=30,Ey=2)               
 
 
 class Character(object):

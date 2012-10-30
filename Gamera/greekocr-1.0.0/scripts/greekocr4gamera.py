@@ -26,6 +26,7 @@ from gamera.plugins.listutilities import median
 from gamera.toolkits.greekocr import GreekOCR
 from gamera.plugins import pagesegmentation
 from gamera.toolkits.ocr.classes import Page
+from gamera.toolkits.greekocr.singlediacritics import *
 
 class MyPage(Page):
    def page_to_lines(self):
@@ -92,6 +93,7 @@ def performGreekOCR(options):
 #   features = ["aspect_ratio", "volume64regions", "moments", "nholes_extended"]   
 #I think these are size-invariant
 #   features = ["aspect_ratio","moments","nholes","nholes_extended","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
+   MAX_CCS = 3500
    features = ["aspect_ratio","moments","ncols_feature","nholes","nholes_extended","nrows_feature","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
    image_files = []
    g = GreekOCR(splits=options["split"],feats=features)
@@ -178,7 +180,13 @@ def performGreekOCR(options):
                 print "filter started on",len(ccs) ,"elements..."
              #filter long vertical runs left over from margins
 	          median_height = median([cc.nrows for cc in ccs])
+	          if len(ccs) < 2:
+		          raise ImageSegmentationError("there are " + str(len(ccs)) +  " ccs")
+	          if len(ccs) > MAX_CCS:
+		          raise ImageSegmentationError("there are more than " + str(MAX_CCS) + " ccs.")
+
 	          for cc in ccs:
+	          #TODO: add another condition that keeps these at edges of page
 		          if((cc.nrows / cc.ncols > 6) and (cc.nrows > 1.5 * median_height) ):
 			          cc.fill_white()
 			          del cc
@@ -205,8 +213,8 @@ def performGreekOCR(options):
            img = image.rotate(rotation,0)
            if options.has_key("debug") and options["debug"] == True:
              print "rotated with",rotation,"angle"
-         
-         output = g.process_image(image)
+         (body_image, app_crit_image) = splitAppCrit(image)
+         output = g.process_image(body_image)
          output_file_name_base = options["unicodeoutfile"] + imageBase + "_" +imageEx[1:] + "_" + threshold_info
          if options.has_key("debug") and options["debug"] == True:
             g.save_debug_images(output_file_name_base)
@@ -228,6 +236,49 @@ def performGreekOCR(options):
          else:
             print output
       image_file_count += 1
+
+def splitAppCrit(imageIn):
+   from gamera.toolkits.ocr.classes import Page
+   image2 = imageIn.image_copy()
+   p = FindAppCrit(imageIn)
+   p.segment()
+   print "image width: " + str(imageIn.ncols)
+   s = sorted(p.ccs_lines, key=lambda cc: cc.offset_y)
+   s.reverse()
+   x = 0 
+   for cc in s:
+   	#has to be reasonably wide, and not higher than 2/3 down the page
+   	x = x + 1
+   	if cc.ncols > 0.6 * imageIn.ncols and cc.offset_y > 0.6 * imageIn.nrows:
+   		print "Image rows: " + str(imageIn.nrows)
+   		print str(cc.ncols) + "x" + str(cc.offset_y)
+   		cc.fill_white()
+   		break
+   
+   im = imageIn.image_copy()
+   im.reset_onebit_image()
+   print "x = " + str(x)
+   print len(s)
+   if x == len(s):
+   	#then there wasn't an app. crit found
+   	print "no app crit found"
+   q = only_app_crit(image2, x)
+   return (im,q)
+   
+def only_app_crit(imageIn, xIn):
+   from gamera.toolkits.ocr.classes import Page
+   p = FindAppCrit(imageIn)
+   p.segment()
+   s = sorted(p.ccs_lines, key=lambda cc: cc.offset_y)
+   s.reverse()
+   x = 0 
+   for cc in s:
+   	x = x + 1
+   	if not (x == xIn):
+   		cc.fill_white()
+   im = imageIn.image_copy()
+   im.reset_onebit_image()
+   return im
 
 def hocr_make_tree_and_return(book_code):
    import lxml
