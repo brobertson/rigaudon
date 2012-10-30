@@ -176,6 +176,13 @@ def performGreekOCR(options):
              ccs = image.cc_analysis()
              if options.has_key("debug") and options["debug"] == True:
                 print "filter started on",len(ccs) ,"elements..."
+             #filter long vertical runs left over from margins
+	          median_height = median([cc.nrows for cc in ccs])
+	          for cc in ccs:
+		          if((cc.nrows / cc.ncols > 6) and (cc.nrows > 1.5 * median_height) ):
+			          cc.fill_white()
+			          del cc
+			          count = count + 1
              median_black_area = median([cc.black_area()[0] for cc in ccs])
              for cc in ccs:
                if(cc.black_area()[0] > (median_black_area * 10)):
