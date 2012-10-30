@@ -80,6 +80,7 @@ def plain(imageIn):
 
 def filter_and_bbox(imageIn):
    from gamera.toolkits.ocr.classes import Page
+   image2 = imageIn.image_copy()
    p = FindAppCrit(imageIn)
    p.segment()
    print "image width: " + str(imageIn.ncols)
@@ -98,7 +99,8 @@ def filter_and_bbox(imageIn):
    im.reset_onebit_image()
    p = Page(im)
    p.segment()
-   return (show_lines(p),x)
+   q = only_app_crit(image2, x)
+   return (show_lines(p),show_lines(q))
 
 def only_app_crit(imageIn, xIn):
    from gamera.toolkits.ocr.classes import Page
@@ -148,9 +150,9 @@ def my_application():
    print "OTSU * 1.15: " + str(thresh_plus)
    #ots_low = filter_and_bbox(ots_low)
    #ots = filter_and_bbox(ots)
-   (ots_up,x) = filter_and_bbox(ots_up)
-   ots_mid = only_app_crit(ots_mid,x)
-   print "x is " + str(x)
+   (ots_up,ots_mid) = filter_and_bbox(ots_up)
+   #ots_mid = only_app_crit(ots_mid,x)
+   #print "x is " + str(x)
    ots_up.display("OTSU-border")
    ots_mid.display()
    #ots_orig.display()
