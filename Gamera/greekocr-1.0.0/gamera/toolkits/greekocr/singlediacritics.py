@@ -64,7 +64,7 @@ class FindAppCrit(Page):
 		#self.ccs_lines = self.img.bbox_merging(Ex=15,Ey=5)
 		#self.ccs_lines = self.img.bbox_mcmillan(None,2,4,20,5)
 
-class AppCrit(Page):
+class AppCrit(SinglePage):
 	def page_to_lines(self):
 		#this cuts up app. crit into lines
 		self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=25)

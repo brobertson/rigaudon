@@ -121,7 +121,6 @@ or separatistic).
    def segment_page(self):
       if (self.mode != "separatistic"):
          self.page = WholisticPage(self.img)
-
       if self.debug:
          #time start of page segmentation
          t = time.time()
@@ -133,8 +132,13 @@ or separatistic).
         autogroup.grouping_distance = max([2,median_cc / 2])
         if self.debug:
           print "autogroup distance: ", autogroup.grouping_distance
+          print "autogroup parts to group: ", autogroup.parts_to_group
         if self.hocr:
           self.page = HocrPager(self.img, hocr=self.hocr, classify_ccs=autogroup)
+        elif self.mode == "appcrit":
+           self.page = AppCrit(self.img, classify_ccs=autogroup)
+        elif self.mode == "body":
+           self.page = Body(self.img, classify_ccs=autogroup)
         else:
           self.page = SinglePage(self.img, classify_ccs=autogroup)
       else:#not autogrouped

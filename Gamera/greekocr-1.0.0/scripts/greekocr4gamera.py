@@ -101,10 +101,16 @@ def performGreekOCR(options):
    g.autogroup = options["autogroup"]
    g.debug = options["debug"] 
    g.load_trainingdata(options['trainingdata'])
+   g_appcrit = GreekOCR(splits=options["split"], feats=features, mode="appcrit")
+   g_appcrit.autogroup = options["autogroup"]
+   g_appcrit.debug = options["debug"]
+   g_appcrit.load_trainingdata(options['trainingdata'])
+   
    if options["hocrfile"]:
       g.hocr = (options["hocrfile"])
    if options["settingsfile"]:
       g.load_settings(options["settingsfile"])
+      g_appcrit.load_settings(options["settingsfile"])
    if options["otsu"]:
       otsu_factors_string = options["otsu"].split(',')
       otsu_factors = [float(x) for x in otsu_factors_string]
@@ -215,13 +221,17 @@ def performGreekOCR(options):
              print "rotated with",rotation,"angle"
          (body_image, app_crit_image) = splitAppCrit(image)
          output = g.process_image(body_image)
+         appcrit_output = g_appcrit.process_image(app_crit_image)
+         output = output + appcrit_output 
          output_file_name_base = options["unicodeoutfile"] + imageBase + "_" +imageEx[1:] + "_" + threshold_info
          if options.has_key("debug") and options["debug"] == True:
             g.save_debug_images(output_file_name_base)
+            g_appcrit.save_debug_images(output_file_name_base + "_appcrit")
          if options.has_key("hocrout") and options["hocrout"]:
             #if we turned this on, we would make a separate div for each page of input
             #hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
             g.store_hocr(internal_image_file_path,hocr_tree)
+            g_appcrit.store_hocr(internal_image_file_path,hocr_tree)
          if options.has_key("sql") and options["sql"]:
             page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
             g.store_sql(image_path,page_id) 
@@ -231,6 +241,7 @@ def performGreekOCR(options):
                g.save_text_hocr(hocr_tree, output_file_name_base + ".html")
             else:
                g.save_text_unicode( output_file_name_base + ".txt")
+               g_appcrit.save_text_unicode( output_file_name_base + "_appcrit.txt")
          elif options.has_key("teubneroutfile"):
             g.save_text_teubner(options["teubneroutfile"])
          else:
