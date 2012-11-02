@@ -31,7 +31,7 @@ class FindAppCrit(Page):
 class AppCrit(Page):
 	def page_to_lines(self):
 		#this cuts up app. crit into lines
-		self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=25)
+		self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=28)
 	
 class Body(Page):
 	def page_to_lines(self):
@@ -151,7 +151,7 @@ def my_application():
    ots = image.otsu_threshold()
    thresh = image.otsu_find_threshold()
    #thresh_low = int(thresh* 1.05)
-   thresh_mid = thresh_plus = int(thresh * 1.1)
+   thresh_mid = thresh_plus = int(thresh * 1.0)
    ots_mid = image.threshold(thresh_mid)
    my_filter(ots_mid)
    ots_up = ots_mid.image_copy()#image.threshold(thresh_plus)
