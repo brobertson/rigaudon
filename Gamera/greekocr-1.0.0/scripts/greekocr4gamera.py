@@ -97,11 +97,12 @@ def performGreekOCR(options):
    features = ["aspect_ratio","moments","ncols_feature","nholes","nholes_extended","nrows_feature","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
    image_files = []
    g = GreekOCR(splits=options["split"],feats=features)
-   g.mode = options["mode"]
+   g.mode = options["mode"] + "body"
    g.autogroup = options["autogroup"]
    g.debug = options["debug"] 
    g.load_trainingdata(options['trainingdata'])
-   g_appcrit = GreekOCR(splits=options["split"], feats=features, mode="appcrit")
+   g_appcrit = GreekOCR(splits=options["split"], feats=features)
+   g_appcrit.mode = options["mode"] + "appcrit"
    g_appcrit.autogroup = options["autogroup"]
    g_appcrit.debug = options["debug"]
    g_appcrit.load_trainingdata(options['trainingdata'])
@@ -219,19 +220,30 @@ def performGreekOCR(options):
            img = image.rotate(rotation,0)
            if options.has_key("debug") and options["debug"] == True:
              print "rotated with",rotation,"angle"
-         (body_image, app_crit_image) = splitAppCrit(image)
-         output = g.process_image(body_image)
-         appcrit_output = g_appcrit.process_image(app_crit_image)
-         output = output + appcrit_output 
+         if options.has_key("mode") and options["mode"] == "teubner":
+            (body_image, app_crit_image) = splitAppCritTeubner(image)
+            output = g.process_image(body_image)
+            if app_crit_image:
+               print "there is an app. crit image"
+               appcrit_output = g_appcrit.process_image(app_crit_image)
+            else:
+               print "there is no app. crit image"
+               appcrit_output = ""
+            output = output + appcrit_output
+         else:
+            output = g.process_image(image) 
          output_file_name_base = options["unicodeoutfile"] + imageBase + "_" +imageEx[1:] + "_" + threshold_info
          if options.has_key("debug") and options["debug"] == True:
             g.save_debug_images(output_file_name_base)
-            g_appcrit.save_debug_images(output_file_name_base + "_appcrit")
+            if options.has_key("mode") and options["mode"] == "teubner" and app_crit_image:
+               #TODO: make more general
+               g_appcrit.save_debug_images(output_file_name_base + "_appcrit")
          if options.has_key("hocrout") and options["hocrout"]:
             #if we turned this on, we would make a separate div for each page of input
             #hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
             g.store_hocr(internal_image_file_path,hocr_tree)
-            g_appcrit.store_hocr(internal_image_file_path,hocr_tree)
+            if options.has_key("mode") and options["mode"] == "teubner" and app_crit_image:
+               g_appcrit.store_hocr(internal_image_file_path,hocr_tree)
          if options.has_key("sql") and options["sql"]:
             page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
             g.store_sql(image_path,page_id) 
@@ -241,19 +253,21 @@ def performGreekOCR(options):
                g.save_text_hocr(hocr_tree, output_file_name_base + ".html")
             else:
                g.save_text_unicode( output_file_name_base + ".txt")
-               g_appcrit.save_text_unicode( output_file_name_base + "_appcrit.txt")
+               if options.has_key("mode") and options["mode"] == "teubner":
+                  #TODO: make the above more general
+                  g_appcrit.save_text_unicode( output_file_name_base + "_appcrit.txt")
          elif options.has_key("teubneroutfile"):
             g.save_text_teubner(options["teubneroutfile"])
          else:
             print output
       image_file_count += 1
 
-def splitAppCrit(imageIn):
+def splitAppCritTeubner(imageIn):
    from gamera.toolkits.ocr.classes import Page
    image2 = imageIn.image_copy()
-   p = FindAppCrit(imageIn)
+   p = FindAppCritTeubner(imageIn)
    p.segment()
-   print "image width: " + str(imageIn.ncols)
+   #print "image width: " + str(imageIn.ncols)
    s = sorted(p.ccs_lines, key=lambda cc: cc.offset_y)
    s.reverse()
    x = 0 
@@ -261,24 +275,26 @@ def splitAppCrit(imageIn):
    	#has to be reasonably wide, and not higher than 2/3 down the page
    	x = x + 1
    	if cc.ncols > 0.6 * imageIn.ncols and cc.offset_y > 0.6 * imageIn.nrows:
-   		print "Image rows: " + str(imageIn.nrows)
-   		print str(cc.ncols) + "x" + str(cc.offset_y)
+   		#print "Image rows: " + str(imageIn.nrows)
+   		#print str(cc.ncols) + "x" + str(cc.offset_y)
    		cc.fill_white()
    		break
    
    im = imageIn.image_copy()
    im.reset_onebit_image()
-   print "x = " + str(x)
-   print len(s)
+   #print "x = " + str(x)
+   #print len(s)
    if x == len(s):
    	#then there wasn't an app. crit found
-   	print "no app crit found"
-   q = only_app_crit(image2, x)
+   	#print "no app crit found"
+   	q = None
+   else:
+      q = only_app_crit(image2, x)
    return (im,q)
    
 def only_app_crit(imageIn, xIn):
    from gamera.toolkits.ocr.classes import Page
-   p = FindAppCrit(imageIn)
+   p = FindAppCritTeubner(imageIn)
    p.segment()
    s = sorted(p.ccs_lines, key=lambda cc: cc.offset_y)
    s.reverse()
@@ -432,6 +448,9 @@ while i < len(args):
    elif args[i] in ("--otsu"):
       i+= 1
       options["otsu"] = args[i]
+   elif args[i] in ("--mode"):
+      i+=1
+      options["mode"] = args[i]
    elif args[i] in ("--hocrout"):
       options["hocrout"] = True
    else:

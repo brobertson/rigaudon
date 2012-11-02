@@ -126,6 +126,7 @@ or separatistic).
          t = time.time()
       the_ccs = self.img.cc_analysis()
       median_cc = int(median([cc.nrows for cc in the_ccs]))
+      print self.mode
       if (self.autogroup):
         autogroup = ClassifyCCs(self.cknn)
         autogroup.parts_to_group = 4 
@@ -135,10 +136,10 @@ or separatistic).
           print "autogroup parts to group: ", autogroup.parts_to_group
         if self.hocr:
           self.page = HocrPager(self.img, hocr=self.hocr, classify_ccs=autogroup)
-        elif self.mode == "appcrit":
-           self.page = AppCrit(self.img, classify_ccs=autogroup)
-        elif self.mode == "body":
-           self.page = Body(self.img, classify_ccs=autogroup)
+        elif self.mode == "teubnerappcrit":
+           self.page = AppCritTeubner(self.img, classify_ccs=autogroup)
+        elif self.mode == "teubnerbody":
+           self.page = BodyTeubner(self.img, classify_ccs=autogroup)
         else:
           self.page = SinglePage(self.img, classify_ccs=autogroup)
       else:#not autogrouped

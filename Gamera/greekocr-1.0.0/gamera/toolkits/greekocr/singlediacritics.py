@@ -51,7 +51,7 @@ class ImageSegmentationError(Exception):
 	def __str__(self):
 		return repr(self.value)
                
-class FindAppCrit(Page):
+class FindAppCritTeubner(SinglePage):
 	def page_to_lines(self):
 		#this subdivides app. crit. in teubners
 		
@@ -64,12 +64,12 @@ class FindAppCrit(Page):
 		#self.ccs_lines = self.img.bbox_merging(Ex=15,Ey=5)
 		#self.ccs_lines = self.img.bbox_mcmillan(None,2,4,20,5)
 
-class AppCrit(SinglePage):
+class AppCritTeubner(SinglePage):
 	def page_to_lines(self):
 		#this cuts up app. crit into lines
-		self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=25)
+		self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=50)
 	
-class Body(Page):
+class BodyTeubner(SinglePage):
 	def page_to_lines(self):
 		#word-by-word body of teubner
 		self.ccs_lines = self.img.bbox_merging(Ex=30,Ey=2)               
