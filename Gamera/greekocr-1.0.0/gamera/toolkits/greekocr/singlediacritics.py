@@ -124,7 +124,31 @@ class SingleTextline(Textline):
    def identify_ambiguous_glyphs(self):
       print
       for g in self.glyphs:
-         print g.get_main_id()
+         mainid = g.get_main_id()
+         if mainid == "comma" or mainid == "combining.comma.above":
+            #print "%s - center_y: %d - med_center: %d" % (mainid, glyph.center.y, med_center)
+            if g.center.y > self.bbox.center.y:
+               g.classify_automatic("comma")
+            else:
+               g.classify_automatic("combining.comma.above")
+         elif mainid == "apostrophe":
+            if g.center.y > self.bbox.center.y:
+               g.classify_automatic("comma")
+         elif mainid == "full.stop" or mainid == "middle.dot":
+            if g.center.y > self.bbox.center.y:
+               g.classify_automatic("full.stop")
+            else:
+               g.classify_automatic("middle.dot")
+         elif mainid == "combining.greek.ypogegrammeni":
+            if g.center.y < self.bbox.center.y:
+               g.classify_automatic("combining.acute.accent")
+         elif mainid == "combining.acute.accent":
+            if g.center.y > self.bbox.center.y:
+               g.classify_automatic("combining.greek.ypogegrammeni")
+         elif mainid == "right.single.quotation.mark":
+            if g.center.y > self.bbox.center.y:
+               #too low to be a quotation mark, must be a comma
+               g.classify_automatic("comma")
          if g.get_main_id() == "apostrophe" or g.get_main_id() == 'right.single.quotation.mark' or g.get_main_id() == 'combining.comma.above':
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
@@ -143,7 +167,25 @@ class SingleTextline(Textline):
                print "nothing underneith"
                g.classify_automatic("apostrophe")#it could be a right.single.quotation.mark, however
                #we have no way of telling
-               
+         
+         if g.get_main_id() == 'left.single.quotation.mark' or g.get_main_id() == 'combining.reversed.comma.above':
+            glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
+            glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
+            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
+            for other in self.glyphs:
+               if self.is_greek_small_letter(other):
+                 # print "other candidate:", other.get_main_id()
+                  other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
+                  #print "at ", other.ul_x, other.lr_x, other_cl_y
+                  if (glyph_cl_x > other.ul_x) and (glyph_cl_x < other.lr_x) and (glyph_cl_y < other_cl_y):#there is a character inside whose width the 'apostrophe's center line lies
+                     print "there is something below:", other.id_name
+                     g.classify_automatic("combining.reversed.comma.above")
+                     break
+            #there are no other glyphs underneith; a for's else runs with no break
+            else:
+               print "nothing underneith"
+               g.classify_automatic("left.single.quotation.mark")#it could be a right.single.quotation.mark, however
+               #we have no way of telling
    def sort_glyphs(self):
       self.glyphs.sort(lambda x,y: cmp(x.ul_x, y.ul_x))
       self.identify_ambiguous_glyphs()
@@ -292,67 +334,54 @@ class SingleTextline(Textline):
                glyph.classify_automatic("greek.capital.letter.xi")
             elif mainid == "manual.theta.inner":
                glyph.classify_automatic("greek.capital.letter.theta")
-            elif mainid == "comma" or mainid == "combining.comma.above":
-               #print "%s - center_y: %d - med_center: %d" % (mainid, glyph.center.y, med_center)
-               if glyph.center.y > self.bbox.center.y:
-                  glyph.classify_automatic("comma")
-               else:
-                  glyph.classify_automatic("combining.comma.above")
-            elif mainid == "apostrophe":
-               if glyph.center.y > self.bbox.center.y:
-                  glyph.classify_automatic("comma")
-            elif mainid == "full.stop" or mainid == "middle.dot":
-               if glyph.center.y > self.bbox.center.y:
-                  glyph.classify_automatic("full.stop")
-               else:
-                  glyph.classify_automatic("middle.dot")
-            elif mainid == "combining.greek.ypogegrammeni":
-               if glyph.center.y < self.bbox.center.y:
-                  glyph.classify_automatic("combining.acute.accent")
-            elif mainid == "combining.acute.accent":
-               if glyph.center.y > self.bbox.center.y:
-                  glyph.classify_automatic("combining.greek.ypogegrammeni")
-            elif mainid == "right.single.quotation.mark":
-               if glyph.center.y > self.bbox.center.y:
-                  #too low to be a quotation mark, must be a comma
-                  glyph.classify_automatic("comma")
             elif mainid.find("manual") != -1 or mainid.find("split") != -1:
                continue
 
             #adding these to circumvent the below, whose purpose I don't understand.
-            c = Character(glyph)
-            characters.append(c)
+##            c = Character(glyph)
+##            characters.append(c)
             
-##            if self.is_combining_glyph(glyph) and not(self.is_joined_glyph(glyph) and self.includes_letter(glyph)):# avoid corner case where we have a glyph that is 'greek.small.letter.eta.and.combining.acute'
-##               glyphs_combining.append(glyph)
-##            else:
-##               c = Character(glyph)
-##               characters.append(c)
-##               #print c
-##               nodes_normal.append(kdtree.KdNode((glyph.center.x, glyph.center.y), c))
-##         
-##         if (nodes_normal == None or len(nodes_normal) == 0):
-##            continue
-##            
-##         tree = kdtree.KdTree(nodes_normal)
-##         
-##         for g in glyphs_combining:
-##            fast = True
-##            if fast:
-##               knn = tree.k_nearest_neighbors((g.center.x, g.center.y), k)
-##               knn[0].data.addCombiningDiacritics(g)
-##            else:
-##               found = False
-##               while (not found) and k < max_k:
-##                  knn = tree.k_nearest_neighbors((g.center.x, g.center.y), k)
-##                  
-##                  for nn in knn:
-##                     if (nn.data.maincharacter.get_main_id().split(".").count("greek") > 0) and not found:
-##                        nn.data.addCombiningDiacritics(g)
-##                        found = True
-##                        break
-##               
-##                  k = k + 2      
+            if self.is_combining_glyph(glyph) and not(self.is_joined_glyph(glyph) and self.includes_letter(glyph)):# avoid corner case where we have a glyph that is 'greek.small.letter.eta.and.combining.acute'
+               glyphs_combining.append(glyph)
+            else:
+               c = Character(glyph)
+               characters.append(c)
+               #print c
+               nodes_normal.append(kdtree.KdNode((glyph.center.x, glyph.center.y), c))
+         
+         if (nodes_normal == None or len(nodes_normal) == 0):
+            continue
+            
+         tree = kdtree.KdTree(nodes_normal)
+         
+         for g in glyphs_combining:
+            fast = True
+            if fast:
+               knn = tree.k_nearest_neighbors((g.center.x, g.center.y), k)
+               print
+               print "KNN!"
+               for aKnn in knn:
+                  print aKnn.data.unicodename
+                  #It isn't just whose center is closer, but also, who is below
+                  if (aKnn.data.maincharacter.ul_x < g.center.x) and (aKnn.data.maincharacter.lr_x > g.center.x):
+                     aKnn.data.addCombiningDiacritics(g)
+                     print "this is determined to be below"
+                     break
+               else:
+                  print "I give up: no NN below??"
+                  knn[0].data.addCombiningDiacritics(g)
+            else:
+               found = False
+               while (not found) and k < max_k:
+                  knn = tree.k_nearest_neighbors((g.center.x, g.center.y), k)
+                  
+                  for nn in knn:
+                     if (nn.data.maincharacter.get_main_id().split(".").count("greek") > 0) and not found:
+                        nn.data.addCombiningDiacritics(g)
+                        found = True
+                        break
+               
+                  k = k + 2      
                   
          wordString = ""      
          for c in characters:
