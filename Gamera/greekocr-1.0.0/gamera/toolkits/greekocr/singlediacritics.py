@@ -44,7 +44,8 @@ class SinglePage(Page):
    # Implement a simple vertical ordering
    def order_lines(self):
       self.ccs_lines.sort(lambda s,t: s.offset_y - t.offset_y)
-
+   def page_to_lines(self):
+      self.ccs_lines = self.img.bbox_mcmillan(None,1,0.5,10,5)
 class ImageSegmentationError(Exception):
 	def __init__(self, value):
 		self.value = value
@@ -62,18 +63,21 @@ class FindAppCritTeubner(SinglePage):
 		
 		#word-by-word body of teubner
 		#self.ccs_lines = self.img.bbox_merging(Ex=15,Ey=5)
-		#self.ccs_lines = self.img.bbox_mcmillan(None,2,4,20,5)
+		#self.ccs_lines = self.img.bbox_mcmillan(None,1,1,20,5)
 
 class AppCritTeubner(SinglePage):
 	def page_to_lines(self):
 		#this cuts up app. crit into lines
-		self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=50)
-	
+		#self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=50)
+	   #self.ccs_lines = self.img.bbox_mcmillan(None,1,.2,10,5)
+	   self.ccs_lines = self.img.bbox_merging(Ex=2,Ey=.5)
+	   
 class BodyTeubner(SinglePage):
 	def page_to_lines(self):
 		#word-by-word body of teubner
-		self.ccs_lines = self.img.bbox_merging(Ex=30,Ey=2)               
-
+		#self.ccs_lines = self.img.bbox_merging(Ex=30,Ey=2)               
+      #self.ccs_lines = self.img.bbox_mcmillan(None,1,.2,10,5)
+      self.ccs_lines = self.img.bbox_merging(Ex=10,Ey=4)#finds boxes for each word
 
 class Character(object):
    def __init__(self, glyph):
@@ -117,8 +121,32 @@ class Character(object):
       
       
 class SingleTextline(Textline):
+   def identify_ambiguous_glyphs(self):
+      print
+      for g in self.glyphs:
+         print g.get_main_id()
+         if g.get_main_id() == "apostrophe" or g.get_main_id() == 'right.single.quotation.mark' or g.get_main_id() == 'combining.comma.above':
+            glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
+            glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
+            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
+            for other in self.glyphs:
+               if self.is_greek_small_letter(other):
+                 # print "other candidate:", other.get_main_id()
+                  other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
+                  #print "at ", other.ul_x, other.lr_x, other_cl_y
+                  if (glyph_cl_x > other.ul_x) and (glyph_cl_x < other.lr_x) and (glyph_cl_y < other_cl_y):#there is a character inside whose width the 'apostrophe's center line lies
+                     print "there is something below:", other.id_name
+                     g.classify_automatic("combining.comma.above")
+                     break
+            #there are no other glyphs underneith; a for's else runs with no break
+            else:
+               print "nothing underneith"
+               g.classify_automatic("apostrophe")#it could be a right.single.quotation.mark, however
+               #we have no way of telling
+               
    def sort_glyphs(self):
       self.glyphs.sort(lambda x,y: cmp(x.ul_x, y.ul_x))
+      self.identify_ambiguous_glyphs()
       #begin calculating threshold for word-spacing
       glyphs = []
       printing_glyphs = []
@@ -138,6 +166,8 @@ class SingleTextline(Textline):
       glyphs_out = []
       reordered_glyphs = []
       just_reordered = False
+##      print "printing glyphs before cap. reordering:"
+     
       for glyph in printing_glyphs:
 #         if self.is_greek_capital_letter(glyph) and len(glyphs_out):
 #            print "Cap:" 
@@ -169,6 +199,9 @@ class SingleTextline(Textline):
             glyphs_out.append(glyph)
             just_reordered = False
       printing_glyphs = glyphs_out
+##      print "printing glyphs after cap. reordering:"
+##      for glyph in printing_glyphs:
+##         print glyph.get_main_id()
       spacelist = []
       total_space = 0
       for i in range(len(glyphs) - 1):
@@ -177,7 +210,7 @@ class SingleTextline(Textline):
       if(len(spacelist) > 0):
          threshold = median(spacelist)
          #print "threshold: ", threshold
-         threshold = threshold * 3
+         threshold = threshold * 2.7#Meineke, Kaibel: 3
       else:
          threshold  = 0
       #end calculating threshold for word-spacing
@@ -198,18 +231,24 @@ class SingleTextline(Textline):
               currentNonCombining = printing_glyphs[i]
               #print "CNC now: ", currentNonCombining.id_name
               if(previousNonCombining and currentNonCombining and ((currentNonCombining.ul_x - previousNonCombining.lr_x) > threshold)):
-               #   print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
+                  #print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
                   wordlist.append(word)
                   word = []
             word.append(printing_glyphs[i])
       if(len(word) > 0):
          wordlist.append(word)
       self.words= wordlist
+      print "SELF WORDS:"
+      for word in self.words:
+         for g in word:
+            print g.get_main_id()
+         print
 
 
    def is_greek_capital_letter(self, glyph):
       return (glyph.get_main_id().find("greek") != -1) and (glyph.get_main_id().find("capital") != -1) and (glyph.get_main_id().find("letter") != -1)
-      
+   def is_greek_small_letter(self, glyph):
+      return (glyph.get_main_id().find("greek") != -1) and (glyph.get_main_id().find("small") != -1) and (glyph.get_main_id().find("letter") != -1)   
    def is_combining_glyph(self, glyph):
       #must both have word 'combining', and not have word 'letter'
       # the latter to avoid grouped things, like 
@@ -279,37 +318,41 @@ class SingleTextline(Textline):
                   glyph.classify_automatic("comma")
             elif mainid.find("manual") != -1 or mainid.find("split") != -1:
                continue
+
+            #adding these to circumvent the below, whose purpose I don't understand.
+            c = Character(glyph)
+            characters.append(c)
             
-            if self.is_combining_glyph(glyph) and not(self.is_joined_glyph(glyph) and self.includes_letter(glyph)):# avoid corner case where we have a glyph that is 'greek.small.letter.eta.and.combining.acute'
-               glyphs_combining.append(glyph)
-            else:
-               c = Character(glyph)
-               characters.append(c)
-               #print c
-               nodes_normal.append(kdtree.KdNode((glyph.center.x, glyph.center.y), c))
-         
-         if (nodes_normal == None or len(nodes_normal) == 0):
-            continue
-            
-         tree = kdtree.KdTree(nodes_normal)
-         
-         for g in glyphs_combining:
-            fast = True
-            if fast:
-               knn = tree.k_nearest_neighbors((g.center.x, g.center.y), k)
-               knn[0].data.addCombiningDiacritics(g)
-            else:
-               found = False
-               while (not found) and k < max_k:
-                  knn = tree.k_nearest_neighbors((g.center.x, g.center.y), k)
-                  
-                  for nn in knn:
-                     if (nn.data.maincharacter.get_main_id().split(".").count("greek") > 0) and not found:
-                        nn.data.addCombiningDiacritics(g)
-                        found = True
-                        break
-               
-                  k = k + 2      
+##            if self.is_combining_glyph(glyph) and not(self.is_joined_glyph(glyph) and self.includes_letter(glyph)):# avoid corner case where we have a glyph that is 'greek.small.letter.eta.and.combining.acute'
+##               glyphs_combining.append(glyph)
+##            else:
+##               c = Character(glyph)
+##               characters.append(c)
+##               #print c
+##               nodes_normal.append(kdtree.KdNode((glyph.center.x, glyph.center.y), c))
+##         
+##         if (nodes_normal == None or len(nodes_normal) == 0):
+##            continue
+##            
+##         tree = kdtree.KdTree(nodes_normal)
+##         
+##         for g in glyphs_combining:
+##            fast = True
+##            if fast:
+##               knn = tree.k_nearest_neighbors((g.center.x, g.center.y), k)
+##               knn[0].data.addCombiningDiacritics(g)
+##            else:
+##               found = False
+##               while (not found) and k < max_k:
+##                  knn = tree.k_nearest_neighbors((g.center.x, g.center.y), k)
+##                  
+##                  for nn in knn:
+##                     if (nn.data.maincharacter.get_main_id().split(".").count("greek") > 0) and not found:
+##                        nn.data.addCombiningDiacritics(g)
+##                        found = True
+##                        break
+##               
+##                  k = k + 2      
                   
          wordString = ""      
          for c in characters:

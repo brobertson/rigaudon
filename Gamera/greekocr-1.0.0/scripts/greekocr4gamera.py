@@ -167,14 +167,17 @@ def performGreekOCR(options):
             hocr_tree = hocr_make_tree_and_return(book_code)
          if imageIn.data.pixel_type == ONEBIT:
             threshold_info = "onebit"
+            otsu_thresh = 1.0
+            image = imageIn
             if options["debug"]:
                print "image is ONEBIT; doing no threshold optimization."
-         current_thresh = otsu_thresh * otsu_factor
-         if current_thresh > 253.0:
-            current_thresh = 253.0
-         current_thresh = int(current_thresh)
-         threshold_info = "thresh_" + str(int(current_thresh))
-         image = imageIn.threshold(current_thresh)
+         else:
+            current_thresh = otsu_thresh * otsu_factor
+            if current_thresh > 253.0:
+               current_thresh = 253.0
+            current_thresh = int(current_thresh)
+            threshold_info = "thresh_" + str(int(current_thresh))
+            image = imageIn.threshold(current_thresh)
          if options["hocrfile"]:
             hocr_to_use = string.replace(options["hocrfile"],"%s",imageBase)
             g.hocr = hocr_to_use
