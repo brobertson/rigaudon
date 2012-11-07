@@ -152,38 +152,38 @@ class SingleTextline(Textline):
          if g.get_main_id() == "apostrophe" or g.get_main_id() == 'right.single.quotation.mark' or g.get_main_id() == 'combining.comma.above':
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
-            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
+##            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
             for other in self.glyphs:
                if self.is_greek_small_letter(other):
                  # print "other candidate:", other.get_main_id()
                   other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
                   #print "at ", other.ul_x, other.lr_x, other_cl_y
                   if (glyph_cl_x > other.ul_x) and (glyph_cl_x < other.lr_x) and (glyph_cl_y < other_cl_y):#there is a character inside whose width the 'apostrophe's center line lies
-                     print "there is something below:", other.id_name
+##                     print "there is something below:", other.id_name
                      g.classify_automatic("combining.comma.above")
                      break
             #there are no other glyphs underneith; a for's else runs with no break
             else:
-               print "nothing underneith"
+##               print "nothing underneith"
                g.classify_automatic("apostrophe")#it could be a right.single.quotation.mark, however
                #we have no way of telling
          
          if g.get_main_id() == 'left.single.quotation.mark' or g.get_main_id() == 'combining.reversed.comma.above':
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
-            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
+##            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
             for other in self.glyphs:
                if self.is_greek_small_letter(other):
                  # print "other candidate:", other.get_main_id()
                   other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
                   #print "at ", other.ul_x, other.lr_x, other_cl_y
                   if (glyph_cl_x > other.ul_x) and (glyph_cl_x < other.lr_x) and (glyph_cl_y < other_cl_y):#there is a character inside whose width the 'apostrophe's center line lies
-                     print "there is something below:", other.id_name
+##                     print "there is something below:", other.id_name
                      g.classify_automatic("combining.reversed.comma.above")
                      break
             #there are no other glyphs underneith; a for's else runs with no break
             else:
-               print "nothing underneith"
+##               print "nothing underneith"
                g.classify_automatic("left.single.quotation.mark")#it could be a right.single.quotation.mark, however
                #we have no way of telling
    def sort_glyphs(self):
@@ -215,24 +215,33 @@ class SingleTextline(Textline):
 #            print "Cap:" 
 #            print glyph.id_name
 #            print glyphs_out[-1].id_name
-         if just_reordered == False and len(glyphs_out) > 0 and self.is_greek_capital_letter(glyph) and self.is_combining_glyph(glyphs_out[-1]):#and the previous accent isn't too far away...
-           # print "Reorder cap?"
+         greek_capital_vowels = ['greek.capital.letter.alpha','greek.capital.letter.epsilon','greek.capital.letter.eta','greek.capital.letter.iota','greek.capital.letter.omicron','greek.capital.letter.upsilon','greek.capital.letter.omega']
+         greek_capital_rho=['greek.capital.letter.rho']
+         can_combine_with_rough_breathing = greek_capital_vowels + greek_capital_rho
+         #if just_reordered == False and len(glyphs_out) > 0 and self.is_greek_capital_letter(glyph) and self.is_combining_glyph(glyphs_out[-1]):#and the previous accent isn't too far away...
+         if just_reordered == False and len(glyphs_out) > 0  and self.is_combining_glyph(glyphs_out[-1]) and (glyph.get_main_id() in can_combine_with_rough_breathing) and not (glyph.get_main_id() in greek_capital_rho and not (glyphs_out[-1] == 'combining.reversed.comma.above')):#and the previous accent isn't too far away...
+         
+            print "Reorder cap?"
             capital_char_width = (glyph.lr_x - glyph.ul_x)
-            max_distance = capital_char_width / 2
-        #    print "width: ", capital_char_width
+            if self.is_combining_glyph(glyphs_out[-1]):#if the 'combining glyph' already on the stack is actually two-in-one, then we need to
+                                                       #give a bit more room.
+               max_distance = capital_char_width
+            else:
+               max_distance = capital_char_width / 2
+            print "width: ", capital_char_width
             distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
-       #     print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+            print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
             reordered_glyphs = []
             reordered_glyphs.append(glyph)
             if distance_to_accent < max_distance:
                just_reordered = True
                reordered_glyphs.append(glyphs_out[-1])
                glyphs_out = glyphs_out[:-1] #strip the last glyph off of this stack
-          #     print "reordered " + glyph.get_main_id()
+               print "reordered " + glyph.get_main_id()
                if len(glyphs_out) > 0 and self.is_combining_glyph(glyphs_out[-1]):#and it isn't too far away
                   distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
-        #          print "possibly two accents"
-         #         print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+                  print "possibly two accents"
+                  print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
                   if distance_to_accent < max_distance:
                      reordered_glyphs.append(glyphs_out[-1])
                      glyphs_out = glyphs_out[:-1]
@@ -241,9 +250,9 @@ class SingleTextline(Textline):
             glyphs_out.append(glyph)
             just_reordered = False
       printing_glyphs = glyphs_out
-##      print "printing glyphs after cap. reordering:"
-##      for glyph in printing_glyphs:
-##         print glyph.get_main_id()
+      print "printing glyphs after cap. reordering:"
+      for glyph in printing_glyphs:
+         print glyph.get_main_id()
       spacelist = []
       total_space = 0
       for i in range(len(glyphs) - 1):
@@ -336,10 +345,6 @@ class SingleTextline(Textline):
                glyph.classify_automatic("greek.capital.letter.theta")
             elif mainid.find("manual") != -1 or mainid.find("split") != -1:
                continue
-
-            #adding these to circumvent the below, whose purpose I don't understand.
-##            c = Character(glyph)
-##            characters.append(c)
             
             if self.is_combining_glyph(glyph) and not(self.is_joined_glyph(glyph) and self.includes_letter(glyph)):# avoid corner case where we have a glyph that is 'greek.small.letter.eta.and.combining.acute'
                glyphs_combining.append(glyph)
@@ -368,8 +373,20 @@ class SingleTextline(Textline):
                      print "this is determined to be below"
                      break
                else:
-                  print "I give up: no NN below??"
-                  knn[0].data.addCombiningDiacritics(g)
+                  search_x_point = 0
+                  if (g.get_main_id() == 'combining.grave.accent'):
+                     search_x_point = g.lr_x
+                  elif (g.get_main_id() == 'combining.acute.accent'):
+                     search_x_point = g.ul_x
+                  else:
+                     print "I give up: no NN below??"
+                     knn[0].data.addCombiningDiacritics(g)
+                     break
+                  for aKnn in knn:
+                     if (aKnn.data.maincharacter.ul_x < search_x_point) and (aKnn.data.maincharacter.lr_x > search_x_point):
+                        aKnn.data.addCombiningDiacritics(g)
+                        print "found on edge of", aKnn.data.unicodename
+                        break
             else:
                found = False
                while (not found) and k < max_k:

@@ -226,8 +226,10 @@ or separatistic).
       grave_accent = unicode(u"\N{COMBINING GRAVE ACCENT}")
       apostrophe = unicode(u"\N{APOSTROPHE}")
       vowels =  unicode(u"\N{GREEK SMALL LETTER ALPHA}\N{GREEK SMALL LETTER EPSILON}\N{GREEK SMALL LETTER ETA}\N{GREEK SMALL LETTER IOTA}\N{GREEK SMALL LETTER OMICRON}\N{GREEK SMALL LETTER UPSILON}\N{GREEK SMALL LETTER OMEGA}")
+      capital_vowels =  unicode(u"\N{GREEK CAPITAL LETTER ALPHA}\N{GREEK CAPITAL LETTER EPSILON}\N{GREEK CAPITAL LETTER ETA}\N{GREEK CAPITAL LETTER IOTA}\N{GREEK CAPITAL LETTER OMICRON}\N{GREEK CAPITAL LETTER UPSILON}\N{GREEK CAPITAL LETTER OMEGA}")
       consonants =  unicode(u"\N{GREEK SMALL LETTER BETA}\N{GREEK SMALL LETTER DELTA}\N{GREEK SMALL LETTER ZETA}\N{GREEK SMALL LETTER THETA}\N{GREEK SMALL LETTER KAPPA}\N{GREEK SMALL LETTER LAMDA}\N{GREEK SMALL LETTER MU}\N{GREEK SMALL LETTER NU}\N{GREEK SMALL LETTER XI}\N{GREEK SMALL LETTER PI}\N{GREEK SMALL LETTER RHO}\N{GREEK SMALL LETTER SIGMA}\N{GREEK SMALL LETTER TAU}\N{GREEK SMALL LETTER PHI}\N{GREEK SMALL LETTER CHI}\N{GREEK SMALL LETTER PSI}")
-
+      capital_rho = unicode(u"\N{GREEK CAPITAL LETTER RHO}")
+      caps_with_breathing = capital_vowels + capital_rho
       #These try to produce canonical ordering of accents and breathing
       #this regex reorders breathing + accent to accent + breathing
       out = re.sub(ur'(['+smooth_breathing+rough_breathing + ur'])([' + acute_accent + grave_accent + ur'])',r'\2' + r'\1',unicode_input)
@@ -246,8 +248,9 @@ or separatistic).
       
       # A left single quote should appear at the beginning of a word only, so this is ok.
       out = re.sub(ur'(.*[' + vowels + ur'])(' + left_single_quote + ur')' ,r'\1'+rough_breathing,out)
-      
-      
+
+      out = re.sub(left_single_quote + ur'([' + caps_with_breathing + ur'])',r'\1' + rough_breathing,out)
+      out = re.sub(apostrophe + ur'([' + capital_vowels + ur'])',r'\1' + smooth_breathing,out)
       #out = re.sub(ur'(.*[' + vowels + ur'])(' + right_single_quote + ur')' ,r'\1'+rough_breathing,out)
       #print "outpu: " + out.encode('utf-8')
       
