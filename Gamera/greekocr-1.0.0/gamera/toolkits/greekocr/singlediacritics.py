@@ -149,6 +149,7 @@ class SingleTextline(Textline):
             if g.center.y > self.bbox.center.y:
                #too low to be a quotation mark, must be a comma
                g.classify_automatic("comma")
+         #TODO: replace these with a common function
          if g.get_main_id() == "apostrophe" or g.get_main_id() == 'right.single.quotation.mark' or g.get_main_id() == 'combining.comma.above':
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
@@ -184,8 +185,46 @@ class SingleTextline(Textline):
             #there are no other glyphs underneith; a for's else runs with no break
             else:
 ##               print "nothing underneith"
-               g.classify_automatic("left.single.quotation.mark")#it could be a right.single.quotation.mark, however
-               #we have no way of telling
+               g.classify_automatic("left.single.quotation.mark")
+         #if a hypen-minus has something below it, it is  in fact a circumflex. Refine so that the 'something' has to be a vowel.
+         if g.get_main_id() == 'hyphen-minus':
+            glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
+            glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
+##            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
+            for other in self.glyphs:
+               if self.is_greek_small_letter(other):
+                 # print "other candidate:", other.get_main_id()
+                  other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
+                  #print "at ", other.ul_x, other.lr_x, other_cl_y
+                  if (glyph_cl_x > other.ul_x) and (glyph_cl_x < other.lr_x) and (glyph_cl_y < other_cl_y):#there is a character inside whose width the 'apostrophe's center line lies
+##                     print "there is something below:", other.id_name
+                     g.classify_automatic("combining.greek.perispomeni")
+                     break
+         greek_small_vowels = ['greek.small.letter.alpha','greek.small.letter.epsilon','greek.small.letter.eta','greek.small.letter.iota','greek.small.letter.omicron','greek.small.letter.upsilon','greek.small.letter.omega']  
+         #if a middle.dot has something below it, it is  in fact a smooth breathing. Refine so that the 'something' has to be a vowel.
+         if g.get_main_id() == 'middle.dot':
+            glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
+            glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
+##            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
+            other_count = 0
+            for other in self.glyphs:
+               #print "other candidate:", other.get_main_id()
+               other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
+               #print "at ", other.ul_x, other.lr_x, other_cl_y
+               if (glyph_cl_x > other.ul_x) and (glyph_cl_x < other.lr_x) and (glyph_cl_y < other_cl_y):#there is a character inside whose width the 'apostrophe's center line lies
+##                  print "there is something below:", other.id_name
+                  if other.get_main_id() in greek_small_vowels:
+                     g.classify_automatic("combining.comma.above")
+                  elif other.get_main_id() == 'comma':
+                     g.classify_automatic('semicolon')
+                     print self.glyphs[other_count].get_main_id()
+                     #TODO not sure how to delete the comma. So for now I'll leave it in place and remove in regex.
+                     #del self.glyphs[other_count]
+                  elif other.get_main_id() == 'full.stop':
+                     g.classify_automatic('colon')
+                  break
+               other_count = other_count + 1
+                  
    def sort_glyphs(self):
       greek_capital_vowels = ['greek.capital.letter.alpha','greek.capital.letter.epsilon','greek.capital.letter.eta','greek.capital.letter.iota','greek.capital.letter.omicron','greek.capital.letter.upsilon','greek.capital.letter.omega']  
       greek_capital_rho=['greek.capital.letter.rho']

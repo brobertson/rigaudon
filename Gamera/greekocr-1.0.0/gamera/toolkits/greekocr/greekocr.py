@@ -260,8 +260,11 @@ or separatistic).
 
       #replace double grave accent with grave accent and smooth breathing
       out = re.sub(grave_accent + grave_accent, grave_accent + smooth_breathing, out)
-      out = out.replace(middle_dot + ',', ';')
-      out = out.replace(',' + middle_dot, ';')
+
+      #These are byproducts of the agressive semi-colon and colon searching. Remove when you figure out how to
+      #remove the comma and full.stop
+      out = out.replace(';,', ';')
+      out = out.replace(':.' , ':')
       
       #No longer necessary due to positional analysis
       #this regex replaces final combining commas (i.e. 'smooth breathing') 
