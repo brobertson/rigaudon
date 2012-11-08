@@ -218,45 +218,67 @@ or separatistic).
       import re
       import unicodedata
       left_single_quote = unicode(u"\N{LEFT SINGLE QUOTATION MARK}")
-      righ_single_quote = unicode(u"\N{RIGHT SINGLE QUOTATION MARK}")
+      right_single_quote = unicode(u"\N{RIGHT SINGLE QUOTATION MARK}")
       smooth_breathing = unicode(u"\N{COMBINING COMMA ABOVE}")
       rough_breathing = unicode(u"\N{COMBINING REVERSED COMMA ABOVE}")
       circumflex = unicode(u"\N{COMBINING GREEK PERISPOMENI}")
       acute_accent = unicode(u"\N{COMBINING ACUTE ACCENT}")
       grave_accent = unicode(u"\N{COMBINING GRAVE ACCENT}")
       apostrophe = unicode(u"\N{APOSTROPHE}")
+      middle_dot = unicode(u"\N{MIDDLE DOT}")
       vowels =  unicode(u"\N{GREEK SMALL LETTER ALPHA}\N{GREEK SMALL LETTER EPSILON}\N{GREEK SMALL LETTER ETA}\N{GREEK SMALL LETTER IOTA}\N{GREEK SMALL LETTER OMICRON}\N{GREEK SMALL LETTER UPSILON}\N{GREEK SMALL LETTER OMEGA}")
+      capital_vowels =  unicode(u"\N{GREEK CAPITAL LETTER ALPHA}\N{GREEK CAPITAL LETTER EPSILON}\N{GREEK CAPITAL LETTER ETA}\N{GREEK CAPITAL LETTER IOTA}\N{GREEK CAPITAL LETTER OMICRON}\N{GREEK CAPITAL LETTER UPSILON}\N{GREEK CAPITAL LETTER OMEGA}")
       consonants =  unicode(u"\N{GREEK SMALL LETTER BETA}\N{GREEK SMALL LETTER DELTA}\N{GREEK SMALL LETTER ZETA}\N{GREEK SMALL LETTER THETA}\N{GREEK SMALL LETTER KAPPA}\N{GREEK SMALL LETTER LAMDA}\N{GREEK SMALL LETTER MU}\N{GREEK SMALL LETTER NU}\N{GREEK SMALL LETTER XI}\N{GREEK SMALL LETTER PI}\N{GREEK SMALL LETTER RHO}\N{GREEK SMALL LETTER SIGMA}\N{GREEK SMALL LETTER TAU}\N{GREEK SMALL LETTER PHI}\N{GREEK SMALL LETTER CHI}\N{GREEK SMALL LETTER PSI}")
+      capital_rho = unicode(u"\N{GREEK CAPITAL LETTER RHO}")
+      caps_with_breathing = capital_vowels + capital_rho
       #These try to produce canonical ordering of accents and breathing
       #this regex reorders breathing + accent to accent + breathing
       out = re.sub(ur'(['+smooth_breathing+rough_breathing + ur'])([' + acute_accent + grave_accent + ur'])',r'\2' + r'\1',unicode_input)
       #this regex reorders circumflex + breathing to breathing + circumflex
       out = re.sub(ur'([' + circumflex +  ur'])([' +smooth_breathing+rough_breathing + ur'])',r'\2' + r'\1',out)
 
-     
+      #These try to fix common identification errors and ambiguities.
+      #They are gradually being replaced by positional analysis
+      
       #this regex takes the sequence vowel+consonant+acute accent and 
       #arranges it as vowel+accent+consonant
       #certain consonants tend to 'steal' the acute
-      out = re.sub(ur'(.*[' + vowels + ur'])([' + consonants + ur'])' + acute_accent,r'\1'+acute_accent+r'\2',out)
+      #out = re.sub(ur'(.*[' + vowels + ur'])([' + consonants + ur'])' + acute_accent,r'\1'+acute_accent+r'\2',out)
      
       #replace vowel + left_single_quote with vowel and acute accent. 
       
       # A left single quote should appear at the beginning of a word only, so this is ok.
       out = re.sub(ur'(.*[' + vowels + ur'])(' + left_single_quote + ur')' ,r'\1'+rough_breathing,out)
-      
-      
+
+      out = re.sub(left_single_quote + ur'([' + caps_with_breathing + ur'])',r'\1' + rough_breathing,out)
+      out = re.sub(apostrophe + ur'([' + capital_vowels + ur'])',r'\1' + smooth_breathing,out)
       #out = re.sub(ur'(.*[' + vowels + ur'])(' + right_single_quote + ur')' ,r'\1'+rough_breathing,out)
       #print "outpu: " + out.encode('utf-8')
+
+      # full.stop or middle.dot plus apostrophe -> full.stop or middle.dot plus right.single.quotation.mark
+      out = re.sub(ur"([\." + middle_dot + ur"])'",ur'\1' + right_single_quote,out)
+
+      #replace double grave accent with grave accent and smooth breathing
+      out = re.sub(grave_accent + grave_accent, grave_accent + smooth_breathing, out)
+
+      #These are byproducts of the agressive semi-colon and colon searching. Remove when you figure out how to
+      #remove the comma and full.stop
+      out = out.replace(';,', ';')
+      out = out.replace(':.' , ':')
       
+      #No longer necessary due to positional analysis
       #this regex replaces final combining commas (i.e. 'smooth breathing') 
       #with apostrophes, if they appear after a consonant
       #print "input: " + out.encode('utf-8')
-      out = re.sub(ur'([' + consonants + ur'])' + smooth_breathing,r'\1' + apostrophe,out)
-      
+      #out = re.sub(ur'([' + consonants + ur'])' + smooth_breathing,r'\1' + apostrophe,out)
+
+      #No longer necessary due to positional analysis
       #this regex replaces vowel + apostrophe + letter with vowel + acute + letter
-      out = re.sub(ur'([' + vowels + ur'])' + apostrophe + ur'([' + vowels + consonants + ur'])' ,r'\1' + smooth_breathing + r'\2',out)
+      #out = re.sub(ur'([' + vowels + ur'])' + apostrophe + ur'([' + vowels + consonants + ur'])' ,r'\1' + smooth_breathing + r'\2',out)
+
+      #No longer necessary, due to positional analysis. However, we might decide to operate this on apostrophes
       #this regex replaces (full.stop + smooth_breathing + end of word) with full.stop + right.single.quote
-      out = re.sub(ur'\.' + smooth_breathing ,r".'",out)
+      #out = re.sub(ur'\.' + smooth_breathing ,r".'",out)
       #print "output: " + out.encode('utf-8')
       return out
 
