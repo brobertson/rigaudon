@@ -122,7 +122,7 @@ class Character(object):
       
 class SingleTextline(Textline):
    def identify_ambiguous_glyphs(self):
-      print
+      #print
       for g in self.glyphs:
          mainid = g.get_main_id()
          if mainid == "comma" or mainid == "combining.comma.above":
@@ -187,6 +187,10 @@ class SingleTextline(Textline):
                g.classify_automatic("left.single.quotation.mark")#it could be a right.single.quotation.mark, however
                #we have no way of telling
    def sort_glyphs(self):
+      greek_capital_vowels = ['greek.capital.letter.alpha','greek.capital.letter.epsilon','greek.capital.letter.eta','greek.capital.letter.iota','greek.capital.letter.omicron','greek.capital.letter.upsilon','greek.capital.letter.omega']  
+      greek_capital_rho=['greek.capital.letter.rho']
+      greek_small_vowels = ['greek.small.letter.alpha','greek.small.letter.epsilon','greek.small.letter.eta','greek.small.letter.iota','greek.small.letter.omicron','greek.small.letter.upsilon','greek.small.letter.omega']  
+
       self.glyphs.sort(lambda x,y: cmp(x.ul_x, y.ul_x))
       self.identify_ambiguous_glyphs()
       #begin calculating threshold for word-spacing
@@ -215,33 +219,32 @@ class SingleTextline(Textline):
 #            print "Cap:" 
 #            print glyph.id_name
 #            print glyphs_out[-1].id_name
-         greek_capital_vowels = ['greek.capital.letter.alpha','greek.capital.letter.epsilon','greek.capital.letter.eta','greek.capital.letter.iota','greek.capital.letter.omicron','greek.capital.letter.upsilon','greek.capital.letter.omega']
-         greek_capital_rho=['greek.capital.letter.rho']
+         
          can_combine_with_rough_breathing = greek_capital_vowels + greek_capital_rho
          #if just_reordered == False and len(glyphs_out) > 0 and self.is_greek_capital_letter(glyph) and self.is_combining_glyph(glyphs_out[-1]):#and the previous accent isn't too far away...
          if just_reordered == False and len(glyphs_out) > 0  and self.is_combining_glyph(glyphs_out[-1]) and (glyph.get_main_id() in can_combine_with_rough_breathing) and not (glyph.get_main_id() in greek_capital_rho and not (glyphs_out[-1] == 'combining.reversed.comma.above')):#and the previous accent isn't too far away...
          
-            print "Reorder cap?"
+##            print "Reorder cap?"
             capital_char_width = (glyph.lr_x - glyph.ul_x)
             if self.is_combining_glyph(glyphs_out[-1]):#if the 'combining glyph' already on the stack is actually two-in-one, then we need to
                                                        #give a bit more room.
                max_distance = capital_char_width
             else:
                max_distance = capital_char_width / 2
-            print "width: ", capital_char_width
+##            print "width: ", capital_char_width
             distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
-            print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+##            print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
             reordered_glyphs = []
             reordered_glyphs.append(glyph)
             if distance_to_accent < max_distance:
                just_reordered = True
                reordered_glyphs.append(glyphs_out[-1])
                glyphs_out = glyphs_out[:-1] #strip the last glyph off of this stack
-               print "reordered " + glyph.get_main_id()
+##               print "reordered " + glyph.get_main_id()
                if len(glyphs_out) > 0 and self.is_combining_glyph(glyphs_out[-1]):#and it isn't too far away
                   distance_to_accent = (glyph.ul_x - glyphs_out[-1].ul_x)
-                  print "possibly two accents"
-                  print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
+##                  print "possibly two accents"
+##                  print "between ", glyph.id_name, " and ", glyphs_out[-1].id_name, distance_to_accent
                   if distance_to_accent < max_distance:
                      reordered_glyphs.append(glyphs_out[-1])
                      glyphs_out = glyphs_out[:-1]
@@ -250,9 +253,9 @@ class SingleTextline(Textline):
             glyphs_out.append(glyph)
             just_reordered = False
       printing_glyphs = glyphs_out
-      print "printing glyphs after cap. reordering:"
-      for glyph in printing_glyphs:
-         print glyph.get_main_id()
+##      print "printing glyphs after cap. reordering:"
+##      for glyph in printing_glyphs:
+##         print glyph.get_main_id()
       spacelist = []
       total_space = 0
       for i in range(len(glyphs) - 1):
@@ -283,17 +286,25 @@ class SingleTextline(Textline):
               #print "CNC now: ", currentNonCombining.id_name
               if(previousNonCombining and currentNonCombining and ((currentNonCombining.ul_x - previousNonCombining.lr_x) > threshold)):
                   #print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
-                  wordlist.append(word)
-                  word = []
+
+                  #sometimes the initial smooth breathing hangs over its initial vowel, putting it before that vowel in order
+                 #this is a poor attempt to make sure it doesn't get glommed onto the previous word. A positional analysis would be much better TODO
+                  if (word[-1].get_main_id() == 'combining.comma.above' or word[-1].get_main_id() == 'combining.reversed.comma.above') and not (previousNonCombining.get_main_id() in (greek_small_vowels + ['greek.small.letter.rho'] + greek_capital_vowels)):
+##                     print "I'm worried about ", word[-1].get_main_id(), "being put with", previousNonCombining.get_main_id()
+                     wordlist.append(word[:-1])
+                     word = [word[-1]]
+                  else:
+                     wordlist.append(word)
+                     word = []
             word.append(printing_glyphs[i])
       if(len(word) > 0):
          wordlist.append(word)
       self.words= wordlist
-      print "SELF WORDS:"
-      for word in self.words:
-         for g in word:
-            print g.get_main_id()
-         print
+##      print "SELF WORDS:"
+##      for word in self.words:
+##         for g in word:
+##            print g.get_main_id()
+##         print
 
 
    def is_greek_capital_letter(self, glyph):
@@ -363,14 +374,14 @@ class SingleTextline(Textline):
             fast = True
             if fast:
                knn = tree.k_nearest_neighbors((g.center.x, g.center.y), k)
-               print
-               print "KNN!"
+##               print
+##               print "KNN!"
                for aKnn in knn:
-                  print aKnn.data.unicodename
+##                  print aKnn.data.unicodename
                   #It isn't just whose center is closer, but also, who is below
                   if (aKnn.data.maincharacter.ul_x < g.center.x) and (aKnn.data.maincharacter.lr_x > g.center.x):
                      aKnn.data.addCombiningDiacritics(g)
-                     print "this is determined to be below"
+##                     print "this is determined to be below"
                      break
                else:
                   search_x_point = 0
@@ -379,13 +390,13 @@ class SingleTextline(Textline):
                   elif (g.get_main_id() == 'combining.acute.accent'):
                      search_x_point = g.ul_x
                   else:
-                     print "I give up: no NN below??"
+##                     print "I give up: no NN below??"
                      knn[0].data.addCombiningDiacritics(g)
                      break
                   for aKnn in knn:
                      if (aKnn.data.maincharacter.ul_x < search_x_point) and (aKnn.data.maincharacter.lr_x > search_x_point):
                         aKnn.data.addCombiningDiacritics(g)
-                        print "found on edge of", aKnn.data.unicodename
+##                        print "found on edge of", aKnn.data.unicodename
                         break
             else:
                found = False

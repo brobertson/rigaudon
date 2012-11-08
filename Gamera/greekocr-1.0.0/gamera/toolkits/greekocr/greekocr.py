@@ -218,13 +218,14 @@ or separatistic).
       import re
       import unicodedata
       left_single_quote = unicode(u"\N{LEFT SINGLE QUOTATION MARK}")
-      righ_single_quote = unicode(u"\N{RIGHT SINGLE QUOTATION MARK}")
+      right_single_quote = unicode(u"\N{RIGHT SINGLE QUOTATION MARK}")
       smooth_breathing = unicode(u"\N{COMBINING COMMA ABOVE}")
       rough_breathing = unicode(u"\N{COMBINING REVERSED COMMA ABOVE}")
       circumflex = unicode(u"\N{COMBINING GREEK PERISPOMENI}")
       acute_accent = unicode(u"\N{COMBINING ACUTE ACCENT}")
       grave_accent = unicode(u"\N{COMBINING GRAVE ACCENT}")
       apostrophe = unicode(u"\N{APOSTROPHE}")
+      middle_dot = unicode(u"\N{MIDDLE DOT}")
       vowels =  unicode(u"\N{GREEK SMALL LETTER ALPHA}\N{GREEK SMALL LETTER EPSILON}\N{GREEK SMALL LETTER ETA}\N{GREEK SMALL LETTER IOTA}\N{GREEK SMALL LETTER OMICRON}\N{GREEK SMALL LETTER UPSILON}\N{GREEK SMALL LETTER OMEGA}")
       capital_vowels =  unicode(u"\N{GREEK CAPITAL LETTER ALPHA}\N{GREEK CAPITAL LETTER EPSILON}\N{GREEK CAPITAL LETTER ETA}\N{GREEK CAPITAL LETTER IOTA}\N{GREEK CAPITAL LETTER OMICRON}\N{GREEK CAPITAL LETTER UPSILON}\N{GREEK CAPITAL LETTER OMEGA}")
       consonants =  unicode(u"\N{GREEK SMALL LETTER BETA}\N{GREEK SMALL LETTER DELTA}\N{GREEK SMALL LETTER ZETA}\N{GREEK SMALL LETTER THETA}\N{GREEK SMALL LETTER KAPPA}\N{GREEK SMALL LETTER LAMDA}\N{GREEK SMALL LETTER MU}\N{GREEK SMALL LETTER NU}\N{GREEK SMALL LETTER XI}\N{GREEK SMALL LETTER PI}\N{GREEK SMALL LETTER RHO}\N{GREEK SMALL LETTER SIGMA}\N{GREEK SMALL LETTER TAU}\N{GREEK SMALL LETTER PHI}\N{GREEK SMALL LETTER CHI}\N{GREEK SMALL LETTER PSI}")
@@ -253,6 +254,14 @@ or separatistic).
       out = re.sub(apostrophe + ur'([' + capital_vowels + ur'])',r'\1' + smooth_breathing,out)
       #out = re.sub(ur'(.*[' + vowels + ur'])(' + right_single_quote + ur')' ,r'\1'+rough_breathing,out)
       #print "outpu: " + out.encode('utf-8')
+
+      # full.stop or middle.dot plus apostrophe -> full.stop or middle.dot plus right.single.quotation.mark
+      out = re.sub(ur"([\." + middle_dot + ur"])'",ur'\1' + right_single_quote,out)
+
+      #replace double grave accent with grave accent and smooth breathing
+      out = re.sub(grave_accent + grave_accent, grave_accent + smooth_breathing, out)
+      out = out.replace(middle_dot + ',', ';')
+      out = out.replace(',' + middle_dot, ';')
       
       #No longer necessary due to positional analysis
       #this regex replaces final combining commas (i.e. 'smooth breathing') 
