@@ -53,7 +53,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:abbyy="http://www.abbyy.c
 </xsl:template>
 <xsl:template match="abbyy:charParams[@wordStart='true']">
 <xsl:param name="place" select="count(preceding-sibling::abbyy:charParams[@wordStart='true'])"/>
-<xsl:param name="wordNodes" select=" current() |  following-sibling::abbyy:charParams[@wordStart='false' and (count(preceding-sibling::abbyy:charParams[@wordStart='true']) = ($place+1))]"/>
+<xsl:param name="wordNodes" select=" current() |  following-sibling::abbyy:charParams[normalize-space(.) and @wordStart='false' and (count(preceding-sibling::abbyy:charParams[@wordStart='true']) = ($place+1))]"/>
 <!--xsl:param name="wordId"><xsl:number from="/" level="any" count="abbyy:charParams[@wordStart='true']" /></xsl:param-->
 <xsl:param name="wordlx0">
   <xsl:for-each select="$wordNodes">
