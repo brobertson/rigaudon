@@ -34,12 +34,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:abbyy="http://www.abbyy.c
                         <xsl:variable name="lx1"><xsl:value-of select="@r" /></xsl:variable>                
                         <xsl:variable name="ly1"><xsl:value-of select="@b" /></xsl:variable>
                         <span class="ocr_line" id="line_{$lineId}" title="bbox {$lx0} {$ly0} {$lx1} {$ly1}">
-                            <xsl:value-of select="." />
+                            <xsl:apply-templates select="abbyy:charParams[@wordStart='true']"/>
                             <!--<xsl:variable name="xBoxes">
                                 <xsl:value-of separator=" " select="(*[@l]|*[@t]|*[@r]|*[@b])[text()]" />
                             </xsl:variable>
-                            <span class="ocr_cinfo" title="x_boxes {$xBoxes}"></span>-->
-                        </span>  
+                           <span class="ocr_cinfo" title="x_boxes {$xBoxes}"></span>-->
+			</span>  
                     </xsl:for-each>
                     </p>
                 </xsl:for-each>
@@ -51,6 +51,55 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:abbyy="http://www.abbyy.c
          </xsl:result-document>
         </xsl:for-each>
 </xsl:template>
+<xsl:template match="abbyy:charParams[@wordStart='true']">
+<xsl:param name="place" select="count(preceding-sibling::abbyy:charParams[@wordStart='true'])"/>
+<xsl:param name="wordNodes" select=" current() |  following-sibling::abbyy:charParams[@wordStart='false' and (count(preceding-sibling::abbyy:charParams[@wordStart='true']) = ($place+1))]"/>
+<!--xsl:param name="wordId"><xsl:number from="/" level="any" count="abbyy:charParams[@wordStart='true']" /></xsl:param-->
+<xsl:param name="wordlx0">
+  <xsl:for-each select="$wordNodes">
+      <xsl:sort select="@l" data-type="number"
+                order="ascending" />
+      <xsl:if test="position() = 1">
+         <xsl:value-of select="@l" />
+      </xsl:if>
+   </xsl:for-each>
+</xsl:param>
 
+<xsl:param name="wordlx1">
+  <xsl:for-each select="$wordNodes">
+      <xsl:sort select="@r" data-type="number"
+                order="descending" />
+      <xsl:if test="position() = 1">
+         <xsl:value-of select="@r" />
+      </xsl:if>
+   </xsl:for-each>
+</xsl:param>
+
+<xsl:param name="wordly0">
+  <xsl:for-each select="$wordNodes">
+      <xsl:sort select="@t" data-type="number"
+                order="ascending" />
+      <xsl:if test="position() = 1">
+         <xsl:value-of select="@t" />
+      </xsl:if>
+   </xsl:for-each>
+</xsl:param>
+
+<xsl:param name="wordly1">
+  <xsl:for-each select="$wordNodes">
+      <xsl:sort select="@b" data-type="number"
+                order="descending" />
+      <xsl:if test="position() = 1">
+         <xsl:value-of select="@b" />
+      </xsl:if>
+   </xsl:for-each>
+</xsl:param>
+
+ <span class="ocr_word" id="word_{position()}" title="bbox {$wordlx0} {$wordly0} {$wordlx1} {$wordly1}"><xsl:apply-templates mode="foo" select="$wordNodes"/></span>
+ <!--xsl:value-of select="position()"/>:<xsl:value-of select="count(preceding-sibling::*)"/>: <xsl:apply-templates/--> 
+</xsl:template>
+<xsl:template match="abbyy:charParams" mode="foo">
+  <xsl:value-of select="."/>
+</xsl:template>
 </xsl:stylesheet>
 
