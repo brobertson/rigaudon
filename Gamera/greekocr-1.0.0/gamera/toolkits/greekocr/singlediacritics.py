@@ -168,7 +168,23 @@ class SingleTextline(Textline):
 ##               print "nothing underneith"
                g.classify_automatic("apostrophe")#it could be a right.single.quotation.mark, however
                #we have no way of telling
-         
+         if g.get_main_id() == 'greek.small.letter.iota' or g.get_main_id() == 'combining.greek.ypogegrammeni':
+            glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
+            glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
+            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
+            for other in self.glyphs:
+               if self.is_greek_small_letter(other):
+                 # print "other candidate:", other.get_main_id()
+                  other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
+                  #print "at ", other.ul_x, other.lr_x, other_cl_y
+                  if (glyph_cl_x > other.ul_x) and (glyph_cl_x < other.lr_x) and (glyph_cl_y > other_cl_y):#there is a character inside whose width the 'iota's center line lies
+                     print "there is something above:", other.id_name
+                     g.classify_automatic("combining.greek.ypogegrammeni")
+                     break
+            #there are no other glyphs underneith; a for's else runs with no break
+            else:
+               print "nothing underneith"
+               g.classify_automatic("greek.small.letter.iota")         
          if g.get_main_id() == 'left.single.quotation.mark' or g.get_main_id() == 'combining.reversed.comma.above':
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
