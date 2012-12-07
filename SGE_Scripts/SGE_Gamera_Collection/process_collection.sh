@@ -1,4 +1,6 @@
-
+#here are the commands that will be passed to gamera, unless
+#you pass a $GAMERA_CMDS variable to this script
+DEFAULT_GAMERA_CMDS=" --split --autogroup --deskew --filter "
 
 #set the directory of the collection of books
 #COLLECTION_DIR=/usr/local/OCR_Processing/Texts/Athenaeus/Pngs
@@ -22,9 +24,9 @@ if [ ! -d $COLLECTION_DIR ]; then
 	exit $E_BADARGS
 fi
 
-
-OUTPUT_DIR=/tmp/sge_out
-ERROR_DIR=/tmp/sge_errors
+#Set the directories for the outputs of Sun Grid Engine
+export OUTPUT_DIR=/tmp/sge_out
+export ERROR_DIR=/tmp/sge_errors
 
 
 if [ ! -d $OUTPUT_DIR ] 
@@ -37,11 +39,18 @@ then
   mkdir $ERROR_DIR
 fi
 
+#If the GAMERA_CMDS variable is not set, give it the default
+#value
+export GAMERA_CMDS=${GAMERA_CMDS:-$DEFAULT_GAMERA_CMDS}
+#export ${GAMERA_CMDS:=$DEFAULT_GAMERA_CMDS}
+echo "Gamera commands: $GAMERA_CMDS"
+#If the HOCR variable is not set, then set it to 'N'
+export ${HOCR:="N"}
 
 #This makes a 'filelist.txt' file for each book, that is, 
 #directory within COLLECTION_DIR
 
-#In particular, these are all the 'png' files found therein
+#In particular, these are all the 'jp2' files found therein
 #TODO: add tiff, too, and perhaps 'PNG' and other plausible
 #variants
 echo "Processing all book files in $COLLECTION_DIR ..."
@@ -49,8 +58,9 @@ for BOOK_DIR in `find -L $COLLECTION_DIR/* -maxdepth 0 -type d`
 do
 echo ""
 echo -e "\t Counting the number of pages in $COLLECTION_DIR/$BOOK_DIR..."
-FILE_LIST=$BOOK_DIR/filelist.txt
-find -L $BOOK_DIR/* -maxdepth 0 -type f -name '*png' -print | sort > $FILE_LIST
+export FILE_LIST=$BOOK_DIR/filelist.txt
+
+find -L $BOOK_DIR/* -maxdepth 0 -type f  -regextype posix-extended -regex '.*\.(png|jp2|tiff|tif)' -print | sort > $FILE_LIST
 
 #This counts the number of files, necessary to provide
 #an arbitrary number of jobs
@@ -64,9 +74,9 @@ if [ ! $FILE_COUNT -gt 0 ]; then
 fi
 
 if [ -z "$CLASSIFIER_DIR" ]; then
-	CLASSIFIER_FILE=`cat $BOOK_DIR/classifier.txt`
+	export CLASSIFIER_FILE=`cat $BOOK_DIR/classifier.txt`
 else
-	CLASSIFIER_FILE=$CLASSIFIER_DIR
+	export CLASSIFIER_FILE=$CLASSIFIER_DIR
 fi
 
 #error checking before we commit to processing the books
@@ -93,6 +103,10 @@ fi
 
 filename=$(basename $CLASSIFIER_FILE) 
 filename=${filename%.*}  
-DATE=`date +%F-%T`
-DATE=$DATE OUTPUT_DIR=$OUTPUT_DIR ERROR_DIR=$ERROR_DIR BOOK_DIR=$BOOK_DIR FILE_LIST=$FILE_LIST FILE_COUNT=$FILE_COUNT CONDITIONS=testing CLASSIFIER_FILE=$CLASSIFIER_FILE bash ./book_loop.sh & #/home/broberts/${filename}.btxt &
+export DATE=`date +%F-%H-%M`
+export BOOK_DIR
+BOOK_NAME=$(basename $BOOK_DIR)
+echo "bookname: $BOOK_NAME"
+export BOOK_NAME
+bash ./book_loop.sh & 
 done
