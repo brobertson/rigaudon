@@ -93,7 +93,7 @@ def performGreekOCR(options):
 #   features = ["aspect_ratio", "volume64regions", "moments", "nholes_extended"]   
 #I think these are size-invariant
 #   features = ["aspect_ratio","moments","nholes","nholes_extended","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
-   MAX_CCS = 3500
+   MAX_CCS = 6500
    features = ["aspect_ratio","moments","ncols_feature","nholes","nholes_extended","nrows_feature","skeleton_features","top_bottom","volume","volume16regions","volume64regions","zernike_moments"]
    image_files = []
    g = GreekOCR(splits=options["split"],feats=features)
@@ -321,7 +321,7 @@ def hocr_make_tree_and_return(book_code):
     <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
     <meta content="riguadon 0.3" name="ocr-system"/>
-   <meta name="ocr-nmber-of-pages" content="???"/>
+   <meta name="ocr-number-of-pages" content="1"/>
    <meta name="ocr-langs" content="grc lat"/>
      <meta content="ocr_line ocr_page" name="ocr-capabilities"/>
     <title>OCR Output</title>
