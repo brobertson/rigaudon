@@ -36,7 +36,8 @@ def generateCCsFromHocr(parser,image):
 	#The following copied from bbox_merging. Simply making Ccs with
 	#the appropriate dimensions does not seem to work, but did in a 
 	#previous version...
-
+	#extended_segs are the line bboxes; ccs are the glyphs
+	#found by page analysis
 	# build new merged CCs
         tmplist = ccs[:]
         dellist = []
@@ -47,7 +48,7 @@ def generateCCsFromHocr(parser,image):
             for seg in extended_segs:
                 label += 1
                 for cc in tmplist:
-                    if(seg.intersects(cc)):
+                    if(seg.intersects(cc) and (cc.lr_y < seg.lr_y) ):
                         # mark original image with segment label
                         image.highlight(cc, label)
                         seg_cc.append(cc)
