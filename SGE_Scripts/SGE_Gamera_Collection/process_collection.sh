@@ -108,5 +108,5 @@ export BOOK_DIR
 BOOK_NAME=$(basename $BOOK_DIR)
 echo "bookname: $BOOK_NAME"
 export BOOK_NAME
-bash ./book_loop.sh & 
+bash $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/book_loop.sh & 
 done

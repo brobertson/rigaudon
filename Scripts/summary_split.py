@@ -53,13 +53,14 @@ for key in sorted(dictionary.keys()):
 td_scores_file = open(os.path.join(hocr_out_directory, "3d_scores.txt"),'w+')
 td_scores_file.write(threed)
 # now pass threed through gnuplot
-
+best_bscore_sum = 0
 page_bscores = []
 for key in dictionary.keys():
 	values = dictionary[key]
 	file_type = image_type_dictionary[key]
 	out_values = sorted(values, key=itemgetter(1))
 	[best_thresh,best_bScore] = out_values[-1]
+	best_bscore_sum += best_bScore
 	page_bscores.append([key,best_bScore])
         best_file = text_name + "_" + key + "_" + file_type + "_thresh_" + str(best_thresh)
         best_txt_file = best_file + ".txt"
@@ -70,6 +71,8 @@ for key in dictionary.keys():
 page_bscores = sorted(page_bscores, key=itemgetter(1))
 page_bscores_sorted = sorted(page_bscores, key=itemgetter(0))
 
+best_bscore_sum_file =  open(os.path.join(hocr_out_directory, "best_scores_sum.txt"),'w+')
+best_bscore_sum_file.write(str(best_bscore_sum))
 best_scores_file = open(os.path.join(hocr_out_directory, "best_scores.txt"),'w+')
 import pprint
 pp = pprint.PrettyPrinter(indent=4)

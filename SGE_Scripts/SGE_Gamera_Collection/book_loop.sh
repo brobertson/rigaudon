@@ -37,24 +37,24 @@ mkdir $TEXT_SELECTED
 #end prep
 #This does an array job the size of the number of files in the book
 #directory
-qsub -sync y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V qsubed_job.sh
+qsub -sync y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_job.sh
 
 #Now we use this script to:
 #1. Convert the hocr output to plain text
 #2. Evaluate the plain text with Federico's code
 #3. Save comma-separated pairs of textfile name and score 
-/home/broberts/rigaudon/Scripts/lynx_dump.sh $HOCR_OUTPUT $PRIMARY_OUTPUT $SECONDARY_OUTPUT $CSV_FILE
+$RIGAUDON_HOME/Scripts/lynx_dump.sh $HOCR_OUTPUT $PRIMARY_OUTPUT $SECONDARY_OUTPUT $CSV_FILE
 
 #This script takes the above-generated csv file and uses it to:
 #1. Copy the highest-scoring text file to the 'selected' dir
 #2. Copy the corresponding highest-scoring hocr file to the 'selected' dir
 #3. Make a graph of page# vs. score for these highest-scoring pages.
-/home/broberts/rigaudon/Scripts/summary_split.py $CSV_FILE $HOCR_OUTPUT $SECONDARY_OUTPUT $HOCR_SELECTED $TEXT_SELECTED $GRAPH_IMAGE_FILE
+$RIGAUDON_HOME/Scripts/summary_split.py $CSV_FILE $HOCR_OUTPUT $SECONDARY_OUTPUT $HOCR_SELECTED $TEXT_SELECTED $GRAPH_IMAGE_FILE
 
 cp $CSV_FILE $TEXT_SELECTED
 #Now report using email.
 
-echo "$BOOK_DIR $DATE done using $filename classifier. `ls $HOCR_SELECTED | wc -l` files created. " | mutt -s "$BOOK_DIR at sharcnet" -a $GRAPH_IMAGE_FILE -- bruce.g.robertson@gmail.com
+echo "$BOOK_DIR $DATE done using $filename classifier. `ls $HOCR_SELECTED | wc -l` files created with total score `cat $HOCR_SELECTED/best_scores_sum.txt`." | mutt -s "$BOOK_DIR at sharcnet" -a $GRAPH_IMAGE_FILE -- bruce.g.robertson@gmail.com
 #echo "$BOOK_DIR $DATE done" | mail bruce.g.robertson@gmail.com -s "$BOOK_DIR processing"
 cd $BOOK_DIR
 tar -zcf $BOOK_DIR/robertson_${DATE}_${BOOK_NAME}_${filename}_hocr_and_txt.tar.gz  $RELATIVE_HOCR_SELECTED $RELATIVE_TEXT_SELECTED 
