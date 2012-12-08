@@ -48,7 +48,7 @@ def generateCCsFromHocr(parser,image):
             for seg in extended_segs:
                 label += 1
                 for cc in tmplist:
-                    if(seg.intersects(cc) and (cc.lr_y < seg.lr_y) ):
+                    if(seg.intersects(cc) and ((cc.lr_y < seg.lr_y) or (cc.height > seg.height/3) or ((cc.lr_y - seg.lr_y) / seg.height) < 0.2 )):
                         # mark original image with segment label
                         image.highlight(cc, label)
                         seg_cc.append(cc)
