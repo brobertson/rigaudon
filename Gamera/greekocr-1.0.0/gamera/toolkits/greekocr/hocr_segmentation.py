@@ -47,8 +47,14 @@ def generateCCsFromHocr(parser,image):
             label = 1
             for seg in extended_segs:
                 label += 1
+        #        print "new line!"
                 for cc in tmplist:
-                    if(seg.intersects(cc) and ((cc.lr_y < seg.lr_y) or (cc.height > seg.height/3) or ((cc.lr_y - seg.lr_y) / seg.height) < 0.2 )):
+		    descender = (float(cc.lr_y - seg.lr_y) / float(seg.height))
+		    if seg.intersects(cc):
+                       downness = cc.lr_y - seg.lr_y 
+                       segheight = seg.height
+         #              print "desc: " + str(descender) + " downness: " + str(downness) + " segheight: " + str(segheight)
+                    if(seg.intersects(cc) and ((cc.lr_y < seg.lr_y) or (descender < 0.4)) ):#((float(cc.height) > float(seg.height)/2.0) and (descender  < 0.2) ))):
                         # mark original image with segment label
                         image.highlight(cc, label)
                         seg_cc.append(cc)
