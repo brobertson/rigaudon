@@ -233,6 +233,7 @@ or separatistic).
       caps_with_breathing = capital_vowels + capital_rho
       #These try to produce canonical ordering of accents and breathing
       #this regex reorders breathing + accent to accent + breathing
+      unicode_input = unicodedata.normalize('NFD',unicode_input)
       out = re.sub(ur'(['+smooth_breathing+rough_breathing + ur'])([' + acute_accent + grave_accent + ur'])',r'\2' + r'\1',unicode_input)
       #this regex reorders circumflex + breathing to breathing + circumflex
       out = re.sub(ur'([' + circumflex +  ur'])([' +smooth_breathing+rough_breathing + ur'])',r'\2' + r'\1',out)
@@ -402,8 +403,8 @@ Make sure that you have called load_trainingdata_ before!
    def save_text_hocr(self, tree, filename):
       import lxml
       from lxml import etree  
-      f = codecs.open(filename, "w", encoding='utf-8')
-      f.write(etree.tostring(tree))
+      f = codecs.open(filename, "w")
+      f.write(etree.tostring(tree, encoding='utf-8'))
       f.close()
 
    def save_text_xetex(self, filename):
