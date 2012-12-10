@@ -2,13 +2,14 @@
 #start prep
 filename=$(basename $CLASSIFIER_FILE)
 filename=${filename%.*}
+barebookname=${BOOK_NAME%%_jp2}
 export HOCR_OUTPUT=$BOOK_DIR/${DATE}_${filename}_hocr_output
 export PRIMARY_OUTPUT=$BOOK_DIR/${DATE}_${filename}_txt_output
 export SECONDARY_OUTPUT=$BOOK_DIR/${DATE}_${filename}_output_tc
 export TESS_OUTPUT=$BOOK_DIR/tess_eng_output
 export HOCR_SELECTED=$BOOK_DIR/${DATE}_${filename}_selected_hocr_output
 export TEXT_SELECTED=$BOOK_DIR/${DATE}_${filename}_selected_text_output
-
+export ABBYY_DATA=`dirname $BOOK_DIR`/${barebookname}_hocr
 export RELATIVE_HOCR_SELECTED=${DATE}_${filename}_selected_hocr_output
 export RELATIVE_TEXT_SELECTED=${DATE}_${filename}_selected_text_output
 export RELATIVE_HOCR_OUTPUT=${DATE}_${filename}_hocr_output

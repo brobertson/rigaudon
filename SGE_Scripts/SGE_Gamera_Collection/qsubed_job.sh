@@ -4,6 +4,7 @@
 #$ -l h_rt=00:18:00
 echo "CLASSIFIER_FILE: $CLASSIFIER_FILE"
 echo "GAMERA CMDS: $GAMERA_CMDS"
+echo "HOCR: $HOCR"
 classifier_filename=$(basename $CLASSIFIER_FILE)
 classifier_filename=${classifier_filename%.*}
 #HOCR_OUTPUT=$BOOK_DIR/${classifier_filename}_hocr_output
@@ -39,10 +40,10 @@ fi
 #fi
 
 HOCR_COMMAND=""
-#if [ $HOCR = "Y" ]; then
-#    HOCR_COMMAND=" --hocr ${TESSFILE}.html "
-#    echo "executing HOCR with command \'$HOCR_COMMAND\'"
-#fi
+if [ $HOCR = "ABBYY" ]; then
+    HOCR_COMMAND=" --hocr ${ABBYY_DATA}/%s.html "
+    echo "executing HOCR with command \'$HOCR_COMMAND\'"
+fi
 
 python  /usr/local/bin/greekocr4gamera.py -x $CLASSIFIER_FILE/classifier_glyphs.xml  --settings $CLASSIFIER_FILE/optimized_settings.xml -s ${GAMERA_CMDS}${HOCR_COMMAND} --hocrout -u $HOCR_OUTPUT/output-${OUTPUT_STUB} $IMAGE_FILENAME #> /dev/null
 #lynx --dump $HOCR_OUTPUT/output-$TRUNC_IMAGE_FILENAME.html > $PRIMARY_OUTPUT/output-$TRUNC_IMAGE_FILENAME.txt
