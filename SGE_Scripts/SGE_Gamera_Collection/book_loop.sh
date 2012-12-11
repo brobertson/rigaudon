@@ -51,8 +51,10 @@ $RIGAUDON_HOME/Scripts/lynx_dump.sh $HOCR_OUTPUT $PRIMARY_OUTPUT $SECONDARY_OUTP
 #2. Copy the corresponding highest-scoring hocr file to the 'selected' dir
 #3. Make a graph of page# vs. score for these highest-scoring pages.
 $RIGAUDON_HOME/Scripts/summary_split.py $CSV_FILE $HOCR_OUTPUT $SECONDARY_OUTPUT $HOCR_SELECTED $TEXT_SELECTED $GRAPH_IMAGE_FILE
-
 cp $CSV_FILE $TEXT_SELECTED
+
+#Save info about the process
+
 #Now report using email.
 
 echo "$BOOK_DIR $DATE done using $filename classifier. `ls $HOCR_SELECTED | wc -l` files created with total score `cat $HOCR_SELECTED/best_scores_sum.txt`." | mutt -s "$BOOK_DIR at sharcnet" -a $GRAPH_IMAGE_FILE -- bruce.g.robertson@gmail.com
