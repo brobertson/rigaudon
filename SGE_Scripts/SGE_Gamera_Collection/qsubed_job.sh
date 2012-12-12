@@ -40,7 +40,7 @@ fi
 #fi
 
 HOCR_COMMAND=""
-if [ $HOCR = "ABBYY" ]; then
+if [ "$HOCR" = "ABBYY" ]; then
     HOCR_COMMAND=" --hocr ${ABBYY_DATA}/%s.html "
     echo "executing HOCR with command \'$HOCR_COMMAND\'"
 fi
