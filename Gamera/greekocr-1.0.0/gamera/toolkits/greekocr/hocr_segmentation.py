@@ -54,6 +54,7 @@ def generateCCsFromHocr(parser,image):
                        downness = cc.lr_y - seg.lr_y 
                        segheight = seg.height
          #              print "desc: " + str(descender) + " downness: " + str(downness) + " segheight: " + str(segheight)
+			#for more closed texts:
                     if(seg.intersects(cc) and ((cc.lr_y < seg.lr_y) or ((float(cc.height) > float(seg.height)/2.0) and (descender  < 0.2) ))):
 		    #for more open texts:
 		    #if(seg.intersects(cc) and ((cc.lr_y < seg.lr_y) or (descender < 0.4)) ):

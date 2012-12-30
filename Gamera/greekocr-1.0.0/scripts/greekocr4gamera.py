@@ -176,7 +176,7 @@ def performGreekOCR(options):
             if current_thresh > 253.0:
                current_thresh = 253.0
             current_thresh = int(current_thresh)
-            threshold_info = "thresh_" + str(int(current_thresh))
+            threshold_info = "thresh_" + str(int(current_thresh))# + "=" + str(otsu_factor)
             image = imageIn.threshold(current_thresh)
          if options["hocrfile"]:
             hocr_to_use = string.replace(options["hocrfile"],"%s",imageBase)
