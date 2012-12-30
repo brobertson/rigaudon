@@ -15,8 +15,14 @@ echo -n "Rigaudon build: " >> $INFO_FILE
 cd /home/broberts/rigaudon
 git rev-parse HEAD >> $INFO_FILE
 cd -
-echo $CLASSIFIER_FILE >> $INFO_FILE
-md5sum $CLASSIFIER_FILE >> $INFO_FILE
+#echo $CLASSIFIER_FILE/classifier_glyphs.xml >> $INFO_FILE
+md5sum $CLASSIFIER_FILE/classifier_glyphs.xml >> $INFO_FILE
+echo $CLASSIFIER_FILE/optimized_settings.xml >> $INFO_FILE
+md5sum  $CLASSIFIER_FILE/optimized_settings.xml >> $INFO_FILE
+echo -n "Gamera Commands: " >> $INFO_FILE
+echo $GAMERA_CMDS >> $INFO_FILE
+echo -n "Hocr command: " >> $INFO_FILE
+echo $HOCR >> $INFO_FILE
 #md5sum $CLASSIFIER_SETTINGS 
 #Now report using email.
 
