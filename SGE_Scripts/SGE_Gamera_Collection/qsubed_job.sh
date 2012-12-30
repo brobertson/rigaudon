@@ -2,6 +2,7 @@
 #$ -cwd
 #$ -j y
 #$ -l h_rt=00:18:00
+#$ -l h_vmem=1G
 echo "CLASSIFIER_FILE: $CLASSIFIER_FILE"
 echo "GAMERA CMDS: $GAMERA_CMDS"
 echo "HOCR: $HOCR"

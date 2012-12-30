@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 #start prep
 filename=$(basename $CLASSIFIER_FILE)
-filename=${filename%.*}
-barebookname=${BOOK_NAME%%_jp2}
+export filename=${filename%.*}
+export barebookname=${BOOK_NAME%%_jp2}
 export HOCR_OUTPUT=$BOOK_DIR/${DATE}_${filename}_hocr_output
 export PRIMARY_OUTPUT=$BOOK_DIR/${DATE}_${filename}_txt_output
 export SECONDARY_OUTPUT=$BOOK_DIR/${DATE}_${filename}_output_tc
@@ -45,18 +45,18 @@ POSTPROCESS_JOB_NAME=$JOB_NAME_BASE-postprocess
 #end prep
 #This does an array job the size of the number of files in the book
 #directory
-qsub -N $OCR_BATCH_JOB_NAME -sync y  -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_job.sh
+qsub -N $OCR_BATCH_JOB_NAME  -p -200 -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_job.sh
 
 #Now we use this script to:
 #1. Convert the hocr output to plain text
 #2. Evaluate the plain text with Federico's code
 #3. Save comma-separated pairs of textfile name and score 
-qsub -N $LYNX_DUMP_JOB_NAME -hold_jid $OCR_BATCH_JOB_NAME -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash  -V  $RIGAUDON_HOME/Scripts/lynx_dump.sh $HOCR_OUTPUT $PRIMARY_OUTPUT $SECONDARY_OUTPUT $CSV_FILE
+qsub -N $LYNX_DUMP_JOB_NAME -p -150 -hold_jid $OCR_BATCH_JOB_NAME -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash  -V  $RIGAUDON_HOME/Scripts/lynx_dump.sh $HOCR_OUTPUT $PRIMARY_OUTPUT $SECONDARY_OUTPUT $CSV_FILE
 
 #This script takes the above-generated csv file and uses it to:
 #1. Copy the highest-scoring text file to the 'selected' dir
 #2. Copy the corresponding highest-scoring hocr file to the 'selected' dir
 #3. Make a graph of page# vs. score for these highest-scoring pages.
-qsub -N $SUMMARY_SPLIT_JOB_NAME -hold_jid  $LYNX_DUMP_JOB_NAME  -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/summary_split.py $CSV_FILE $HOCR_OUTPUT $SECONDARY_OUTPUT $HOCR_SELECTED $TEXT_SELECTED $GRAPH_IMAGE_FILE
+qsub -N $SUMMARY_SPLIT_JOB_NAME -p -100 -hold_jid  $LYNX_DUMP_JOB_NAME  -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/summary_split.py $CSV_FILE $HOCR_OUTPUT $SECONDARY_OUTPUT $HOCR_SELECTED $TEXT_SELECTED $GRAPH_IMAGE_FILE
 
-qsub -N $POSTPROCESS_JOB_NAME -hold_jid  $SUMMARY_SPLIT_JOB_NAME  -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V $RIGAUDON_HOME/Scripts/post_qsub_processing.sh
+qsub -N $POSTPROCESS_JOB_NAME -p 0 -hold_jid  $SUMMARY_SPLIT_JOB_NAME  -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V $RIGAUDON_HOME/Scripts/post_qsub_processing.sh
