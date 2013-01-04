@@ -121,6 +121,24 @@ class Character(object):
       
       
 class SingleTextline(Textline):
+   def double_check_capital_omicrons(self):
+      lc_letters_of_half_height = ['greek.small.letter.alpha','greek.small.letter.nu','greek.small.letter.upsilon','greek.small.letter.sigma','greek.small.letter.omega']
+      #find the average height of all the above letters as they appear in this line
+      count = 0
+      running_total = 0
+      for g in self.glyphs:
+          if g.get_main_id() in lc_letters_of_half_height: 
+          running_total += g.height
+          count += 1
+      #don't perform this calculation unless we have a decent number of examples
+      if count > 3:	
+         #judge all the lc omicrons against this height, if it is too different, then assign it uc 
+         average_height_of_letters = float(running_total) / float(count)
+         height_limit_for_lc_omicron = average_height_of_letters + float(self.bbox.height)/float(4)
+         for g in self.glyphs:
+            if g.get_main_id() == 'greek.capital.letter.omicron' & g.height > height_limit_for_lc_omicron:
+               g.classify_automatic('greek.small.letter.omicron')
+
    def identify_ambiguous_glyphs(self):
       #print
       for g in self.glyphs:
@@ -251,6 +269,7 @@ class SingleTextline(Textline):
       greek_small_vowels = ['greek.small.letter.alpha','greek.small.letter.epsilon','greek.small.letter.eta','greek.small.letter.iota','greek.small.letter.omicron','greek.small.letter.upsilon','greek.small.letter.omega']  
 
       self.glyphs.sort(lambda x,y: cmp(x.ul_x, y.ul_x))
+      self.double_check_capital_omicrons()
       self.identify_ambiguous_glyphs()
       #begin calculating threshold for word-spacing
       glyphs = []
