@@ -50,11 +50,11 @@ def generateCCsFromHocr(parser,image):
         #        print "new line!"
                 for cc in tmplist:
 		#changed in this revision; the divisor used to be seg.height, that is, the line's height
-		    descender = (float(cc.lr_y - seg.lr_y) / float(seg.height))
+		    descender = (float(cc.lr_y - seg.lr_y) / float(cc.height))
 		    if seg.intersects(cc):
                        downness = cc.lr_y - seg.lr_y 
                        segheight = seg.height
-                       print "desc: ", str(descender), " downness: ", str(downness), " segheight: ", str(segheight)
+#                       print "desc: ", str(descender), " downness: ", str(downness), " ccheight: ", str(cc.height)
 			#for more closed texts:
 			#this matches if:
 				# 1. 	the character's bottom is above the lines, or;
@@ -73,7 +73,7 @@ def generateCCsFromHocr(parser,image):
 			#1. the character's bottom is above the line, or;
 			#2. The character's bottom is below the line, and the amount of the character that is below the line is less than 40% of its height
                     if (seg.intersects(cc)  and ((cc.lr_y <= seg.lr_y) or ((cc.lr_y >  seg.lr_y) and (descender < 0.3)))):
-			  print "\tpassed"
+#			  print "\tpassed"
                           image.highlight(cc, label)
                           seg_cc.append(cc)
                           dellist.append(cc)
