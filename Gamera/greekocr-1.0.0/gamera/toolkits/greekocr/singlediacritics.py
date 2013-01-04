@@ -155,7 +155,7 @@ class SingleTextline(Textline):
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
 ##            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
             for other in self.glyphs:
-               if self.is_greek_small_letter(other):
+               if True:#self.is_greek_small_letter(other):
                  # print "other candidate:", other.get_main_id()
                   other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
                   #print "at ", other.ul_x, other.lr_x, other_cl_y
@@ -190,7 +190,11 @@ class SingleTextline(Textline):
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
 ##            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
             for other in self.glyphs:
-               if self.is_greek_small_letter(other):
+		#TODO: sometimes the classifier considers an omicron to be a 'o'. In which case,
+		#this algorithm will force the breathing to be a quotation mark. 
+		#perhaps we shouldn't test for greek-letterness, and let the chips fall.
+		#Similarly, a capital omicron also gets its breathing forced to quotation mark.
+               if True: #self.is_greek_small_letter(other):
                  # print "other candidate:", other.get_main_id()
                   other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
                   #print "at ", other.ul_x, other.lr_x, other_cl_y
