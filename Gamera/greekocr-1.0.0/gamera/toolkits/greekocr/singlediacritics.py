@@ -128,8 +128,8 @@ class SingleTextline(Textline):
       running_total = 0
       for g in self.glyphs:
           if g.get_main_id() in lc_letters_of_half_height: 
-          running_total += g.height
-          count += 1
+             running_total += g.height
+             count += 1
       #don't perform this calculation unless we have a decent number of examples
       if count > 3:	
          #judge all the lc omicrons against this height, if it is too different, then assign it uc 
