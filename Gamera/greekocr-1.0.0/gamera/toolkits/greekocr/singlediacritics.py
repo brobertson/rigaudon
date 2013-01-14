@@ -121,6 +121,18 @@ class Character(object):
       
       
 class SingleTextline(Textline):
+   def check_capital_letter(self,glyph, height_limit, lc_form, uc_form):
+      if float(glyph.height) < height_limit:
+         glyph.classify_automatic(lc_form)
+      else:
+         glyph.classify_automatic(uc_form)
+   
+   def check_greek_capital_letter(self,glyph, height_limit, name):
+      self.check_capital_letter(glyph, height_limit, "greek.small.letter." + name, "greek.capital.letter." + name)
+      
+                  #print "\treclassified capital as small one with height: ", g.height
+               #else:
+                  #print "\tkept one capital with height: ", g.height
    def double_check_capital_omicrons(self):
       lc_letters_of_half_height = ['greek.small.letter.alpha','greek.small.letter.nu','greek.small.letter.upsilon','greek.small.letter.sigma','greek.small.letter.omega']
       #find the average height of all the above letters as they appear in this line
@@ -130,15 +142,22 @@ class SingleTextline(Textline):
           if g.get_main_id() in lc_letters_of_half_height: 
              running_total += g.height
              count += 1
-      #don't perform this calculation unless we have a decent number of examples
-      if count > 3:	
+      if count > 0:	
          #judge all the lc omicrons against this height, if it is too different, then assign it uc 
          average_height_of_letters = float(running_total) / float(count)
-         height_limit_for_lc_omicron = average_height_of_letters + float(self.bbox.height)/float(4)
+         #print "average height: ", average_height_of_letters
+         height_limit_for_lc_omicron = average_height_of_letters + float(self.bbox.height)/float(10)
+         #print "height limit: ", height_limit_for_lc_omicron
+         letters_to_check = ["omicron","tau","iota"]
          for g in self.glyphs:
-            if g.get_main_id() == 'greek.capital.letter.omicron' & g.height > height_limit_for_lc_omicron:
-               g.classify_automatic('greek.small.letter.omicron')
-
+            g_name = g.get_main_id()
+            for letter_to_check in letters_to_check:
+               if g_name.endswith(letter_to_check):
+                  self.check_greek_capital_letter(g,height_limit_for_lc_omicron,letter_to_check)
+                  break
+            if g_name in ['greek.capital.lunate.sigma.symbol','greek.lunate.sigma.symbol']:
+               self.check_capital_letter(g,height_limit_for_lc_omicron,'greek.lunate.sigma.symbol','greek.capital.lunate.sigma.symbol')
+   
    def identify_ambiguous_glyphs(self):
       #print
       for g in self.glyphs:
