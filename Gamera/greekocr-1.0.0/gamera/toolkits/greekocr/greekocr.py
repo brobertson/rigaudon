@@ -269,7 +269,10 @@ or separatistic).
       out = out.replace(':.' , ':')
       out = out.replace(',;', ';')
       out = out.replace('.:',':')
-       
+      
+      out = re.sub(ur"l" + middle_dot,ur'i',out)
+      out = re.sub(ur"1" + middle_dot ,ur'i',out)
+      #out = out.replace(u'l·',u'i')
       #No longer necessary due to positional analysis
       #this regex replaces final combining commas (i.e. 'smooth breathing') 
       #with apostrophes, if they appear after a consonant
