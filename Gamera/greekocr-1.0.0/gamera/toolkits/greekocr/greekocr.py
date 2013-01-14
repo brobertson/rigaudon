@@ -218,6 +218,7 @@ or separatistic).
    def correct_common_errors(self,unicode_input):
       import re
       import unicodedata
+      import string
       left_single_quote = unicode(u"\N{LEFT SINGLE QUOTATION MARK}")
       right_single_quote = unicode(u"\N{RIGHT SINGLE QUOTATION MARK}")
       smooth_breathing = unicode(u"\N{COMBINING COMMA ABOVE}")
@@ -227,6 +228,9 @@ or separatistic).
       grave_accent = unicode(u"\N{COMBINING GRAVE ACCENT}")
       apostrophe = unicode(u"\N{APOSTROPHE}")
       middle_dot = unicode(u"\N{MIDDLE DOT}")
+      sigma = unicode(u"\N{GREEK SMALL LETTER SIGMA}")
+      final_sigma =  unicode(u"\N{GREEK SMALL LETTER FINAL SIGMA}")
+      lunate_sigma= unicode(u"\N{GREEK LUNATE SIGMA SYMBOL}")
       vowels =  unicode(u"\N{GREEK SMALL LETTER ALPHA}\N{GREEK SMALL LETTER EPSILON}\N{GREEK SMALL LETTER ETA}\N{GREEK SMALL LETTER IOTA}\N{GREEK SMALL LETTER OMICRON}\N{GREEK SMALL LETTER UPSILON}\N{GREEK SMALL LETTER OMEGA}")
       capital_vowels =  unicode(u"\N{GREEK CAPITAL LETTER ALPHA}\N{GREEK CAPITAL LETTER EPSILON}\N{GREEK CAPITAL LETTER ETA}\N{GREEK CAPITAL LETTER IOTA}\N{GREEK CAPITAL LETTER OMICRON}\N{GREEK CAPITAL LETTER UPSILON}\N{GREEK CAPITAL LETTER OMEGA}")
       consonants =  unicode(u"\N{GREEK SMALL LETTER BETA}\N{GREEK SMALL LETTER DELTA}\N{GREEK SMALL LETTER ZETA}\N{GREEK SMALL LETTER THETA}\N{GREEK SMALL LETTER KAPPA}\N{GREEK SMALL LETTER LAMDA}\N{GREEK SMALL LETTER MU}\N{GREEK SMALL LETTER NU}\N{GREEK SMALL LETTER XI}\N{GREEK SMALL LETTER PI}\N{GREEK SMALL LETTER RHO}\N{GREEK SMALL LETTER SIGMA}\N{GREEK SMALL LETTER TAU}\N{GREEK SMALL LETTER PHI}\N{GREEK SMALL LETTER CHI}\N{GREEK SMALL LETTER PSI}")
@@ -270,8 +274,13 @@ or separatistic).
       out = out.replace(',;', ';')
       out = out.replace('.:',':')
       
+      #when the dot on the top of i is misrecognized, recombine 
       out = re.sub(ur"l" + middle_dot,ur'i',out)
       out = re.sub(ur"1" + middle_dot ,ur'i',out)
+      out = re.sub(lunate_sigma + ur'$',final_sigma,out)
+      out = re.sub(lunate_sigma + ur'([\.,;:])',final_sigma + ur'\1',out)
+      out = re.sub(lunate_sigma + ur'(\]$)',final_sigma + ur']',out)
+      out = re.sub(lunate_sigma,sigma,out)
       #out = out.replace(u'l·',u'i')
       #No longer necessary due to positional analysis
       #this regex replaces final combining commas (i.e. 'smooth breathing') 
