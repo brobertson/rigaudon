@@ -126,7 +126,8 @@ or separatistic).
          t = time.time()
       the_ccs = self.img.cc_analysis()
       median_cc = int(median([cc.nrows for cc in the_ccs]))
-      print self.mode
+      if self.debug:
+         print self.mode
       if (self.autogroup):
         autogroup = ClassifyCCs(self.cknn)
         autogroup.parts_to_group = 4 
@@ -266,7 +267,9 @@ or separatistic).
       #remove the comma and full.stop
       out = out.replace(';,', ';')
       out = out.replace(':.' , ':')
-      
+      out = out.replace(',;', ';')
+      out = out.replace('.:',':')
+       
       #No longer necessary due to positional analysis
       #this regex replaces final combining commas (i.e. 'smooth breathing') 
       #with apostrophes, if they appear after a consonant
