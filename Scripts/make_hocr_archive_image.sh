@@ -1,7 +1,4 @@
 #!/bin/bash
-#This script takes as an argument an abbyy ocr output xml file in archive.org format (which doesn't have the 
-#extension '.xml'). It makes a directory with the archivename + _hocr, then puts in it separate files for 
-#each page of the input.
 jp2InputFile=$1
 #echo "jp2 file: $jp2InputFile"
 archivePath=${jp2InputFile%%_jp2}

@@ -36,7 +36,8 @@ def generateCCsFromHocr(parser,image):
 	#The following copied from bbox_merging. Simply making Ccs with
 	#the appropriate dimensions does not seem to work, but did in a 
 	#previous version...
-
+	#extended_segs are the line bboxes; ccs are the glyphs
+	#found by page analysis
 	# build new merged CCs
         tmplist = ccs[:]
         dellist = []
@@ -46,12 +47,36 @@ def generateCCsFromHocr(parser,image):
             label = 1
             for seg in extended_segs:
                 label += 1
+        #        print "new line!"
                 for cc in tmplist:
-                    if(seg.intersects(cc)):
+		#changed in this revision; the divisor used to be seg.height, that is, the line's height
+		    descender = (float(cc.lr_y - seg.lr_y) / float(cc.height))
+		    if seg.intersects(cc):
+                       downness = cc.lr_y - seg.lr_y 
+                       segheight = seg.height
+#                       print "desc: ", str(descender), " downness: ", str(downness), " ccheight: ", str(cc.height)
+			#for more closed texts:
+			#this matches if:
+				# 1. 	the character's bottom is above the lines, or;
+				# 2.  	if the character is higher than half the line height 
+				#		AND the portion of the character that goes below the line is less 
+				#		than 20% of its total height.
+
+
+                    #if(seg.intersects(cc) and ((cc.lr_y < seg.lr_y) or ((float(cc.height) > float(seg.height)/2.0) and (descender  < 0.2) )):
+		    #for more open texts:
+		    #if(seg.intersects(cc) and ((cc.lr_y < seg.lr_y) or (descender < 0.4)) ):
                         # mark original image with segment label
-                        image.highlight(cc, label)
-                        seg_cc.append(cc)
-                        dellist.append(cc)
+
+                    #new, experimental universal solution:
+		    #This matches if:
+			#1. the character's bottom is above the line, or;
+			#2. The character's bottom is below the line, and the amount of the character that is below the line is less than 40% of its height
+                    if (seg.intersects(cc)  and ((cc.lr_y <= seg.lr_y) or ((cc.lr_y >  seg.lr_y) and (descender < 0.3)))):
+#			  print "\tpassed"
+                          image.highlight(cc, label)
+                          seg_cc.append(cc)
+                          dellist.append(cc)
                 if len(seg_cc) == 0:
                     continue
                 seg_rect = seg_cc[0].union_rects(seg_cc)

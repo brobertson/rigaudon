@@ -68,16 +68,16 @@ class FindAppCritTeubner(SinglePage):
 class AppCritTeubner(SinglePage):
 	def page_to_lines(self):
 		#this cuts up app. crit into lines
-		#self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=1, noise=50)
+		self.ccs_lines = self.img.projection_cutting(Tx=1700, Ty=2, noise=60)
 	   #self.ccs_lines = self.img.bbox_mcmillan(None,1,.2,10,5)
-	   self.ccs_lines = self.img.bbox_merging(Ex=2,Ey=.5)
+	   #self.ccs_lines = self.img.bbox_merging(Ex=2,Ey=.5)
 	   
 class BodyTeubner(SinglePage):
 	def page_to_lines(self):
 		#word-by-word body of teubner
 		#self.ccs_lines = self.img.bbox_merging(Ex=30,Ey=2)               
-      #self.ccs_lines = self.img.bbox_mcmillan(None,1,.2,10,5)
-      self.ccs_lines = self.img.bbox_merging(Ex=10,Ey=4)#finds boxes for each word
+      self.ccs_lines = self.img.bbox_mcmillan(None,1,.5,10,5)
+      #self.ccs_lines = self.img.bbox_merging(Ex=10,Ey=4)#finds boxes for each word
 
 class Character(object):
    def __init__(self, glyph):
@@ -121,6 +121,43 @@ class Character(object):
       
       
 class SingleTextline(Textline):
+   def check_capital_letter(self,glyph, height_limit, lc_form, uc_form):
+      if float(glyph.height) < height_limit:
+         glyph.classify_automatic(lc_form)
+      else:
+         glyph.classify_automatic(uc_form)
+   
+   def check_greek_capital_letter(self,glyph, height_limit, name):
+      self.check_capital_letter(glyph, height_limit, "greek.small.letter." + name, "greek.capital.letter." + name)
+      
+                  #print "\treclassified capital as small one with height: ", g.height
+               #else:
+                  #print "\tkept one capital with height: ", g.height
+   def double_check_capital_omicrons(self):
+      lc_letters_of_half_height = ['greek.small.letter.alpha','greek.small.letter.nu','greek.small.letter.upsilon','greek.small.letter.sigma','greek.small.letter.omega']
+      #find the average height of all the above letters as they appear in this line
+      count = 0
+      running_total = 0
+      for g in self.glyphs:
+          if g.get_main_id() in lc_letters_of_half_height: 
+             running_total += g.height
+             count += 1
+      if count > 0:	
+         #judge all the lc omicrons against this height, if it is too different, then assign it uc 
+         average_height_of_letters = float(running_total) / float(count)
+         #print "average height: ", average_height_of_letters
+         height_limit_for_lc_omicron = average_height_of_letters + float(self.bbox.height)/float(10)
+         #print "height limit: ", height_limit_for_lc_omicron
+         letters_to_check = ["omicron","tau","iota"]
+         for g in self.glyphs:
+            g_name = g.get_main_id()
+            for letter_to_check in letters_to_check:
+               if g_name.endswith(letter_to_check):
+                  self.check_greek_capital_letter(g,height_limit_for_lc_omicron,letter_to_check)
+                  break
+            if g_name in ['greek.capital.lunate.sigma.symbol','greek.lunate.sigma.symbol']:
+               self.check_capital_letter(g,height_limit_for_lc_omicron,'greek.lunate.sigma.symbol','greek.capital.lunate.sigma.symbol')
+   
    def identify_ambiguous_glyphs(self):
       #print
       for g in self.glyphs:
@@ -155,7 +192,7 @@ class SingleTextline(Textline):
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
 ##            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
             for other in self.glyphs:
-               if self.is_greek_small_letter(other):
+               if True:#self.is_greek_small_letter(other):
                  # print "other candidate:", other.get_main_id()
                   other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
                   #print "at ", other.ul_x, other.lr_x, other_cl_y
@@ -171,26 +208,30 @@ class SingleTextline(Textline):
          if g.get_main_id() == 'greek.small.letter.iota' or g.get_main_id() == 'combining.greek.ypogegrammeni':
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
-            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
+            #print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
             for other in self.glyphs:
                if self.is_greek_small_letter(other):
                  # print "other candidate:", other.get_main_id()
                   other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
                   #print "at ", other.ul_x, other.lr_x, other_cl_y
                   if (glyph_cl_x > other.ul_x) and (glyph_cl_x < other.lr_x) and (glyph_cl_y > other_cl_y):#there is a character inside whose width the 'iota's center line lies
-                     print "there is something above:", other.id_name
+             #        print "there is something above:", other.id_name
                      g.classify_automatic("combining.greek.ypogegrammeni")
                      break
             #there are no other glyphs underneith; a for's else runs with no break
             else:
-               print "nothing underneith"
+              # print "nothing underneith"
                g.classify_automatic("greek.small.letter.iota")         
          if g.get_main_id() == 'left.single.quotation.mark' or g.get_main_id() == 'combining.reversed.comma.above':
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
 ##            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
             for other in self.glyphs:
-               if self.is_greek_small_letter(other):
+		#TODO: sometimes the classifier considers an omicron to be a 'o'. In which case,
+		#this algorithm will force the breathing to be a quotation mark. 
+		#perhaps we shouldn't test for greek-letterness, and let the chips fall.
+		#Similarly, a capital omicron also gets its breathing forced to quotation mark.
+               if True: #self.is_greek_small_letter(other):
                  # print "other candidate:", other.get_main_id()
                   other_cl_y = (other.ul_y + (other.lr_y - other.ul_y)/2)
                   #print "at ", other.ul_x, other.lr_x, other_cl_y
@@ -203,6 +244,10 @@ class SingleTextline(Textline):
 ##               print "nothing underneith"
                g.classify_automatic("left.single.quotation.mark")
          #if a hypen-minus has something below it, it is  in fact a circumflex. Refine so that the 'something' has to be a vowel.
+         if g.get_main_id() in ['left.parenthesis','greek.capital.lunate.sigma.symbol','greek.lunate.sigma.symbol']:
+            for other in self.glyphs:
+              if g.center_x > other.ul_x and g.center_x < other.lr_x and g.center_y < other.center_y:
+                g.classify_automatic("combining.reversed.comma.above")
          if g.get_main_id() == 'hyphen-minus':
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
@@ -247,6 +292,7 @@ class SingleTextline(Textline):
       greek_small_vowels = ['greek.small.letter.alpha','greek.small.letter.epsilon','greek.small.letter.eta','greek.small.letter.iota','greek.small.letter.omicron','greek.small.letter.upsilon','greek.small.letter.omega']  
 
       self.glyphs.sort(lambda x,y: cmp(x.ul_x, y.ul_x))
+      self.double_check_capital_omicrons()
       self.identify_ambiguous_glyphs()
       #begin calculating threshold for word-spacing
       glyphs = []

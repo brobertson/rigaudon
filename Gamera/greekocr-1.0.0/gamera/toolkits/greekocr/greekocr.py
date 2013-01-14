@@ -126,7 +126,8 @@ or separatistic).
          t = time.time()
       the_ccs = self.img.cc_analysis()
       median_cc = int(median([cc.nrows for cc in the_ccs]))
-      print self.mode
+      if self.debug:
+         print self.mode
       if (self.autogroup):
         autogroup = ClassifyCCs(self.cknn)
         autogroup.parts_to_group = 4 
@@ -217,6 +218,7 @@ or separatistic).
    def correct_common_errors(self,unicode_input):
       import re
       import unicodedata
+      import string
       left_single_quote = unicode(u"\N{LEFT SINGLE QUOTATION MARK}")
       right_single_quote = unicode(u"\N{RIGHT SINGLE QUOTATION MARK}")
       smooth_breathing = unicode(u"\N{COMBINING COMMA ABOVE}")
@@ -226,6 +228,9 @@ or separatistic).
       grave_accent = unicode(u"\N{COMBINING GRAVE ACCENT}")
       apostrophe = unicode(u"\N{APOSTROPHE}")
       middle_dot = unicode(u"\N{MIDDLE DOT}")
+      sigma = unicode(u"\N{GREEK SMALL LETTER SIGMA}")
+      final_sigma =  unicode(u"\N{GREEK SMALL LETTER FINAL SIGMA}")
+      lunate_sigma= unicode(u"\N{GREEK LUNATE SIGMA SYMBOL}")
       vowels =  unicode(u"\N{GREEK SMALL LETTER ALPHA}\N{GREEK SMALL LETTER EPSILON}\N{GREEK SMALL LETTER ETA}\N{GREEK SMALL LETTER IOTA}\N{GREEK SMALL LETTER OMICRON}\N{GREEK SMALL LETTER UPSILON}\N{GREEK SMALL LETTER OMEGA}")
       capital_vowels =  unicode(u"\N{GREEK CAPITAL LETTER ALPHA}\N{GREEK CAPITAL LETTER EPSILON}\N{GREEK CAPITAL LETTER ETA}\N{GREEK CAPITAL LETTER IOTA}\N{GREEK CAPITAL LETTER OMICRON}\N{GREEK CAPITAL LETTER UPSILON}\N{GREEK CAPITAL LETTER OMEGA}")
       consonants =  unicode(u"\N{GREEK SMALL LETTER BETA}\N{GREEK SMALL LETTER DELTA}\N{GREEK SMALL LETTER ZETA}\N{GREEK SMALL LETTER THETA}\N{GREEK SMALL LETTER KAPPA}\N{GREEK SMALL LETTER LAMDA}\N{GREEK SMALL LETTER MU}\N{GREEK SMALL LETTER NU}\N{GREEK SMALL LETTER XI}\N{GREEK SMALL LETTER PI}\N{GREEK SMALL LETTER RHO}\N{GREEK SMALL LETTER SIGMA}\N{GREEK SMALL LETTER TAU}\N{GREEK SMALL LETTER PHI}\N{GREEK SMALL LETTER CHI}\N{GREEK SMALL LETTER PSI}")
@@ -233,6 +238,7 @@ or separatistic).
       caps_with_breathing = capital_vowels + capital_rho
       #These try to produce canonical ordering of accents and breathing
       #this regex reorders breathing + accent to accent + breathing
+      unicode_input = unicodedata.normalize('NFD',unicode_input)
       out = re.sub(ur'(['+smooth_breathing+rough_breathing + ur'])([' + acute_accent + grave_accent + ur'])',r'\2' + r'\1',unicode_input)
       #this regex reorders circumflex + breathing to breathing + circumflex
       out = re.sub(ur'([' + circumflex +  ur'])([' +smooth_breathing+rough_breathing + ur'])',r'\2' + r'\1',out)
@@ -265,7 +271,17 @@ or separatistic).
       #remove the comma and full.stop
       out = out.replace(';,', ';')
       out = out.replace(':.' , ':')
+      out = out.replace(',;', ';')
+      out = out.replace('.:',':')
       
+      #when the dot on the top of i is misrecognized, recombine 
+      out = re.sub(ur"l" + middle_dot,ur'i',out)
+      out = re.sub(ur"1" + middle_dot ,ur'i',out)
+      out = re.sub(lunate_sigma + ur'$',final_sigma,out)
+      out = re.sub(lunate_sigma + ur'([\.,;:])',final_sigma + ur'\1',out)
+      out = re.sub(lunate_sigma + ur'(\]$)',final_sigma + ur']',out)
+      out = re.sub(lunate_sigma,sigma,out)
+      #out = out.replace(u'l·',u'i')
       #No longer necessary due to positional analysis
       #this regex replaces final combining commas (i.e. 'smooth breathing') 
       #with apostrophes, if they appear after a consonant
@@ -402,8 +418,8 @@ Make sure that you have called load_trainingdata_ before!
    def save_text_hocr(self, tree, filename):
       import lxml
       from lxml import etree  
-      f = codecs.open(filename, "w", encoding='utf-8')
-      f.write(etree.tostring(tree))
+      f = codecs.open(filename, "w")
+      f.write(etree.tostring(tree, encoding='utf-8'))
       f.close()
 
    def save_text_xetex(self, filename):

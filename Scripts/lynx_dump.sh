@@ -1,5 +1,8 @@
 #!/bin/bash
-
+#$ -cwd
+#$ -j y
+#$ -l h_rt=01:00:00
+#$ -l h_vmem=18G
 #1. Convert the hocr output to plain text
 #2. Evaluate the plain text with Federico's code
 #3. Save comma-separated pairs of textfile name and score 
