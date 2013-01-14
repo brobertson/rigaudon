@@ -244,6 +244,10 @@ class SingleTextline(Textline):
 ##               print "nothing underneith"
                g.classify_automatic("left.single.quotation.mark")
          #if a hypen-minus has something below it, it is  in fact a circumflex. Refine so that the 'something' has to be a vowel.
+         if g.get_main_id() in ['left.parenthesis','greek.capital.lunate.sigma.symbol','greek.lunate.sigma.symbol']:
+            for other in self.glyphs:
+              if g.center_x > other.ul_x and g.center_x < other.lr_x and g.center_y < other.center_y:
+                g.classify_automatic("combining.reversed.comma.above")
          if g.get_main_id() == 'hyphen-minus':
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
