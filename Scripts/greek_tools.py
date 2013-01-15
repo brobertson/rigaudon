@@ -25,7 +25,7 @@ def is_greek_char(char):
 @memoize
 def is_greek_string(string_in):
 	import string,re
-	regex = re.compile('[%s]' % re.escape(string.punctuation + u'—'))
+	regex = re.compile('[%s]' % re.escape(string.punctuation + u'—·' + u'0123456789'))
         greekness_threshold = 0.7
         print "String to test for greekness: ", string_in.encode('utf-8')
         string_in = regex.sub('',string_in)
