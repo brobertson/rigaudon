@@ -60,7 +60,7 @@ def get_hocr_lines_for_tree(treeIn):
 
 def dump_lines(lines_out):
     for line_out in lines_out:
-        #print 'LINE', line_out.bbox 
+        print 'LINE', line_out.bbox 
         #for word_out in line_out.words:
         #    print '\t', word_out.text, word_out.bbox,  word_out.element
 
