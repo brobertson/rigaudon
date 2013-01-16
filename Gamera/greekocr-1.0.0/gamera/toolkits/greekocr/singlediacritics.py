@@ -387,11 +387,15 @@ class SingleTextline(Textline):
               #print "CNC now: ", currentNonCombining.id_name
               if(previousNonCombining and currentNonCombining and ((currentNonCombining.ul_x - previousNonCombining.lr_x) > threshold)):
                   #print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
-
+                  cnc_dist = abs(currentNonCombining.center_x - word[-1].center_x)
+                  pnc_dist = abs(previousNonCombining.center_x - word[-1].center_x)
                   #sometimes the initial smooth breathing hangs over its initial vowel, putting it before that vowel in order
                  #this is a poor attempt to make sure it doesn't get glommed onto the previous word. A positional analysis would be much better TODO
-                  if (word[-1].get_main_id() == 'combining.comma.above' or word[-1].get_main_id() == 'combining.reversed.comma.above') and not (previousNonCombining.get_main_id() in (greek_small_vowels + ['greek.small.letter.rho'] + greek_capital_vowels)):
-##                     print "I'm worried about ", word[-1].get_main_id(), "being put with", previousNonCombining.get_main_id()
+                  if (word[-1].get_main_id() in ['combining.comma.above', 'combining.reversed.comma.above'] and cnc_dist < pnc_dist):# and not (previousNonCombining.get_main_id() in (greek_small_vowels + ['greek.small.letter.rho'] + greek_capital_vowels)):
+                     print "word[-1] is ", word[-1].get_main_id(), " with cl ", word[-1].center_x 
+                     print "cnc is ", currentNonCombining.get_main_id(), " with cl ", currentNonCombining.center_x
+                     print "pnc is ", previousNonCombining.get_main_id(), "with cl ", previousNonCombining.center_x
+ #print "I'm worried about ", word[-1].get_main_id(), "being put with", previousNonCombining.get_main_id()
                      wordlist.append(word[:-1])
                      word = [word[-1]]
                   else:
