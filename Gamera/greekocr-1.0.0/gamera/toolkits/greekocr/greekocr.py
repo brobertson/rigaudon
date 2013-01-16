@@ -186,8 +186,6 @@ or separatistic).
       self.word_tuples = []
       self.output = ""
       for line in self.page.textlines:
-         line.glyphs = \
-            self.cknn.classify_and_update_list_automatic(line.glyphs)
          line.sort_glyphs()
          self.word_tuples = self.word_tuples + line.to_word_tuples() + [(u'\n',None)]
       for t in self.word_tuples:
