@@ -178,6 +178,7 @@ def performGreekOCR(options):
             current_thresh = int(current_thresh)
             threshold_info = "thresh_" + str(int(current_thresh))# + "=" + str(otsu_factor)
             image = imageIn.threshold(current_thresh)
+            print "Otsu factor: ", otsu_factor, " threshold: ", current_thresh
          if options["hocrfile"]:
             hocr_to_use = string.replace(options["hocrfile"],"%s",imageBase)
             g.hocr = hocr_to_use
@@ -190,10 +191,11 @@ def performGreekOCR(options):
                 print "filter started on",len(ccs) ,"elements..."
              #filter long vertical runs left over from margins
 	          median_height = median([cc.nrows for cc in ccs])
-	          if len(ccs) < 2:
-		          raise ImageSegmentationError("there are " + str(len(ccs)) +  " ccs")
-	          if len(ccs) > MAX_CCS:
-		          raise ImageSegmentationError("there are more than " + str(MAX_CCS) + " ccs.")
+	          #TODO: put the body following in a loop so that it can raise this and be skipped
+                  ##if len(ccs) < 2:
+		  ##        raise ImageSegmentationError("there are " + str(len(ccs)) +  " ccs")
+	          ##if len(ccs) > MAX_CCS:
+		  ##        raise ImageSegmentationError("there are more than " + str(MAX_CCS) + " ccs.")
 
 	          for cc in ccs:
 	          #TODO: add another condition that keeps these at edges of page
