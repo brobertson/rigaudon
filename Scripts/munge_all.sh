@@ -1,0 +1,1 @@
+ for file in `ls mcorneliifronton00fronuoft_hocr/`; do echo "${file%.*}"; ~/rigaudon/Scripts/munge_hocr.py   mcorneliifronton00fronuoft_hocr/${file%.*}.html mcorneliifronton00fronuoft_jp2/2013-01-14-15-45_TeubnerSans_2012_12_29_no_sigmas_cnn_selected_hocr_output/output-${file%.*}* /tmp/$file; xsltproc ~/rigaudon/Scripts/add_hocr_css.xsl /tmp/$file /tmp/done-${file%.*}.html; done

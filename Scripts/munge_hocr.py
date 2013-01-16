@@ -96,7 +96,7 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
     print "at start lines2 is: ", len(lines2)
     line_pairs = []
     if not len(lines1) == len(lines2):
-        raise ValueError("hocr lines are not equal in number")
+        raise ValueError("hocr lines are not equal in number: ", len(lines1), " and ", len(lines2))
     for line1 in lines1:
         #print "doing line1 ", line1.bbox
         already_matched = False
