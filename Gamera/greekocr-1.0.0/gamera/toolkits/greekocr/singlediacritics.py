@@ -391,7 +391,7 @@ class SingleTextline(Textline):
                   pnc_dist = abs(previousNonCombining.center_x - word[-1].center_x)
                   #sometimes the initial smooth breathing hangs over its initial vowel, putting it before that vowel in order
                  #this is a poor attempt to make sure it doesn't get glommed onto the previous word. A positional analysis would be much better TODO
-                  if (word[-1].get_main_id() in ['combining.comma.above', 'combining.reversed.comma.above'] and cnc_dist < pnc_dist):# and not (previousNonCombining.get_main_id() in (greek_small_vowels + ['greek.small.letter.rho'] + greek_capital_vowels)):
+                  if ( ('combining.comma.above' in word[-1].get_main_id() or 'combining.reversed.comma.above' in word[-1].get_main_id()) and cnc_dist < pnc_dist) :# ['combining.comma.above.and.combining.acute.accent.above','combining.comma.above', 'combining.reversed.comma.above'] and cnc_dist < pnc_dist):# and not (previousNonCombining.get_main_id() in (greek_small_vowels + ['greek.small.letter.rho'] + greek_capital_vowels)):
                      print "word[-1] is ", word[-1].get_main_id(), " with cl ", word[-1].center_x 
                      print "cnc is ", currentNonCombining.get_main_id(), " with cl ", currentNonCombining.center_x
                      print "pnc is ", previousNonCombining.get_main_id(), "with cl ", previousNonCombining.center_x
