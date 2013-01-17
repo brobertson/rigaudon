@@ -158,7 +158,7 @@ class SingleTextline(Textline):
             if g_name in ['greek.capital.lunate.sigma.symbol','greek.lunate.sigma.symbol']:
                self.check_capital_letter(g,height_limit_for_lc_omicron,'greek.lunate.sigma.symbol','greek.capital.lunate.sigma.symbol')
    
-   def identify_ambiguous_glyphs(self):
+   def identify_ambiguous_glyphs(self, check_for_underdots=True):
       #print
       for g in self.glyphs:
          mainid = g.get_main_id()
@@ -174,6 +174,14 @@ class SingleTextline(Textline):
          elif mainid == "full.stop" or mainid == "middle.dot":
             if g.center.y > self.bbox.center.y:
                g.classify_automatic("full.stop")
+               if check_for_underdots:
+                  print "checking for underdots on something with x: ", g.center.x, " and Y: ", g.center.y
+                  for other in self.glyphs:
+                     print "\tother is: ", other.get_main_id(), "with center_x ", other.center.x, " center_y: ", other.center.y
+                     if (g.center.x > other.ul_x and g.center.x < other.lr_x) and (g.center.y > other.center.y) and "letter" in other.get_main_id():
+                        print "classifying as dot below"
+                        g.classify_automatic("combining.dot.below")
+                        break
             else:
                g.classify_automatic("middle.dot")
          elif mainid == "combining.greek.ypogegrammeni":
