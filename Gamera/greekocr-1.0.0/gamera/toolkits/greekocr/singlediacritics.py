@@ -157,9 +157,24 @@ class SingleTextline(Textline):
                   break
             if g_name in ['greek.capital.lunate.sigma.symbol','greek.lunate.sigma.symbol']:
                self.check_capital_letter(g,height_limit_for_lc_omicron,'greek.lunate.sigma.symbol','greek.capital.lunate.sigma.symbol')
-   
-   def identify_ambiguous_glyphs(self, check_for_underdots=True):
-      #print
+
+   def identify_ambiguous_glyphs(self, delete_macron_below=False, check_for_underdots=True):
+      if delete_macron_below:
+         glyphs_copy = self.glyphs[:]
+         i = 0
+         while i < len(glyphs_copy):
+           g = glyphs_copy[i]
+           if g.get_main_id() in ["hyphen-minus","em.dash"]:
+              j = 0
+              while j < len(glyphs_copy):
+                 if (glyphs_copy[j] != g and g.center.x > glyphs_copy[j].ul_x and g.center.x < glyphs_copy[j].lr_x) and (g.center.y > glyphs_copy[j].center.y) and "letter" in glyphs_copy[j].get_main_id():
+                    del glyphs_copy[i] 
+                    i = j
+                    break
+                 j += 1
+           i += 1
+         self.glyphs = glyphs_copy
+
       for g in self.glyphs:
          mainid = g.get_main_id()
          if mainid == "comma" or mainid == "combining.comma.above":
