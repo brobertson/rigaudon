@@ -78,7 +78,7 @@ def delete_non_greek_tokens(tokens):
 
 def split_text_token(stringIn):
 	import re
-	word_parts = re.match(ur'(^["]*)([^.,!?;†·:〉\]]+)([.,!?;†·:〉\]]*$)',stringIn,re.UNICODE)
+	word_parts = re.match(ur'(^[\[\("]*)(.*?)([.,!?;†·:〉\]\)\d]*$)',stringIn,re.UNICODE)
    	try:
       		parts = word_parts.groups()
 	except AttributeError:
