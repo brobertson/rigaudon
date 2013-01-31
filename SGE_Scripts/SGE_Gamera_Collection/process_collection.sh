@@ -25,8 +25,8 @@ if [ ! -d $COLLECTION_DIR ]; then
 fi
 
 #Set the directories for the outputs of Sun Grid Engine
-export OUTPUT_DIR=/tmp/sge_out
-export ERROR_DIR=/tmp/sge_errors
+export OUTPUT_DIR=/usr/local/OCR_Processing/Logs/sge_out
+export ERROR_DIR=/usr/local/OCR_Processing/Logs/sge_errors
 
 
 if [ ! -d $OUTPUT_DIR ] 
@@ -54,6 +54,7 @@ export ${HOCR:="N"}
 #TODO: add tiff, too, and perhaps 'PNG' and other plausible
 #variants
 echo "Processing all book files in $COLLECTION_DIR ..."
+export PREVIOUS_BOOK_NAME=""
 for BOOK_DIR in `find -L $COLLECTION_DIR/* -maxdepth 0 -type d`
 do
 echo ""
@@ -108,5 +109,6 @@ export BOOK_DIR
 BOOK_NAME=$(basename $BOOK_DIR)
 echo "bookname: $BOOK_NAME"
 export BOOK_NAME
-bash $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/book_loop.sh & 
+bash $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/book_loop.sh  
+export PREVIOUS_BOOK_NAME=$BOOK_NAME
 done

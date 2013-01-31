@@ -38,6 +38,15 @@ OCR_BATCH_JOB_NAME=$JOB_NAME_BASE-ocr-batch
 LYNX_DUMP_JOB_NAME=$JOB_NAME_BASE-lynx-dump
 SUMMARY_SPLIT_JOB_NAME=$JOB_NAME_BASE-summary-split
 POSTPROCESS_JOB_NAME=$JOB_NAME_BASE-postprocess
+echo "first previous: $PREVIOUS_BOOK_NAME"
+#Previous job name
+if [ -z "$PREVIOUS_BOOK_NAME" ]
+then
+PREV_BOOK_HOLD=""
+else
+PREV_BOOK_HOLD="-hold_jid ${PREVIOUS_BOOK_NAME%%_jp2}-${DATE}-postprocess"
+fi
+echo "Previous book: $PREV_BOOK_HOLD"
 #DEBUG
 #cat $FILE_LIST
 #echo $FILE_COUNT
@@ -45,7 +54,7 @@ POSTPROCESS_JOB_NAME=$JOB_NAME_BASE-postprocess
 #end prep
 #This does an array job the size of the number of files in the book
 #directory
-qsub -N $OCR_BATCH_JOB_NAME  -p -200 -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_job.sh
+qsub -N $OCR_BATCH_JOB_NAME  -p -200 $PREV_BOOK_HOLD -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_job.sh
 
 #Now we use this script to:
 #1. Convert the hocr output to plain text
