@@ -132,16 +132,17 @@ def spellcheck_url(dict_file, url):
 	#now flatten the 2d array
 	tokens = [item for sublist in text_array for item in sublist]
 	#now remove tokens that are not Greek
-	print "printing tokens"
-	for token in tokens:
-		for word in tokens:
-			print word.encode('utf-8')
+	#print "printing tokens"
+	#for token in tokens:
+	#	for word in tokens:
+	#		print word.encode('utf-8')
 	tokens = delete_non_greek_tokens(tokens)
-	print tokens 
+	#print tokens 
 	vocab = sorted(set(tokens))
 	print "vocab of ", len(vocab), " words"
 	word_dicts  = makeDict(dict_file)
         (dict_words, words_clean)  = word_dicts
+	print "dictionary of ", len(dict_words), "words"
         for wordIn in vocab:
                 wordIn = preprocess_word(wordIn)
                 output_words = getCloseWords(wordIn, word_dicts, teubner_serif_weights, threshold=5)
