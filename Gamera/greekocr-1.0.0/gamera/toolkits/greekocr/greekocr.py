@@ -237,7 +237,7 @@ or separatistic).
       #These try to produce canonical ordering of accents and breathing
       #this regex reorders breathing + accent to accent + breathing
       unicode_input = unicodedata.normalize('NFD',unicode_input)
-      out = re.sub(ur'(['+smooth_breathing+rough_breathing + ur'])([' + acute_accent + grave_accent + ur'])',r'\2' + r'\1',unicode_input)
+      out = re.sub(ur'([' + acute_accent + grave_accent + ur'])(['+smooth_breathing+rough_breathing + ur'])',r'\2' + r'\1',unicode_input)
       #this regex reorders circumflex + breathing to breathing + circumflex
       out = re.sub(ur'([' + circumflex +  ur'])([' +smooth_breathing+rough_breathing + ur'])',r'\2' + r'\1',out)
 
@@ -263,7 +263,7 @@ or separatistic).
       out = re.sub(ur"([\." + middle_dot + ur"])'",ur'\1' + right_single_quote,out)
 
       #replace double grave accent with grave accent and smooth breathing
-      out = re.sub(grave_accent + grave_accent, grave_accent + smooth_breathing, out)
+      #out = re.sub(grave_accent + grave_accent, grave_accent + smooth_breathing, out)
 
       #These are byproducts of the agressive semi-colon and colon searching. Remove when you figure out how to
       #remove the comma and full.stop
@@ -271,7 +271,9 @@ or separatistic).
       out = out.replace(':.' , ':')
       out = out.replace(',;', ';')
       out = out.replace('.:',':')
-      
+      out = re.sub(middle_dot + ur',', ur';',out)
+      out = re.sub(ur',' + middle_dot, ur';',out)
+      out = re.sub(ur'I·',ur'i',out)
       #when the dot on the top of i is misrecognized, recombine 
       out = re.sub(ur"l" + middle_dot,ur'i',out)
       out = re.sub(ur"1" + middle_dot ,ur'i',out)
