@@ -25,7 +25,8 @@ teubner_serif_weights = [
 	['replace',ur'Pp',ur'Ρρ',1],
 	['replace',ur'ϲϹ',ur'σςΣ',1],
 	['replace',ur'c',ur'σς',1],
-	['replace',ur'T',ur'Τ',1],
+	['replace',ur'T',ur'Ττ',1],
+	['replace',ur'Τ',ur'τ',1],
 	['replace',ur'Uu',ur'υ',1],
 	['replace',ur'Y',ur'Υ',1],
 	['replace',ur'E',ur'Εε',1],
@@ -42,7 +43,7 @@ teubner_serif_weights = [
 	['replace',ur'ι|',ur'ι|',2]
 	]
 
-debug = True 
+debug = False 
 
 
 def weight_for_leven_edits(wordFrom, wordTo, edits, weight_rules):
@@ -102,12 +103,13 @@ def weight_for_leven_edits(wordFrom, wordTo, edits, weight_rules):
 	return cumulative_weight
 
 def Dehyphenate(lines):
+	from greek_tools import split_text_token
         import string,re
   	regex = re.compile('[%s]' % re.escape(string.punctuation + u'〉〈“‘†”—·' + u'0123456789'))
         import nltk
         from nltk.tokenize import RegexpTokenizer
         n = 0
-        tokenizer = RegexpTokenizer('[)(·;\d><.,\s]+', gaps=True)
+        tokenizer = RegexpTokenizer('[)(·;><.,\s]+', gaps=True)
         #lines = raw.split("\n")
         text_array = []
 #        print "lines: ", len(lines)
@@ -115,8 +117,8 @@ def Dehyphenate(lines):
   #              print n, line.encode('utf-8') 
                 line_tokens = tokenizer.tokenize(line)
 #		line_tokens = [regex.sub('',tok) for tok in line_tokens]
-  #              for token in line_tokens:
-  #                     print token.encode('utf-8'), " | " 
+#                for token in line_tokens:
+#                       print token.encode('utf-8'), " | " 
                 n = n + 1
                 text_array.append(line_tokens)
  #       print "Done printing lines"
@@ -142,7 +144,7 @@ def Dehyphenate(lines):
         #now flatten the 2d array
         tokens = [item for sublist in text_array for item in sublist]
         #now remove extraneous punctuation
-	tokens = [regex.sub('',tok) for tok in tokens]
+	tokens = [split_text_token(tok)[1] for tok in tokens]
 	#now remove tokens that are not Greek
 #        print "printing tokens"
 #        for token in tokens:
@@ -160,22 +162,25 @@ def spellcheck_url(dict_file, url, max_weight=10, debug=False):
 	raw = urlopen(url).read().decode('utf-8')
 	n = 0
 	lines = raw.split("\n")
-	for line in lines:
-		print line
+	if debug:
+		for line in lines:
+			print line
 
 	tokens = Dehyphenate(lines)
-	for token in tokens:
-		print token
+	if debug:
+		for token in tokens:
+			print token
 	tokens = delete_non_greek_tokens(tokens)
-	for token in tokens:
-		print token 
+	if debug:
+		for token in tokens:
+			print token 
 	vocab = sorted(set(tokens))
-	print "vocab of ", len(vocab), " words"
+	#print "vocab of ", len(vocab), " words"
 	vocab = [word for word in vocab if not is_uc_word(word)]
-	print "non-capital words: ", len(vocab)
+	#print "non-capital words: ", len(vocab)
 	word_dicts  = makeDict(dict_file)
         (dict_words, words_clean, words_freq)  = word_dicts
-	print "dictionary of ", len(dict_words), "words"
+	#print "dictionary of ", len(dict_words), "words"
 	#vocab = [preprocess_word(a_word) for a_word in vocab]
 	#why doesn't this trimm all the ones that pass spellcheck?
 	#vocab = sorted(set(vocab).difference(set(dict_words)))
@@ -186,11 +191,15 @@ def spellcheck_url(dict_file, url, max_weight=10, debug=False):
 		#If the word doesn't have an exact match, and it is capitalized, then redo with 
 		#a uncapitalized version
 		isCapitalized = False
+		hasBeenLowered = False
+		if debug:
+			print
+			print wordIn.encode('utf-8')
 		if wordIn.capitalize() == wordIn:
 			if debug:
 				print wordIn.encode('utf-8'), "is capitalized"
 			isCapitalized = True
-		min_weight = max_weight + 2
+		min_weight = max_weight + 1 
 		for output_word in output_words:
 			if output_word[3] < min_weight:
 				min_weight = output_word[3]
@@ -198,8 +207,11 @@ def spellcheck_url(dict_file, url, max_weight=10, debug=False):
 			print "minweight is ", min_weight
 		if isCapitalized and (len(output_words) == 0 or min_weight > max_weight):
 			if debug:
+				for word,lev_distance,n,w,junk1,junk2  in output_words[:8]:
+                                        print word,words_clean[word].encode('utf-8'), w, lev_distance, words_freq[word]
 				print "not found directly, so using", wordIn.lower().encode('utf-8')
 			output_words = getCloseWords(wordIn.lower(), word_dicts, teubner_serif_weights, threshold=5)
+			hasBeenLowered = True
                 #print
                 #print wordIn, ":"
 		#If the input word is in the dictionary
@@ -209,7 +221,7 @@ def spellcheck_url(dict_file, url, max_weight=10, debug=False):
 		else:
 			if len(output_words) > 0 and output_words[0][3] < max_weight:
 				best_result_word = words_clean[output_words[0][0]]
-				if (isCapitalized):
+				if (hasBeenLowered):
 					best_result_word = best_result_word.capitalize()
 				if not best_result_word == wordIn:
 					print wordIn+","+best_result_word
@@ -217,7 +229,7 @@ def spellcheck_url(dict_file, url, max_weight=10, debug=False):
 				#print
 				#dump(best_result_word)
 			for word,lev_distance,n,w,junk1,junk2  in output_words[:8]:
-                       		if (isCapitalized):
+                       		if (hasBeenLowered):
 					word_to_print = word.capitalize()
 				else:
 					 word_to_print =  word
@@ -248,7 +260,7 @@ def makeDict(fileName):
 		words_transformed.append(thisWord)
 		words_clean[thisWord] = word
 		words_freq[thisWord] = freq	
-	print "dictionary: ",len(words_transformed), " words."
+	#print "dictionary: ",len(words_transformed), " words."
 	#for word in words_transformed:
 	#	dump(word)
 	#	print
@@ -325,7 +337,8 @@ def getCloseWords(wordIn, word_dicts, rules, threshold=2, fast=True):
 			if (lev_distance == 0) and (fast == True):
 				#In the case of an exact match, cut the search short
                                 #We might have got some close matches ahead of time, so this will not create a complete list
-                                return sorted(output_words, key=lambda word: int(word[3]))
+                                output_words = sorted(output_words, key=lambda word: int(words_freq[word[0]]))
+				return sorted(output_words, key=lambda word: int(word[3]))
 		n = n + 1
 	return sorted(output_words, key=lambda word: word[3])
 
@@ -333,5 +346,5 @@ if __name__ == "__main__":
    # stuff only to run when not called via 'import' here
    #main()
 	import sys
-	spellcheck_url(sys.argv[1], sys.argv[2],debug=True)
+	spellcheck_url(sys.argv[1], sys.argv[2],debug=False)
 	
