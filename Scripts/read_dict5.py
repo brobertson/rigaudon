@@ -167,14 +167,16 @@ def Dehyphenate(lines):
     return tokens
 
 
-def spellcheck_urls(dict_file, urls, max_weight=10, debug=False):
+def spellcheck_urls(dict_file, urls, output_file_name, max_weight=10, debug=False):
     from urllib import urlopen
     import nltk
     from nltk.tokenize import RegexpTokenizer
     from itertools import repeat
     from multiprocessing import Pool
+    import codecs
     all_tokens = []
-    print "numbre of urls: ", len(urls)
+    output_file= codecs.open(output_file_name, 'w', 'utf-8')
+    #print "numbre of urls: ", len(urls)
     for url in urls:
         raw = urlopen(url).read().decode('utf-8')
         n = 0
@@ -208,13 +210,16 @@ def spellcheck_urls(dict_file, urls, max_weight=10, debug=False):
     # vocab = sorted(set(vocab).difference(set(dict_words)))
     # print "vocab trimmed of dictionary words to ", len(vocab)
     p = Pool(processes=20)
-    p.map(process_vocab,processed_vocab_chunks)
+    output = p.map(process_vocab,processed_vocab_chunks)
+    for output_chunk in output:
+        output_file.write(output_chunk)
 ##    for chunk in processed_vocab_chunks:
 ##        print "doing chunk "
 ##        process_vocab(chunk)
 
 def process_vocab((vocab,word_dicts, max_weight)):
     (dict_words, words_clean, words_freq) = word_dicts
+    output_string = ''
     for wordIn in vocab:
         wordIn = preprocess_word(wordIn)
         output_words = getCloseWords(
@@ -256,7 +261,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
                 if (hasBeenLowered):
                     best_result_word = best_result_word.capitalize()
                 if not best_result_word == wordIn:
-                    print wordIn + "," + best_result_word
+                    output_string += wordIn + "," + best_result_word + '\n'
                 # dump(wordIn)
                 # print
                 # dump(best_result_word)
@@ -273,7 +278,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
                 # dump(word)
                 if (lev_distance == 0):
                     break
-    return True
+    return output_string
 
 def makeDict(fileName):
     words_transformed = []
@@ -388,4 +393,4 @@ if __name__ == "__main__":
    # stuff only to run when not called via 'import' here
    # main()
     import sys
-    spellcheck_urls(sys.argv[1], sys.argv[2:], debug=False)
+    spellcheck_urls(sys.argv[1], sys.argv[2:-1], sys.argv[-1], debug=False)
