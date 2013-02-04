@@ -29,14 +29,16 @@ echo $HOCR >> $INFO_FILE
 echo "$BOOK_DIR $DATE done using $filename classifier. `ls $HOCR_SELECTED | wc -l` files created with total score `cat $HOCR_SELECTED/best_scores_sum.txt`." | mutt -s "$BOOK_DIR at sharcnet" -a $GRAPH_IMAGE_FILE -- bruce.g.robertson@gmail.com
 #echo "$BOOK_DIR $DATE done" | mail bruce.g.robertson@gmail.com -s "$BOOK_DIR processing"
 cd $BOOK_DIR
-tar -zcf $BOOK_DIR/robertson_${DATE}_${BOOK_NAME}_${filename}_hocr_and_txt.tar.gz  $RELATIVE_HOCR_SELECTED $RELATIVE_TEXT_SELECTED
-tar -zcf  $BOOK_DIR/robertson_${DATE}_${BOOK_NAME}_${filename}_full.tar.gz $RELATIVE_HOCR_OUTPUT $RELATIVE_PRIMARY_OUTPUT $RELATIVE_SECONDARY_OUTPUT $RELATIVE_HOCR_SELECTED $RELATIVE_TEXT_SELECTED
+tar -zcf $BOOK_DIR/robertson_${DATE}_${BOOK_NAME}_${filename}_hocr_and_txt.tar.gz  $RELATIVE_HOCR_SELECTED $RELATIVE_TEXT_SELECTED $RELATIVE_SPELLCHECKED_HOCR_SELECTED $RELATIVE_COMBINED_HOCR
+tar -zcf  $BOOK_DIR/robertson_${DATE}_${BOOK_NAME}_${filename}_full.tar.gz $RELATIVE_HOCR_OUTPUT $RELATIVE_PRIMARY_OUTPUT $RELATIVE_SECONDARY_OUTPUT $RELATIVE_HOCR_SELECTED $RELATIVE_TEXT_SELECTED $RELATIVE_SPELLCHECKED_HOCR_SELECTED $RELATIVE_COMBINED_HOCR
 cd -
 THIS_COMMAND="mkdir /home/brucerob/Rigaudon/${BOOK_NAME}"
 ssh heml $THIS_COMMAND
 cd $BOOK_DIR
 scp -r ${DATE}_${filename}_selected_hocr_output heml:/home/brucerob/Rigaudon/${BOOK_NAME}
 scp -r  ${DATE}_${filename}_selected_text_output heml:/home/brucerob/Rigaudon/${BOOK_NAME}
+scp -r $RELATIVE_COMBINED_HOCR heml:/home/brucerob/Rigaudon/${BOOK_NAME}
+scp -r $RELATIVE_SPELLCHECKED_HOCR_SELECTED heml:/home/brucerob/Rigaudon/${BOOK_NAME}
 rm -rf  $HOCR_OUTPUT
 rm -rf  $PRIMARY_OUTPUT
 rm -rf  $SECONDARY_OUTPUT
