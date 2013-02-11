@@ -15,7 +15,14 @@ def transIn(input):
 	iota_subscript = unicode(u"\N{COMBINING GREEK YPOGEGRAMMENI}")
 	other_circumflex = unicode(u"\N{COMBINING CIRCUMFLEX ACCENT}")
 	intab = u'' + smooth_breathing + rough_breathing + circumflex + acute_accent + grave_accent + iota_subscript 
-	outtab = u")(~/\|"
+        smooth_breathing_replacement=u'\u21b2'#u')'
+	rough_breathing_replacement=u'\u21b1'#u'('
+	circumflex_replacement=u'\u2194'#u'~'
+	acute_accent_replacement=u'\u2197'#u'/'
+	grave_accent_replacement=u'\u2196'#u'\\'
+	iota_subscript_replacement=u'\u2193'#u'|'
+	outtab= u'' + smooth_breathing_replacement + rough_breathing_replacement + circumflex_replacement + acute_accent_replacement + grave_accent_replacement + iota_subscript_replacement 
+	#outtab = u")(~/\|"
         trantab = dict((ord(a), b) for a, b in zip(intab, outtab))
 	return inputD.translate(trantab)
 

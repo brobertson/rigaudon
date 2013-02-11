@@ -6,28 +6,35 @@ import leven
 import codecs
 import unicodedata
 from greek_tools import dump, delete_non_greek_tokens, is_uc_word, is_greek_char, is_greek_string
-
+smooth_breathing_replacement=u'\u21b2'#u')'
+rough_breathing_replacement=u'\u21b1'#u'('
+circumflex_replacement=u'\u2194'#u'~'
+acute_accent_replacement=u'\u2197'#u'/'
+grave_accent_replacement=u'\u2196'#u'\\'
+iota_subscript_replacement=u'\u2193'#u'|'
+all_accents = u'' + smooth_breathing_replacement + rough_breathing_replacement + circumflex_replacement + acute_accent_replacement + grave_accent_replacement + iota_subscript_replacement 
+all_upper_accents = u'' + smooth_breathing_replacement + rough_breathing_replacement + circumflex_replacement + acute_accent_replacement + grave_accent_replacement
 teubner_serif_weights = [
     ['replace', '|', unicode(u"\N{GREEK SMALL LETTER IOTA}"), 1],
     ['replace', unicode(u"\N{RIGHT SINGLE QUOTATION MARK}"),
      unicode(u"\N{APOSTROPHE}"), 1],
-    ['replace', ur')', ur'/', 1],
-    ['replace', ur'(', ur'/', 1],
+    ['replace', smooth_breathing_replacement, acute_accent_replacement, 1],
+    ['replace', rough_breathing_replacement, grave_accent_replacement, 1],
     ['replace', ur'ΟοO0o', ur'ΟοO0o', 2],
     ['replace', ur'Λλ', ur'Λλ', 1],
     ['replace', ur'A', ur'Α', 1],
     ['replace', ur'BβΒ', ur'BβΒ', 1],
     ['replace', ur'Z', ur'Ζ', 1],
     ['replace', ur'H', ur'Η', 1],
-    ['replace', ur'I', ur'Ι', 1],
-    ['replace', ur'li1', ur'ιΙ', 1],
+  #  ['replace', ur'I', ur'ιΙ', 1],
+    ['replace', ur'Ili1', ur'ιΙ', 1],
     ['replace', ur'M', ur'Μ', 1],
     ['replace', ur'N', ur'Ν', 1],
     ['replace', ur'Pp', ur'Ρρ', 1],
-    ['replace', ur'ϲϹ', ur'σςΣ', 1],#for lunate fonts
-    ['replace', ur'c', ur'σς', 1],#for lunate fonts
+ #   ['replace', ur'ϲϹ', ur'σςΣ', 1],#for lunate fonts
+ #   ['replace', ur'c', ur'σς', 1],#for lunate fonts
     ['replace', ur'T', ur'Ττ', 1],
-    ['replace', ur'Τ', ur'τ', 1],
+    ['replace', ur'Τr', ur'τ', 1],
     ['replace', ur'Uu', ur'υ', 1],
     ['replace', ur'Y', ur'Υ', 1],
     ['replace', ur'E', ur'Εε', 1],
@@ -35,13 +42,13 @@ teubner_serif_weights = [
     ['replace', ur'K', ur'κΚ', 1],
     ['replace', ur'a', ur'α', 1],
     ['replace', ur'ΛΑ', ur'ΛΑ', 1],
-    ['insert', ur'*', ur'/\\()|~', 3],
-    ['delete', ur'/\\()|~', ur'*', 3],
-    ['replace', ur'()~/\\', ur'()~/\\', 2],
-    ['replace', ur'σ', ur'ς', 2],  # for lunate fonts
+    ['insert', ur'*', all_accents, 3],
+    ['delete', all_accents, ur'*', 3],
+    ['replace', all_upper_accents, all_upper_accents, 2],
+#    ['replace', ur'σ', ur'ς', 2],  # for lunate fonts
     ['replace', ur'χΧ', ur'χΧ', 2],
     ['replace', ur'κΚ', ur'κΚ', 2],
-    ['replace', ur'ι|', ur'ι|', 2]
+    ['replace', ur'ι'+iota_subscript_replacement, ur'ι'+iota_subscript_replacement, 3]
 ]
 
 debug = False
@@ -55,17 +62,15 @@ def chunks(l, n):
     yield l[i:i+n]
 
 
-def weight_for_leven_edits(wordFrom, wordTo, edits, weight_rules):
-
-    debug = False
+def weight_for_leven_edits(wordFrom, wordTo, edits, weight_rules, debug=False):
     if (debug):
         print
         print
-        print "trying weight"
-        print "word in: "
+        print "Weight Analysis"
+        print "word in: ", wordFrom
         dump(wordFrom)
         print
-        print "word to: "
+        print "word to: ", wordTo
         dump(wordTo)
     cumulative_weight = 0
     for edit in edits:
@@ -194,12 +199,17 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=10, debug=Fals
         for token in all_tokens:
             print token
     vocab = sorted(set(all_tokens))
-    # print "vocab of ", len(vocab), " words"
+    print "vocab of ", len(vocab), " words"
+    #for word in vocab:
+    #  print word
     vocab = [word for word in vocab if not is_uc_word(word)]
-    # print "non-capital words: ", len(vocab)
+    vocab = [word.rstrip() for word in vocab]
+    print "non-capital words: ", len(vocab)
+    #for word in vocab:
+    #  print word
     print "making dicts"
     word_dicts = makeDict(dict_file)
-    vocab_chunks = list(chunks(vocab, len(vocab) / 19))
+    vocab_chunks = list(chunks(vocab, len(vocab) / 13))
     print "vocab is ", len(vocab)
     processed_vocab_chunks = zip(vocab_chunks, repeat(word_dicts), repeat(max_weight))
     print "there are ", len(processed_vocab_chunks), "chunks"
@@ -209,7 +219,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=10, debug=Fals
     # why doesn't this trimm all the ones that pass spellcheck?
     # vocab = sorted(set(vocab).difference(set(dict_words)))
     # print "vocab trimmed of dictionary words to ", len(vocab)
-    p = Pool(processes=20)
+    p = Pool(processes=14)
     output = p.map(process_vocab,processed_vocab_chunks)
     for output_chunk in output:
         output_file.write(output_chunk)
@@ -218,12 +228,13 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=10, debug=Fals
 ##        process_vocab(chunk)
 
 def process_vocab((vocab,word_dicts, max_weight)):
+    debug = True
     (dict_words, words_clean, words_freq) = word_dicts
     output_string = ''
     for wordIn in vocab:
         wordIn = preprocess_word(wordIn)
         output_words = getCloseWords(
-            wordIn, word_dicts, teubner_serif_weights, threshold=5)
+            wordIn, word_dicts, teubner_serif_weights, threshold=2)
         # If the word doesn't have an exact match, and it is capitalized, then redo with
         # a uncapitalized version
         isCapitalized = False
@@ -294,7 +305,7 @@ def makeDict(fileName):
         # print len(wordsInLine)
         # for word in wordsInLine:
         freq = int(freq.rstrip('\r\n'))
-        word = preprocess_word(word)
+        word = preprocess_word(word.rstrip('\n\r'+r'\x11'))
         thisWord = leven.transIn(word)
         words_transformed.append(thisWord)
         words_clean[thisWord] = word
@@ -350,7 +361,7 @@ def unicode_test(word):
     dump(cfd)
 
 
-def getCloseWords(wordIn, word_dicts, rules, threshold=2, fast=True):
+def getCloseWords(wordIn, word_dicts, rules, threshold=2, fast=True, debug=False):
     import Levenshtein
     # out = difflib.get_close_matches('ἐστιν',words)
     (dict_words, words_clean, words_freq) = word_dicts
@@ -360,9 +371,10 @@ def getCloseWords(wordIn, word_dicts, rules, threshold=2, fast=True):
     # print "word in pp:"
     # print dump(wordIn)
     wordInTrans = leven.transIn(wordIn)
-    # print
-    # print wordInTrans.encode('utf-8'), "(", wordIn.encode('utf-8'),")"
-    # dump(wordInTrans)
+    if (debug):
+      print
+      print "getCloseWords for", wordInTrans.encode('utf-8'), "(", wordIn.encode('utf-8'),")"
+      dump(wordIn)
     output_words = []
     n = 0
     # print "Now comparing to..."
@@ -376,9 +388,9 @@ def getCloseWords(wordIn, word_dicts, rules, threshold=2, fast=True):
         # print ratio
         if lev_distance <= threshold:
             edits = Levenshtein.editops(wordInTrans, word)
-            w = weight_for_leven_edits(wordInTrans, word, edits, rules)
+            w = weight_for_leven_edits(wordInTrans, word, edits, rules, debug=False)
             output_words.append(
-                (word, lev_distance, len(edits), w, 'xxx', 'yyy'))
+                (word, lev_distance, len(edits), w, 'xxx', 'yyy')) 
             if (lev_distance == 0) and (fast == True):
                 # In the case of an exact match, cut the search short
                 # We might have got some close matches ahead of time, so this
