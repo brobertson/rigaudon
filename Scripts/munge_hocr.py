@@ -147,12 +147,12 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
                     right_match.append(unmatched_words_2[current_word_2])
                     while abs(right_difference) > x_tolerance and (current_word_2 < len(unmatched_words_2)-1 or current_word_1 < len(unmatched_words_1)-1):
                         print "did loop"
-                        if right_difference > 0 and ((current_word_2 < len(unmatched_words_2)) or (unmatched_words_2[current_word_2 + 1].bbox.ul_x < unmatched_words_1[current_word_1].bbox.lr.x)):
+                        if right_difference > 0 and (current_word_2 < len(unmatched_words_2)-1) and (unmatched_words_2[current_word_2 + 1].bbox.ul_x < unmatched_words_1[current_word_1].bbox.lr.x):
                             #ensure that the next word of the second document is within the box of the first
                             print "case1 adding one from right"
                             current_word_2 += 1
                             right_match.append(unmatched_words_2[current_word_2])
-                        elif right_difference < 0 and ((current_word_1 < len(unmatched_words_1) or unmatched_words_1[current_word_1 + 1].bbox.ul_x < unmatched_words_2[current_word_2].bbox.lr.x)):
+                        elif right_difference < 0 and (((current_word_1 < len(unmatched_words_1)-1) or unmatched_words_1[current_word_1 + 1].bbox.ul_x < unmatched_words_2[current_word_2].bbox.lr.x)):
                             #ensured that the next word from the first document is within the box of the second
                             print "case 2 adding one from left"
                             current_word_1 += 1
@@ -170,6 +170,7 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
                     right_match= []
                 current_word_2 += 1
             current_word_2 = 0
+        
         for match in line_matches:
             (left_match, right_match) = match
             for word in left_match:
@@ -189,22 +190,27 @@ def grecify_left(right_lines):
     from greek_tools import is_greek_string
     
     for lines in right_lines:
-        for match in lines.line_matches:
-            (left_match, right_match) = match
-            test_word = ""
-            test_word = ' '.join([a.text for a in right_match])
-            #for word in right_match:
-            #   test_word += " " + word.text
-            print "test_word: ", test_word
-            if is_greek_string(test_word):
-                print "replacing left"
-                left_match[0].element.text = unicodedata.normalize('NFD',test_word)
-		left_match[0].element.set("lang","grc")
-		left_match[0].element.set("{http://www.w3.org/XML/1998/namespace}lang","grc")
-    		#if there are additional elements in the source document that were matched, 
-		#we need to remove these 
-		for match in left_match[1:]:
-			match.element.getparent().remove(match.element)
+        try:
+            for match in lines.line_matches:
+                (left_match, right_match) = match
+                test_word = ""
+                test_word = ' '.join([a.text for a in right_match])
+                #for word in right_match:
+                #   test_word += " " + word.text
+                print "test_word: ", test_word
+                if is_greek_string(test_word):
+                    print "replacing left"
+                    left_match[0].element.text = unicodedata.normalize('NFD',test_word)
+                    left_match[0].element.set("lang","grc")
+                    left_match[0].element.set("{http://www.w3.org/XML/1998/namespace}lang","grc")
+                    #if there are additional elements in the source document that were matched, 
+                    #we need to remove these 
+                    for match in left_match[1:]:
+                            match.element.getparent().remove(match.element)
+        #maybe there isn't a line_matches attribute. In which case, keep the left
+        #value
+        except AttributeError:
+            pass
 
 fileIn1 = open(sys.argv[1],'r')
 tree1 = etree.parse(fileIn1)
