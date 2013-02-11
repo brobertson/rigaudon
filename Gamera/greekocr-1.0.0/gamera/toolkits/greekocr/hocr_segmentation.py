@@ -20,17 +20,19 @@ class SpanLister(HTMLParser):
 def generateCCsFromHocr(parser,image):
 	from gamera.core import Point, Cc, Rect
 	extended_segs = []
-	for span in parser.spans: 
+	for span in parser.spans:
+                print "line_span found:", span
 		boxes =  span.split(';')[0].split()
 		point1 = Point(int(boxes[1]),int(boxes[2]))
 		point2 = Point(int(boxes[3]),int(boxes[4]))
 		try:
 			extended_segs.append(Rect(point1, point2))
 		except RuntimeError as e:
-		#TODO we should do something here
-		#	print "failed to make Cc from Hocr box: "
-		#	print boxes 
-			pass
+                    #TODO we should do something here
+                    print e
+		    print "failed to make Cc from Hocr box: "
+                    print boxes 
+		    pass
         page = image.image_copy()
         ccs = page.cc_analysis()
 	#The following copied from bbox_merging. Simply making Ccs with
@@ -79,8 +81,12 @@ def generateCCsFromHocr(parser,image):
                           seg_cc.append(cc)
                           dellist.append(cc)
                 if len(seg_cc) == 0:
-                    continue
-                seg_rect = seg_cc[0].union_rects(seg_cc)
+                    #continue
+                    #try to output, rather than ignore, empty line
+                    #this should make alignment easier, but is it wise?
+                    seg_rect = seg
+                else:
+                    seg_rect = seg_cc[0].union_rects(seg_cc)
                 new_seg = Cc(image, label, seg_rect.ul, seg_rect.lr)
                 seg_cc = []
                 for item in dellist:
