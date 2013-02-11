@@ -20,7 +20,7 @@ mkdir $hocrDir
 cd $hocrDir
 #echo "moved"
 #xsltproc /home/broberts/rigaudon/Scripts/abbyy2hocr_preprocess.xsl $abbyyInputFile 
-saxonb-xslt -xsl:/home/broberts/rigaudon/Scripts/abbyy2hocr.xsl  -ext:on $abbyyInputFile  
+saxonb-xslt -xsl:/home/broberts/rigaudon/Scripts/abbyy2hocr.xsl  -ext:on ../$abbyyInputFile  
 echo -n "completed $hocrDir with `ls | wc -l` files"
 
 #get time difference
