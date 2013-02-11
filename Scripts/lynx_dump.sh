@@ -29,7 +29,8 @@ done
 
 cd ~/Federicos-evaluator
 echo "Federizing $3"
-$JAVA_PATH/java -jar textevaluator.jar $3/ > /dev/null
+$JAVA_PATH/java -jar textevaluator.jar $3/ 
+echo "Done Federizing, now summarizing results in csv file"
 cd -
 for file in `ls $3/*eval.txt` 
 do 
