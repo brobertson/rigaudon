@@ -47,7 +47,7 @@ echo "Gamera commands: $GAMERA_CMDS"
 #If the HOCR variable is not set, then set it to 'N'
 export ${HOCR:="N"}
 #If the DRIVER_HOCR_IS_LATINSCRIPT variable is not set, then set it to 'N'
-export ${DRIVER_HOCR_IS_LATINSCRIPT:="False"}
+export ${DRIVER_HOCR_IS_LATINSCRIPT:="N"}
 
 #This makes a 'filelist.txt' file for each book, that is, 
 #directory within COLLECTION_DIR

@@ -24,9 +24,10 @@ export RELATIVE_SECONDARY_OUTPUT=${DATE}_${filename}_output_tc
 export RELATIVE_TESS_OUTPUT=tess_eng_output
 export CSV_FILE=$SECONDARY_OUTPUT/${DATE}_${filename}_summary.csv
 export GRAPH_IMAGE_FILE=$HOCR_SELECTED/${DATE}_${filename}_summary.png
-export DICTIONARY_FILE=/usr/local/OCR_Processing/Dictionary/Dicts_From_Perseus/all_perseus_dict2.csv
+export DICTIONARY_FILE=/usr/local/OCR_Processing/Dictionary/Dicts_From_Perseus/all_perseus_dict7.csv
 export SPELLCHECK_FILE=$TEXT_SELECTED/${DATE}_${filename}_spellcheck.csv
 export SIDE_BY_SIDE_VIEW=$BOOK_DIR/${barebookname}_${DATE}_${filename}_sidebyside
+export RELATIVE_SIDE_BY_SIDE_VIEW=${barebookname}_${DATE}_${filename}_sidebyside
 #touch $BOOK_DIR/filelist.txt
 rm -rf $PRIMARY_OUTPUT > /dev/null
 rm -rf $SECONDARY_OUTPUT > /dev/null 
@@ -71,6 +72,9 @@ else
 PREV_BOOK_HOLD="-hold_jid ${PREVIOUS_BOOK_NAME%%_jp2}-${DATE}-postprocess"
 fi
 echo "Previous book: $PREV_BOOK_HOLD"
+
+export DRIVER_HOCR_IS_LATINSCRIPT=`$RIGAUDON_HOME/Scripts/has_latin_script.py $barebookname`
+echo "Latin-script source hocr file?: $DRIVER_HOCR_IS_LATINSCRIPT"
 #DEBUG
 #cat $FILE_LIST
 #echo $FILE_COUNT
