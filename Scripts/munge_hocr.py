@@ -152,7 +152,7 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
                             print "case1 adding one from right"
                             current_word_2 += 1
                             right_match.append(unmatched_words_2[current_word_2])
-                        elif right_difference < 0 and (((current_word_1 < len(unmatched_words_1)-1) or unmatched_words_1[current_word_1 + 1].bbox.ul_x < unmatched_words_2[current_word_2].bbox.lr.x)):
+                        elif right_difference < 0 and (current_word_1 < len(unmatched_words_1)-1) and (unmatched_words_1[current_word_1 + 1].bbox.ul_x < unmatched_words_2[current_word_2].bbox.lr.x):
                             #ensured that the next word from the first document is within the box of the second
                             print "case 2 adding one from left"
                             current_word_1 += 1
