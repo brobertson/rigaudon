@@ -47,7 +47,15 @@ fi
 
 echo "done  making gray images; now making sidebyside view. My pwd is:"
 pwd 
-python $RIGAUDON_HOME/Scripts/make_sidebyside_view.py $RELATIVE_COMBINED_HOCR/  $SIDE_BY_SIDE_VIEW
+
+HOCR_DIR_FOR_SIDE_VIEW=$RELATIVE_SPELLCHECKED_HOCR_SELECTED
+
+if [ $DRIVER_HOCR_IS_LATINSCRIPT = "True" ]
+then
+  HOCR_DIR_FOR_SIDE_VIEW=$RELATIVE_COMBINED_HOCR
+fi 
+
+python $RIGAUDON_HOME/Scripts/make_sidebyside_view.py $HOCR_DIR_FOR_SIDE_VIEW/  $SIDE_BY_SIDE_VIEW
 
 tar -zcf $BOOK_DIR/robertson_${DATE}_${BOOK_NAME}_${filename}_hocr_and_txt.tar.gz  $RELATIVE_HOCR_SELECTED $RELATIVE_TEXT_SELECTED $RELATIVE_SPELLCHECKED_HOCR_SELECTED $RELATIVE_COMBINED_HOCR
 tar -zcf  $BOOK_DIR/robertson_${DATE}_${BOOK_NAME}_${filename}_full.tar.gz $RELATIVE_HOCR_OUTPUT $RELATIVE_PRIMARY_OUTPUT $RELATIVE_SECONDARY_OUTPUT $RELATIVE_HOCR_SELECTED $RELATIVE_TEXT_SELECTED $RELATIVE_SPELLCHECKED_HOCR_SELECTED $RELATIVE_COMBINED_HOCR
@@ -63,7 +71,7 @@ scp -r $RELATIVE_SPELLCHECKED_HOCR_SELECTED heml:/home/brucerob/Rigaudon/${BOOK_
 
 scp -r $SIDE_BY_SIDE_VIEW heml:/home/brucerob/Rigaudon/Views/SideBySide
 
-echo "$BOOK_DIR $DATE done using $filename classifier. `ls $HOCR_SELECTED | wc -l` files created with total score `cat $HOCR_SELECTED/best_scores_sum.txt`." | mutt -s "$BOOK_DIR at sharcnet" -a $GRAPH_IMAGE_FILE -- bruce.g.robertson@gmail.com
+echo "$BOOK_DIR $DATE done using $filename classifier. `ls $HOCR_SELECTED | wc -l` files created with total score `cat $HOCR_SELECTED/best_scores_sum.txt`. Materials at http://heml.mta.ca/Rigaudon/Views/SideBySide/${RELATIVE_SIDE_BY_SIDE_VIEW}" | mutt -s "$BOOK_DIR at sharcnet" -a $GRAPH_IMAGE_FILE -- bruce.g.robertson@gmail.com
 
 rm -rf  $HOCR_OUTPUT
 rm -rf  $PRIMARY_OUTPUT
