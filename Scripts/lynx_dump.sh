@@ -19,13 +19,14 @@ echo $TRUNC_FILENAME
 lynx --dump $1/$file > $2/$TRUNC_FILENAME.txt
 done
 
-for file in `ls $2`
-do
-TRUNC_FILENAME=$(basename $file)
-TRUNC_FILENAME=${TRUNC_FILENAME%.*}
-#echo $2/$file into $3/$TRUNC_FILENAME.txt
-/usr/bin/java  -jar /home/broberts/Federicos-evaluator/tg.jar <   $2/$file  >  $3/$TRUNC_FILENAME.txt
-done
+#for file in `ls $2`
+#do
+#TRUNC_FILENAME=$(basename $file)
+#TRUNC_FILENAME=${TRUNC_FILENAME%.*}
+echo "regularizing files in $2 and putting into $3"
+java -classpath /home/broberts/Federicos-evaluator/transgamera-20110622/src eu/himeros/transcoder/TransGamera $2 $3
+#/usr/bin/java  -jar /home/broberts/Federicos-evaluator/tg.jar    $2   $3
+#done
 
 cd ~/Federicos-evaluator
 echo "Federizing $3"
