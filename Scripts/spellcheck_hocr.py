@@ -32,9 +32,16 @@ if  not os.path.isdir(dir_in) or not os.path.isdir(dir_out):
         exit()
         
 for file_name in os.listdir(dir_in):
-        fileIn_name = os.path.join(dir_in,file_name)
-        if fileIn_name.endswith('.html'):
-                fileOut_name = os.path.join(dir_out,file_name)
+        if file_name.endswith('.html'):
+                simplified_name = file_name
+                if file_name.startswith('output-'):
+                        simplified_name = file_name[7:]
+                print simplified_name
+                name_parts = simplified_name.split('_')
+                print name_parts
+                simplified_name = name_parts[0] + '_' + name_parts[1] + '.html'
+                fileIn_name = os.path.join(dir_in,file_name)
+                fileOut_name = os.path.join(dir_out,simplified_name)
                 fileIn= codecs.open(fileIn_name,'r','utf-8')
                 fileOut = codecs.open(fileOut_name, 'w','utf-8')
                 print "checking", fileIn_name, "sending to ", fileOut_name
