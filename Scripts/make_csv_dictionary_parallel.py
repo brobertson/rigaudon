@@ -104,7 +104,7 @@ is left intact.
 """
 def sanitize(w):
   import string,re
-  regex = re.compile('[%s]' % re.escape(string.punctuation + u'〉〈“‘†”—·' + u'0123456789'))
+  regex = re.compile('[%s]' % re.escape(string.punctuation + u'᾽‧∗῾〉〈“‘†”—·⟦' + u'0123456789'))
   w = regex.sub('',w)
   # Strip punctuation from the front
   #while len(w) > 0 and not w[0].isalnum():
