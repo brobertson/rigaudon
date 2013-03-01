@@ -22,13 +22,15 @@ section_three="'>Next</a></p>"
 section_four="""<img id="page_image" src='"""
 section_five="""' alt="photo"/>
 <div id="page_right">
-<iframe  frameBorder="0" width="850px" height="1500px"
+<iframe  frameBorder="0" width="850px" height="1100px"
 src='"""
+
 section_six="""'></iframe>
 </div>
-
+<div id="footer"><p>Copyright 2013, Bruce Robertson, Dept. of Classics, Mount Allison University and Federico Boschetti, ILC-CNR, Pisa. <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.</p></div>
 </body>
 </html>"""
+
 
 IMAGE_WEB_DESTINATION_PREFIX = 'http://heml.mta.ca/Rigaudon/Images/Color/'
 TEXT_WEB_DESTINATION_PREFIX = 'http://heml.mta.ca/Rigaudon/'
@@ -62,7 +64,7 @@ for i, page in enumerate(pages_filtered):
     archive_source = 'http://www.archive.org/details/' + text_name
     image_url = IMAGE_WEB_DESTINATION_PREFIX + text_name + '_color' + '/' + text_name + '_' + real_number + '.jpg'
     text_url = TEXT_WEB_DESTINATION_PREFIX + text_name + '_jp2' + '/' + dir_in  + page
-    h1_element = '<h1><a href="' + archive_source + '">' + text_name + "</a> Page " + real_number + "</h1>"
+    h1_element = '<h1><a href=".">Index</a> <a href="' + archive_source + '">' + text_name + "</a> Page " + real_number + "</h1>"
     out_string = head + text_name + " Page " + real_number + section_one + h1_element + section_one_and_half + prev_page + section_two + next_page + section_three
     out_string += section_four + image_url + section_five + text_url + section_six
     fileOut.write(out_string)
