@@ -5,6 +5,10 @@
   <xsl:apply-templates select="TEI.2/text/body"/>
 </xsl:template>
 <xsl:template match="body">
-<xsl:apply-templates />
+<xsl:apply-templates match="*[@lang != 'eng']"/>
+</xsl:template>
+<xsl:template match="*[@lang != 'eng']">
+  <xsl:value-of select="text()"/>
+  <xsl:apply-templates match="*[@lang != 'eng']"/>
 </xsl:template>
 </xsl:stylesheet>
