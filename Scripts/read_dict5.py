@@ -26,7 +26,7 @@ teubner_serif_weights = [
     ['replace', ur'BβΒ', ur'BβΒ', 1],
     ['replace', ur'Z', ur'Ζ', 1],
     ['replace', ur'H', ur'Η', 1],
-  #  ['replace', ur'I', ur'ιΙ', 1],
+    ['replace', ur't', ur'ι', 1],
     ['replace', ur'Ili1', ur'ιΙ', 1],
     ['replace', ur'M', ur'Μ', 1],
     ['replace', ur'N', ur'Ν', 1],
@@ -48,7 +48,7 @@ teubner_serif_weights = [
 #    ['replace', ur'σ', ur'ς', 2],  # for lunate fonts
     ['replace', ur'χΧ', ur'χΧ', 2],
     ['replace', ur'κΚ', ur'κΚ', 2],
-    ['replace', ur'ι'+iota_subscript_replacement, ur'ι'+iota_subscript_replacement, 3]
+  #  ['replace', ur'ι'+iota_subscript_replacement, ur'ι'+iota_subscript_replacement, 3]
 ]
 
 debug = False
@@ -234,7 +234,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
     for wordIn in vocab:
         wordIn = preprocess_word(wordIn)
         output_words = getCloseWords(
-            wordIn, word_dicts, teubner_serif_weights, threshold=2)
+            wordIn, word_dicts, teubner_serif_weights, threshold=4)
         # If the word doesn't have an exact match, and it is capitalized, then redo with
         # a uncapitalized version
         isCapitalized = False
@@ -361,7 +361,7 @@ def unicode_test(word):
     dump(cfd)
 
 
-def getCloseWords(wordIn, word_dicts, rules, threshold=2, fast=True, debug=False):
+def getCloseWords(wordIn, word_dicts, rules, threshold=4, fast=True, debug=False):
     import Levenshtein
     # out = difflib.get_close_matches('ἐστιν',words)
     (dict_words, words_clean, words_freq) = word_dicts
