@@ -158,7 +158,7 @@ class SingleTextline(Textline):
             if g_name in ['greek.capital.lunate.sigma.symbol','greek.lunate.sigma.symbol']:
                self.check_capital_letter(g,height_limit_for_lc_omicron,'greek.lunate.sigma.symbol','greek.capital.lunate.sigma.symbol')
 
-   def identify_ambiguous_glyphs(self, delete_macron_below=False, check_for_underdots=False):
+   def identify_ambiguous_glyphs(self, delete_macron_below=True, check_for_underdots=True):
       if delete_macron_below:
          glyphs_copy = self.glyphs[:]
          i = 0
