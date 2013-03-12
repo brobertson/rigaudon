@@ -17,3 +17,12 @@ but for now this work-around is effective.
 
 I like to build this locally, and avoid spamming the source tree with:
 python setup.py build -b /tmp/pybuild/greekocr install --prefix=/home/broberts/python
+
+
+Building on Ubuntu 12.04
+
+apt-get install python-dev g++ libtiff-dev python-wxTools libpng12-dev
+
+install gamera, install gamera-ocr, then install this
+
+
