@@ -28,7 +28,7 @@ cd $BOOK_DIR
 
 if [ ! -d $JPG_COLOR_IMAGES ]; then
  mkdir $JPG_COLOR_IMAGES
-for image_file in `ls *jp2 *tiff`
+for image_file in `ls *jp2 *tiff *png`
   do 
     convert -quality 30 -depth 8 $image_file  $JPG_COLOR_IMAGES/${image_file%.*}.jpg
   done
