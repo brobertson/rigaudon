@@ -6,6 +6,10 @@
 
 #For big files, typical of this sort of data, you may need to do these two steps separately in order to avoid running out of memory.
 
+if [[ -z $RIGAUDON_HOME ]]; then
+  echo '$RIGAUDON_HOME not set. Exiting.'
+  exit
+fi
 # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
 T="$(date +%s)"
 
@@ -18,9 +22,7 @@ hocrDir=${archiveName}_hocr
 mkdir $hocrDir
 #echo "made dir"
 cd $hocrDir
-#echo "moved"
-#xsltproc /home/broberts/rigaudon/Scripts/abbyy2hocr_preprocess.xsl $abbyyInputFile 
-saxonb-xslt -xsl:/home/broberts/rigaudon/Scripts/abbyy2hocr.xsl  -ext:on ../$abbyyInputFile  
+saxonb-xslt -xsl:$RIGAUDON_HOME/Scripts/abbyy2hocr.xsl  -ext:on ../$abbyyInputFile  
 echo -n "completed $hocrDir with `ls | wc -l` files"
 
 #get time difference

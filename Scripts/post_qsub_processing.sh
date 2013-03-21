@@ -12,7 +12,7 @@ print ('Python version: %s.%s.%s' % sys.version_info[:3])" > $INFO_FILE
 echo -n "OS: " >> $INFO_FILE
 uname -sr >> $INFO_FILE
 echo -n "Rigaudon build: " >> $INFO_FILE
-cd /home/broberts/rigaudon
+cd $RIGAUDON_HOME 
 git rev-parse HEAD >> $INFO_FILE
 cd -
 md5sum $CLASSIFIER_FILE/classifier_glyphs.xml >> $INFO_FILE

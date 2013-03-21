@@ -27,7 +27,6 @@ echo "The image base fileame is `basename $IMAGE_FILENAME`"
 if ! [[ `basename "$IMAGE_FILENAME"` == *_* ]]
 then  
 OUTPUT_STUB="_"
-echo "I made an output stub"
 fi
 #The tesseract file will not change with different Gamera classifiers
 #So we check to make sure it doesn't already exist
@@ -46,7 +45,5 @@ if [ "$HOCR" = "ABBYY" ]; then
     echo "executing HOCR with command \'$HOCR_COMMAND\'"
 fi
 
-python  /usr/local/bin/greekocr4gamera.py -x $CLASSIFIER_FILE/classifier_glyphs.xml  --settings $CLASSIFIER_FILE/optimized_settings.xml -s ${GAMERA_CMDS}${HOCR_COMMAND} --hocrout -u $HOCR_OUTPUT/output-${OUTPUT_STUB} $IMAGE_FILENAME #> /dev/null
-#lynx --dump $HOCR_OUTPUT/output-$TRUNC_IMAGE_FILENAME.html > $PRIMARY_OUTPUT/output-$TRUNC_IMAGE_FILENAME.txt
-#/usr/bin/java  -jar /home/broberts/Federicos-evaluator/tg.jar <   $PRIMARY_OUTPUT/output-$TRUNC_IMAGE_FILENAME.txt  >  $SECONDARY_OUTPUT/output-$TRUNC_IMAGE_FILENAME.txt  
+python  /usr/local/bin/greekocr4gamera.py -x $CLASSIFIER_FILE/classifier_glyphs.xml  --settings $CLASSIFIER_FILE/optimized_settings.xml -s ${GAMERA_CMDS}${HOCR_COMMAND} --hocrout -u $HOCR_OUTPUT/output-${OUTPUT_STUB} $IMAGE_FILENAME 
 fi

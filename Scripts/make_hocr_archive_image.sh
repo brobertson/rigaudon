@@ -1,4 +1,9 @@
 #!/bin/bash
+if [[ -z $RIGAUDON_HOME ]]; then
+  echo '$RIGAUDON_HOME not set. Exiting.'
+  exit
+fi
+
 jp2InputFile=$1
 #echo "jp2 file: $jp2InputFile"
 archivePath=${jp2InputFile%%_jp2}
@@ -19,10 +24,5 @@ fi
 storageDir=/usr/local/OCR_Processing/ArchSegImages
 pngFile=${storageDir}/${archive}.png
 convert $jp2File  $pngFile
-python /home/broberts/rigaudon/Scripts/hocr_draw_boxes_complex.py $pngFile $hocrFile ${storageDir}/${archive}${fileNum}.png
+python $RIGAUDON_HOME/Scripts/hocr_draw_boxes_complex.py $pngFile $hocrFile ${storageDir}/${archive}${fileNum}.png
 rm $pngFile
-#echo "made dir"
-#cd $hocrDir
-#echo "moved"
-#saxonb-xslt -xsl:/home/broberts/rigaudon/Scripts/abbyy2hocr.xsl  -ext:on  $abbyyInputFile
-#saxonb-xslt -xsl:/media/sf_Pictures/abbyy2hocr.xsl  -ext:on  /media/sf_Pictures/philodemiperipar00philuoft_abbyy

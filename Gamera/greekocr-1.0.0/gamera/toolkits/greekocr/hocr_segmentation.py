@@ -87,14 +87,18 @@ def generateCCsFromHocr(parser,image):
                     seg_rect = seg
                 else:
                     seg_rect = seg_cc[0].union_rects(seg_cc)
+                #TODO fix these errors, caused by new_seg being beyond the bounds of the image, I believe
+                #They seem to appear with tesseract hocr output
                 try:
-			new_seg = Cc(image, label, seg_rect.ul, seg_rect.lr)
-			seg_ccs.append(new_seg)
-		except RuntimeError as e:
+                    new_seg = Cc(image, label, seg_rect.ul, seg_rect.lr)
+                    seg_ccs.append(new_seg)
+                except RuntimeError as e:
                     print "HOCR ERROR -- failed to append segment"
                     print e
                 seg_cc = []
                 for item in dellist:
                     tmplist.remove(item)
                 dellist = []
+                seg_ccs.append(new_seg)
+
         return seg_ccs

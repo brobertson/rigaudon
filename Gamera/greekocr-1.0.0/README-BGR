@@ -25,4 +25,8 @@ apt-get install python-dev g++ libtiff-dev python-wxTools libpng12-dev python-nu
 
 install gamera, install gamera-ocr, then install this
 
+Making a SGE Environment on Single Machine
+
+This is the best guide I've read, esp. for Ubuntu:
+http://scidom.wordpress.com/tag/parallel/
 
