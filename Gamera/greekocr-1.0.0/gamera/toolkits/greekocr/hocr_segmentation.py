@@ -21,7 +21,7 @@ def generateCCsFromHocr(parser,image):
 	from gamera.core import Point, Cc, Rect
 	extended_segs = []
 	for span in parser.spans:
-                print "line_span found:", span
+##                print "line_span found:", span
 		boxes =  span.split(';')[0].split()
 		point1 = Point(int(boxes[1]),int(boxes[2]))
 		point2 = Point(int(boxes[3]),int(boxes[4]))
@@ -87,11 +87,14 @@ def generateCCsFromHocr(parser,image):
                     seg_rect = seg
                 else:
                     seg_rect = seg_cc[0].union_rects(seg_cc)
-                new_seg = Cc(image, label, seg_rect.ul, seg_rect.lr)
+                try:
+			new_seg = Cc(image, label, seg_rect.ul, seg_rect.lr)
+			seg_ccs.append(new_seg)
+		except RuntimeError as e:
+                    print "HOCR ERROR -- failed to append segment"
+                    print e
                 seg_cc = []
                 for item in dellist:
                     tmplist.remove(item)
                 dellist = []
-                seg_ccs.append(new_seg)
-
         return seg_ccs
