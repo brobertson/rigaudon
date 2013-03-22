@@ -1,8 +1,8 @@
 #!/bin/bash
 export HOCR="ABBYY" 
-export RIGAUDON_HOME=/home/broberts/rigaudon/
-export FBEVALUATOR_HOME=/home/broberts/Federicos-evaluator/
-export GAMERA_CMDS=" --split --autogroup  --filter --otsu  0.65,0.67,0.70,0.72,0.75,0.78,0.80,0.83,0.85,0.87,0.90,0.92,0.95,0.97,1.0,1.03,1.05,1.07,1.09,1.12,1.15,1.17"
+#export RIGAUDON_HOME=/home/broberts/rigaudon/
+#export FBEVALUATOR_HOME=/home/broberts/Federicos-evaluator/
+export GAMERA_CMDS=" --split --autogroup  --filter --otsu  0.92,0.95,0.97,1.0,1.03,1.05,1.07,1.09,1.12,1.15,1.17,1.19"
 #0.91,0.95,1.0,1.05,1.08" 
 export ARCHIVE_ID=$1
 export CLASSIFIER_DIR=$2
