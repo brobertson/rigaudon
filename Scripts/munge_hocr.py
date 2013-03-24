@@ -187,20 +187,23 @@ def grecify_left(right_lines):
     import unicodedata
     print "doing grecify"
     print 'linematches length: ', len(right_lines)
-    from greek_tools import is_greek_string
+    from greek_tools import is_greek_string, is_number
     
     for lines in right_lines:
         try:
             for match in lines.line_matches:
                 (left_match, right_match) = match
-                test_word = ""
-                test_word = ' '.join([a.text for a in right_match])
-                #for word in right_match:
-                #   test_word += " " + word.text
-                print "test_word: ", test_word
-                if is_greek_string(test_word):
-                    print "replacing left"
-                    left_match[0].element.text = unicodedata.normalize('NFD',test_word)
+                right_test_word = ""
+                right_test_word = ' '.join([a.text for a in right_match])
+                left_test_word = ""
+                left_test_word = ' '.join([a.text for a in left_match])
+                print "test_words: ", left_test_word, right_test_word
+                left_is_number = is_number(left_test_word)
+                print '\t', left_test_word, "is a number?", left_is_number
+		print '\t', right_test_word, "is greek?", is_greek_string(right_test_word)
+                if is_greek_string(right_test_word) and not left_is_number:
+                    print '\t', "replacing left"
+                    left_match[0].element.text = unicodedata.normalize('NFD',right_test_word)
                     left_match[0].element.set("lang","grc")
                     left_match[0].element.set("{http://www.w3.org/XML/1998/namespace}lang","grc")
                     #if there are additional elements in the source document that were matched, 

@@ -43,6 +43,16 @@ def is_uc_word(string_in):
                 return True
         else:
                 return False
+
+@memoize
+def is_number(string_in):
+    #for the purposes of OCR, we include Latin capital O and Latin capital I as digits :-)
+    #the point here isn't to clean, but rather to discern if, in a Latin OCR output context, the word is likely a number
+    import re
+    allowed_punct='\.' #what punctuation do you want to include as part of a number?
+    allowed_chars = 'OIi'
+    return bool(re.match('[\d' + allowed_chars + allowed_punct + ']+', string_in))
+
 @memoize
 def is_greek_string(string_in):
 	import string,re
