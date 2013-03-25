@@ -48,6 +48,7 @@ teubner_serif_weights = [
 #    ['replace', ur'σ', ur'ς', 2],  # for lunate fonts
     ['replace', ur'χΧ', ur'χΧ', 2],
     ['replace', ur'κΚ', ur'κΚ', 2],
+    ['replace',ur'r',ur'γ',4]
   #  ['replace', ur'ι'+iota_subscript_replacement, ur'ι'+iota_subscript_replacement, 3]
 ]
 
@@ -118,7 +119,7 @@ def weight_for_leven_edits(wordFrom, wordTo, edits, weight_rules, debug=False):
 
 
 def Dehyphenate(lines):
-    from greek_tools import split_text_token
+    from greek_tools import split_text_token, is_number
     import string
     import re
     regex = re.compile(
@@ -141,6 +142,15 @@ def Dehyphenate(lines):
  #       print "Done printing lines"
     # now try to match hyphenated lines with their
     # correpsonding beginning lines
+    #But first, get rid of numbers at the end of lines, because
+    #they are often in fact blocking the dehyphenation process
+    for line in text_array:
+	try:
+        	if is_number(line[-1]):
+			line = line[:-2]
+	except IndexError:
+		pass
+    
     n = 0
     for line in text_array[:-2]:
    #             print line
@@ -172,7 +182,7 @@ def Dehyphenate(lines):
     return tokens
 
 
-def spellcheck_urls(dict_file, urls, output_file_name, max_weight=10, debug=False):
+def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False):
     from urllib import urlopen
     import nltk
     from nltk.tokenize import RegexpTokenizer
@@ -189,8 +199,10 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=10, debug=Fals
         if debug:
             for line in lines:
                 print line
-
         tokens  =  Dehyphenate(lines)
+	#if tokens[-1][-1] = '-':
+        #       tokens = tokens[:-1]
+	
         if debug:
             for token in tokens:
                 print token
@@ -204,12 +216,13 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=10, debug=Fals
     #  print word
     vocab = [word for word in vocab if not is_uc_word(word)]
     vocab = [word.rstrip() for word in vocab]
+    vocab = [word for word in vocab if not  word[-1] == '-']
     print "non-capital words: ", len(vocab)
-    #for word in vocab:
-    #  print word
+    for word in vocab:
+      print 'V' + word + 'V', word[-1] 
     print "making dicts"
     word_dicts = makeDict(dict_file)
-    vocab_chunks = list(chunks(vocab, len(vocab) / 13))
+    vocab_chunks = list(chunks(vocab, len(vocab) / 6))
     print "vocab is ", len(vocab)
     processed_vocab_chunks = zip(vocab_chunks, repeat(word_dicts), repeat(max_weight))
     print "there are ", len(processed_vocab_chunks), "chunks"
@@ -219,7 +232,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=10, debug=Fals
     # why doesn't this trimm all the ones that pass spellcheck?
     # vocab = sorted(set(vocab).difference(set(dict_words)))
     # print "vocab trimmed of dictionary words to ", len(vocab)
-    p = Pool(processes=14)
+    p = Pool(processes=6)
     output = p.map(process_vocab,processed_vocab_chunks)
     for output_chunk in output:
         output_file.write(output_chunk)
@@ -234,7 +247,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
     for wordIn in vocab:
         wordIn = preprocess_word(wordIn)
         output_words = getCloseWords(
-            wordIn, word_dicts, teubner_serif_weights, threshold=4)
+            wordIn, word_dicts, teubner_serif_weights, threshold=6)
         # If the word doesn't have an exact match, and it is capitalized, then redo with
         # a uncapitalized version
         isCapitalized = False
@@ -258,7 +271,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
                     print word, words_clean[word].encode('utf-8'), w, lev_distance, words_freq[word]
                 print "not found directly, so using", wordIn.lower().encode('utf-8')
             output_words = getCloseWords(wordIn.lower(
-            ), word_dicts, teubner_serif_weights, threshold=5)
+            ), word_dicts, teubner_serif_weights, threshold=6)
             hasBeenLowered = True
         # print
         # print wordIn, ":"
@@ -361,7 +374,7 @@ def unicode_test(word):
     dump(cfd)
 
 
-def getCloseWords(wordIn, word_dicts, rules, threshold=4, fast=True, debug=False):
+def getCloseWords(wordIn, word_dicts, rules, threshold=6, fast=True, debug=False):
     import Levenshtein
     # out = difflib.get_close_matches('ἐστιν',words)
     (dict_words, words_clean, words_freq) = word_dicts
@@ -405,4 +418,4 @@ if __name__ == "__main__":
    # stuff only to run when not called via 'import' here
    # main()
     import sys
-    spellcheck_urls(sys.argv[1], sys.argv[2:-1], sys.argv[-1], debug=False)
+    spellcheck_urls(sys.argv[1], sys.argv[2:-1], sys.argv[-1], debug=True)
