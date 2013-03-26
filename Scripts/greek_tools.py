@@ -28,6 +28,10 @@ def is_greek_capital(char):
 	return bool(re.match(ur'([\u0391-\u03A9])',char,re.UNICODE))
 
 @memoize
+def is_capitalized(word):
+    return is_greek_capital(word[0])
+
+@memoize
 def is_uc_word(string_in):
 	count = 0
 	threshold = 0.7
@@ -51,7 +55,7 @@ def is_number(string_in):
     import re
     allowed_punct='\.' #what punctuation do you want to include as part of a number?
     allowed_chars = 'OIi'
-    return bool(re.match('[\d' + allowed_chars + allowed_punct + ']+', string_in))
+    return bool(re.match('^[\d' + allowed_chars + allowed_punct + ']+$', string_in))
 
 @memoize
 def is_greek_string(string_in):
@@ -88,7 +92,7 @@ def delete_non_greek_tokens(tokens):
 
 def split_text_token(stringIn):
 	import re
-	word_parts = re.match(ur'(^[\[\("]*)(.*?)([.,!?;†·:〉\]\)\d]*$)',stringIn,re.UNICODE)
+	word_parts = re.match(ur'(^[\[\("〈]*)(.*?)([.,!?;†·:〉\)\d]*$)',stringIn,re.UNICODE)
    	try:
       		parts = word_parts.groups()
 	except AttributeError:
