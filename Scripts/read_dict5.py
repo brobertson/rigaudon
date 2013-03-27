@@ -12,8 +12,9 @@ circumflex_replacement=u'\u2194'#u'~'
 acute_accent_replacement=u'\u2197'#u'/'
 grave_accent_replacement=u'\u2196'#u'\\'
 iota_subscript_replacement=u'\u2193'#u'|'
-all_accents = u'' + smooth_breathing_replacement + rough_breathing_replacement + circumflex_replacement + acute_accent_replacement + grave_accent_replacement + iota_subscript_replacement 
-all_upper_accents = u'' + smooth_breathing_replacement + rough_breathing_replacement + circumflex_replacement + acute_accent_replacement + grave_accent_replacement
+combining_diaeresis = u'\u0308'
+all_accents = u'' + smooth_breathing_replacement + rough_breathing_replacement + circumflex_replacement + acute_accent_replacement + grave_accent_replacement + iota_subscript_replacement + combining_diaeresis
+all_upper_accents = u'' + smooth_breathing_replacement + rough_breathing_replacement + circumflex_replacement + acute_accent_replacement + grave_accent_replacement + combining_diaeresis
 teubner_serif_weights = [
     ['replace', '|', unicode(u"\N{GREEK SMALL LETTER IOTA}"), 1],
     ['replace', unicode(u"\N{RIGHT SINGLE QUOTATION MARK}"),
@@ -37,7 +38,8 @@ teubner_serif_weights = [
     ['replace', ur'Τr', ur'τ', 1],
     ['replace', ur'Uu', ur'υ', 1],
     ['replace', ur'Y', ur'Υ', 1],
-    ['replace', ur'E', ur'Εε', 1],
+    ['replace', ur'E', ur'Ε', 1],
+    ['replace', ur'E', ur'ε', 2],
     ['replace', ur'Z', ur'Ζ', 1],
     ['replace', ur'K', ur'κΚ', 1],
     ['replace', ur'a', ur'α', 1],
@@ -63,7 +65,7 @@ def chunks(l, n):
     yield l[i:i+n]
 
 
-def weight_for_leven_edits(wordFrom, wordTo, edits, weight_rules, debug=False):
+def weight_for_leven_edits(wordFrom, wordTo, edits, weight_rules, max_weight, debug=False):
     if (debug):
         print
         print
@@ -115,6 +117,8 @@ def weight_for_leven_edits(wordFrom, wordTo, edits, weight_rules, debug=False):
         if (debug):
             print '\tweight: ', edit_weight
         cumulative_weight += edit_weight
+        if (cumulative_weight >= max_weight):
+          break
     return cumulative_weight
 
 
@@ -218,15 +222,24 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     vocab = [word.rstrip() for word in vocab]
     vocab = [word for word in vocab if not  word[-1] == '-']
     print "non-capital words: ", len(vocab)
-    for word in vocab:
-      print 'V' + word + 'V', word[-1] 
+    if debug:
+      print "Are they capitalized?"
+      from greek_tools import is_capitalized 
+      for wordIn in vocab:
+        wordIn = preprocess_word(wordIn)
+        print wordIn, is_capitalized(wordIn)
     print "making dicts"
+    import time
+    start_time = time.time()
     word_dicts = makeDict(dict_file)
+    dict_time = time.time() - start_time
+    minutes = dict_time / 60.0
+    print "dict building took", minutes, " minutes."
     vocab_chunks = list(chunks(vocab, len(vocab) / 6))
     print "vocab is ", len(vocab)
     processed_vocab_chunks = zip(vocab_chunks, repeat(word_dicts), repeat(max_weight))
     print "there are ", len(processed_vocab_chunks), "chunks"
-   
+    start_time = time.time()
     # print "dictionary of ", len(dict_words), "words"
     # vocab = [preprocess_word(a_word) for a_word in vocab]
     # why doesn't this trimm all the ones that pass spellcheck?
@@ -236,18 +249,22 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     output = p.map(process_vocab,processed_vocab_chunks)
     for output_chunk in output:
         output_file.write(output_chunk)
+    pool_time = time.time() - start_time
+    minutes = pool_time / 60.0
+    print "processing took", minutes, " minutes"
 ##    for chunk in processed_vocab_chunks:
 ##        print "doing chunk "
 ##        process_vocab(chunk)
 
 def process_vocab((vocab,word_dicts, max_weight)):
+    from greek_tools import is_capitalized
     debug = True
     (dict_words, words_clean, words_freq) = word_dicts
     output_string = ''
     for wordIn in vocab:
         wordIn = preprocess_word(wordIn)
         output_words = getCloseWords(
-            wordIn, word_dicts, teubner_serif_weights, threshold=6)
+            wordIn, word_dicts, teubner_serif_weights, max_weight, threshold=3)
         # If the word doesn't have an exact match, and it is capitalized, then redo with
         # a uncapitalized version
         isCapitalized = False
@@ -255,7 +272,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
         if debug:
             print
             print wordIn.encode('utf-8')
-        if wordIn.capitalize() == wordIn:
+        if is_capitalized(wordIn):
             if debug:
                 print wordIn.encode('utf-8'), "is capitalized"
             isCapitalized = True
@@ -271,7 +288,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
                     print word, words_clean[word].encode('utf-8'), w, lev_distance, words_freq[word]
                 print "not found directly, so using", wordIn.lower().encode('utf-8')
             output_words = getCloseWords(wordIn.lower(
-            ), word_dicts, teubner_serif_weights, threshold=6)
+            ), word_dicts, teubner_serif_weights, max_weight, threshold=3)
             hasBeenLowered = True
         # print
         # print wordIn, ":"
@@ -374,7 +391,7 @@ def unicode_test(word):
     dump(cfd)
 
 
-def getCloseWords(wordIn, word_dicts, rules, threshold=6, fast=True, debug=False):
+def getCloseWords(wordIn, word_dicts, rules, max_weight, threshold=3, fast=True, debug=False):
     import Levenshtein
     # out = difflib.get_close_matches('ἐστιν',words)
     (dict_words, words_clean, words_freq) = word_dicts
@@ -391,27 +408,31 @@ def getCloseWords(wordIn, word_dicts, rules, threshold=6, fast=True, debug=False
     output_words = []
     n = 0
     # print "Now comparing to..."
-    for word in dict_words:
-        # print u"*****" + words_clean[n]
-        # print "word into comparison:"
-        # print dump(word)
-        lev_distance = Levenshtein.distance(
-            wordInTrans, word)  # difflib.SequenceMatcher(None, word, wordInTrans).ratio()
-        # print "distance: ",
-        # print ratio
-        if lev_distance <= threshold:
-            edits = Levenshtein.editops(wordInTrans, word)
-            w = weight_for_leven_edits(wordInTrans, word, edits, rules, debug=False)
-            output_words.append(
-                (word, lev_distance, len(edits), w, 'xxx', 'yyy')) 
-            if (lev_distance == 0) and (fast == True):
-                # In the case of an exact match, cut the search short
-                # We might have got some close matches ahead of time, so this
-                # will not create a complete list
-                output_words = sorted(
-                    output_words, key=lambda word: int(words_freq[word[0]]))
-                return sorted(output_words, key=lambda word: int(word[3]))
-        n = n + 1
+    if wordInTrans in dict_words:
+        print "short-circuting dictionary word"
+        output_words.append((wordInTrans,0,0,0,'xxx','yyy'))
+    else:
+      for word in dict_words:
+          # print u"*****" + words_clean[n]
+          # print "word into comparison:"
+          # print dump(word)
+          lev_distance = Levenshtein.distance(
+              wordInTrans, word)  # difflib.SequenceMatcher(None, word, wordInTrans).ratio()
+          # print "distance: ",
+          # print ratio
+          if lev_distance <= threshold:
+              edits = Levenshtein.editops(wordInTrans, word)
+              w = weight_for_leven_edits(wordInTrans, word, edits, rules, max_weight, debug=False)
+              output_words.append(
+                  (word, lev_distance, len(edits), w, 'xxx', 'yyy')) 
+              if (lev_distance == 0) and (fast == True):
+                  # In the case of an exact match, cut the search short
+                  # We might have got some close matches ahead of time, so this
+                  # will not create a complete list
+                  output_words = sorted(
+                      output_words, key=lambda word: int(words_freq[word[0]]))
+                  return sorted(output_words, key=lambda word: int(word[3]))
+          n = n + 1
     return sorted(output_words, key=lambda word: word[3])
 
 if __name__ == "__main__":
