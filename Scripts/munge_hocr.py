@@ -47,7 +47,16 @@ def get_hocr_lines_for_tree(treeIn):
         for word in words:        
            # print "\tword: ", word_counter, word.text, parse_bbox(word.get('title'))
             aWord = hocrWord()
-            aWord.text = word.text
+            aWord.text = ""
+            if word.text:
+               aWord.text += word.text
+            #get rid of any inner elements, and just keep their text values
+            for element in word.iterchildren():
+              if element.text:
+                 aWord.text += element.text
+              word.remove(element)
+            #set the contents of the xml element to the stripped text
+            word.text = aWord.text
             aWord.bbox = parse_bbox(word.get('title'))
             aWord.element = word
             words_out.append(aWord)
