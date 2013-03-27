@@ -128,9 +128,9 @@ or separatistic).
       median_cc = int(median([cc.nrows for cc in the_ccs]))
       if self.debug:
          print self.mode
+      autogroup = ClassifyCCs(self.cknn)
       if (self.autogroup):
-        autogroup = ClassifyCCs(self.cknn)
-        autogroup.parts_to_group = 4 
+        autogroup.parts_to_group = 5 
         autogroup.grouping_distance = max([2,median_cc / 2])
         if self.debug:
           print "autogroup distance: ", autogroup.grouping_distance
@@ -144,10 +144,11 @@ or separatistic).
         else:
           self.page = SinglePage(self.img, classify_ccs=autogroup)
       else:#not autogrouped
-        if self.hocr:
-          self.page = HocrPager(self.img, hocr=self.hocr)
-        else:
-          self.page = SinglePage(self.img)
+         autogroup.parts_to_group = 1
+         if self.hocr:
+          self.page = HocrPager(self.img, hocr=self.hocr, classify_ccs=autogroup)
+         else:
+          self.page = SinglePage(self.img, classify_ccs=autogroup)
       self.page.segment()
       if self.debug:
          t = time.time() - t
@@ -183,10 +184,23 @@ or separatistic).
 
 
    def classify_text(self):
+      print "Now In classify_text greekocr.py 187"
       self.word_tuples = []
       self.output = ""
       for line in self.page.textlines:
-         line.sort_glyphs()
+##         print
+##         for word in line.words:
+##            print
+##            for glyph in word:
+##               print glyph.get_main_id()
+         #print "caling sort_glyphs"
+         #line.sort_glyphs()
+##         print
+##         print "after sort"
+##         for word in line.words:
+##            print
+##            for glyph in word:
+##               print glyph.get_main_id()     
          self.word_tuples = self.word_tuples + line.to_word_tuples() + [(u'\n',None)]
       for t in self.word_tuples:
          self.output = self.output + self.correct_common_errors(t[0])
@@ -299,6 +313,7 @@ or separatistic).
       return out
 
    def store_hocr(self,page_path,hocr_tree):
+      #print "Now in Store HOCR greekocr.py ln 316"
       import lxml
       from lxml import etree
       import string
@@ -318,6 +333,7 @@ or separatistic).
          for t in word_tuples:
             if not (t[0] == u'\n'):
                word_unicode = unicode(t[0])
+               #print word_unicode
                word_unicode = self.correct_common_errors(word_unicode)
                wordSpan = etree.SubElement(lineSpan,"{http://www.w3.org/1999/xhtml}span")
                wordSpan.set("class","ocr_word")
@@ -407,7 +423,7 @@ Make sure that you have called load_trainingdata_ before!
       self.segment_page()
       if self.debug:
          print "Classifying Text"
-      self.classify_text()
+      #self.classify_text()
       #if self.debug:
       #   print "storing to database"
      # self.store_sql()

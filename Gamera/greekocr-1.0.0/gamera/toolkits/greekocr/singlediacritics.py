@@ -46,6 +46,10 @@ class SinglePage(Page):
       self.ccs_lines.sort(lambda s,t: s.offset_y - t.offset_y)
    def page_to_lines(self):
       self.ccs_lines = self.img.bbox_mcmillan(None,1,0.5,10,5)
+   #don't allow the built-in chars_to_words to add more spaces
+   def chars_to_words(self):
+      print "doing my chars_to_words ln 50 singlediacr"
+      
 class ImageSegmentationError(Exception):
 	def __init__(self, value):
 		self.value = value
@@ -308,7 +312,11 @@ class SingleTextline(Textline):
                      g.classify_automatic('colon')
                   break
                other_count = other_count + 1
-                  
+
+   def chars_to_words(self, lines=None):
+      print "Running my dummy chars_to_words"
+      
+   
    def sort_glyphs(self):
       greek_capital_vowels = ['greek.capital.letter.alpha','greek.capital.letter.epsilon','greek.capital.letter.eta','greek.capital.letter.iota','greek.capital.letter.omicron','greek.capital.letter.upsilon','greek.capital.letter.omega']  
       greek_capital_rho=['greek.capital.letter.rho']
@@ -401,23 +409,23 @@ class SingleTextline(Textline):
       for i in range(len(printing_glyphs)):
             if not self.is_combining_glyph(printing_glyphs[i]): 
               previousNonCombining = currentNonCombining
-              #print "PNC now: ",
-             # if previousNonCombining:
-               # print previousNonCombining.id_name
-             # else:
-                #print "NONE"
+##              print "PNC now: ",
+##              if previousNonCombining:
+##                print previousNonCombining.id_name
+##              else:
+##                print "NONE"
               currentNonCombining = printing_glyphs[i]
-              #print "CNC now: ", currentNonCombining.id_name
+##              print "CNC now: ", currentNonCombining.id_name
               if(previousNonCombining and currentNonCombining and ((currentNonCombining.ul_x - previousNonCombining.lr_x) > threshold)):
-                  #print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
+##                  print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
                   cnc_dist = abs(currentNonCombining.center_x - word[-1].center_x)
                   pnc_dist = abs(previousNonCombining.center_x - word[-1].center_x)
                   #sometimes the initial smooth breathing hangs over its initial vowel, putting it before that vowel in order
                  #this is a poor attempt to make sure it doesn't get glommed onto the previous word. A positional analysis would be much better TODO
                   if ( ('combining.comma.above' in word[-1].get_main_id() or 'combining.reversed.comma.above' in word[-1].get_main_id()) and cnc_dist < pnc_dist) :# ['combining.comma.above.and.combining.acute.accent.above','combining.comma.above', 'combining.reversed.comma.above'] and cnc_dist < pnc_dist):# and not (previousNonCombining.get_main_id() in (greek_small_vowels + ['greek.small.letter.rho'] + greek_capital_vowels)):
-                     print "word[-1] is ", word[-1].get_main_id(), " with cl ", word[-1].center_x 
-                     print "cnc is ", currentNonCombining.get_main_id(), " with cl ", currentNonCombining.center_x
-                     print "pnc is ", previousNonCombining.get_main_id(), "with cl ", previousNonCombining.center_x
+##                     print "word[-1] is ", word[-1].get_main_id(), " with cl ", word[-1].center_x 
+##                     print "cnc is ", currentNonCombining.get_main_id(), " with cl ", currentNonCombining.center_x
+##                     print "pnc is ", previousNonCombining.get_main_id(), "with cl ", previousNonCombining.center_x
  #print "I'm worried about ", word[-1].get_main_id(), "being put with", previousNonCombining.get_main_id()
                      wordlist.append(word[:-1])
                      word = [word[-1]]
@@ -428,11 +436,7 @@ class SingleTextline(Textline):
       if(len(word) > 0):
          wordlist.append(word)
       self.words= wordlist
-##      print "SELF WORDS:"
-##      for word in self.words:
-##         for g in word:
-##            print g.get_main_id()
-##         print
+
 
 
    def is_greek_capital_letter(self, glyph):
