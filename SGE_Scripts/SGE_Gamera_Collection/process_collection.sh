@@ -24,9 +24,7 @@ if [ ! -d $COLLECTION_DIR ]; then
 	exit $E_BADARGS
 fi
 
-#Set the directories for the outputs of Sun Grid Engine
-export OUTPUT_DIR=/usr/local/OCR_Processing/Logs/sge_out
-export ERROR_DIR=/usr/local/OCR_Processing/Logs/sge_errors
+#Check the directories for the outputs of Sun Grid Engine
 
 
 if [ ! -d $OUTPUT_DIR ] 
@@ -47,7 +45,11 @@ echo "Gamera commands: $GAMERA_CMDS"
 #If the HOCR variable is not set, then set it to 'N'
 export ${HOCR:="N"}
 #If the DRIVER_HOCR_IS_LATINSCRIPT variable is not set, then set it to 'N'
-export ${DRIVER_HOCR_IS_LATINSCRIPT:="False"}
+#export ${DRIVER_HOCR_IS_LATINSCRIPT:="False"}
+
+#If the MIX_HOR variable is not set, then set it to TRUE; this is default behaviour
+#but overridden if other OCR is seen to be Greek script
+export ${MIX_HOCR:="True"}
 
 #This makes a 'filelist.txt' file for each book, that is, 
 #directory within COLLECTION_DIR

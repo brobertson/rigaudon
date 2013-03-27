@@ -24,7 +24,7 @@ export RELATIVE_SECONDARY_OUTPUT=${DATE}_${filename}_output_tc
 export RELATIVE_TESS_OUTPUT=tess_eng_output
 export CSV_FILE=$SECONDARY_OUTPUT/${DATE}_${filename}_summary.csv
 export GRAPH_IMAGE_FILE=$HOCR_SELECTED/${DATE}_${filename}_summary.png
-export DICTIONARY_FILE=/usr/local/OCR_Processing/Dictionary/Dicts_From_Perseus/all_perseus_dict7.csv
+#export DICTIONARY_FILE=/usr/local/OCR_Processing/Dictionary/MORPHEUS_DUMP_PLUS-greek-dictionary-with-bogus-freq.txt
 export SPELLCHECK_FILE=$TEXT_SELECTED/${DATE}_${filename}_spellcheck.csv
 export SIDE_BY_SIDE_VIEW=$BOOK_DIR/${barebookname}_${DATE}_${filename}_sidebyside
 export RELATIVE_SIDE_BY_SIDE_VIEW=${barebookname}_${DATE}_${filename}_sidebyside
@@ -63,18 +63,40 @@ SPELLCHECK_JOB_NAME=$JOB_NAME_BASE-spellcheck
 SPELLREPLACE_JOB_NAME=$JOB_NAME_BASE-spellreplace
 COMBINE_GREEK_AND_LATIN_JOB_NAME=$JOB_NAME_BASE-combine-hocrs
 POSTPROCESS_JOB_NAME=$JOB_NAME_BASE-postprocess
-echo "first previous: $PREVIOUS_BOOK_NAME"
-#Previous job name
-if [ -z "$PREVIOUS_BOOK_NAME" ]
-then
-PREV_BOOK_HOLD=""
-else
-PREV_BOOK_HOLD="-hold_jid ${PREVIOUS_BOOK_NAME%%_jp2}-${DATE}-postprocess"
-fi
-echo "Previous book: $PREV_BOOK_HOLD"
 
-export DRIVER_HOCR_IS_LATINSCRIPT=`$RIGAUDON_HOME/Scripts/has_latin_script.py $barebookname`
-echo "Latin-script source hocr file?: $DRIVER_HOCR_IS_LATINSCRIPT"
+qstat -r | grep `cat $CURRENT_JOB_FILE`
+RETVAL=$?
+if [ $RETVAL -eq 0 ]
+then
+        echo "There is a book `cat $CURRENT_JOB_FILE` in process"
+	PREV_BOOK_HOLD="-hold_jid `cat $CURRENT_JOB_FILE`-postprocess"
+else
+        echo "There is not a book in process"
+	PREV_BOOK_HOLD=""
+fi
+
+
+echo "Previous book hold: $PREV_BOOK_HOLD"
+
+if [ ${MIX_HOCR:=False} = "True" ] 
+then
+	export DRIVER_HOCR_IS_LATINSCRIPT=`$RIGAUDON_HOME/Scripts/has_latin_script.py $barebookname`
+	echo "Latin-script source hocr file?: $DRIVER_HOCR_IS_LATINSCRIPT"
+	if [ $DRIVER_HOCR_IS_LATINSCRIPT = "False" ]
+	then
+		MIX_HOCR="False"
+		echo "Not doing HOCR mixing ..."
+	fi
+else
+	echo "Not doing HOCR mixing because MIX_HOCR is set to $MIX_HOCR"
+fi
+
+if [ ! -f $DICTIONARY_FILE ]
+then
+  echo "Dictionary file $DICTIONARY_FILE doesn't exist"
+  exit 1
+fi
+
 #DEBUG
 #cat $FILE_LIST
 #echo $FILE_COUNT
@@ -96,10 +118,11 @@ qsub -N $LYNX_DUMP_JOB_NAME -p -150 -hold_jid $OCR_BATCH_JOB_NAME -o $OUTPUT_DIR
 #3. Make a graph of page# vs. score for these highest-scoring pages.
 qsub -N $SUMMARY_SPLIT_JOB_NAME -p -100 -hold_jid  $LYNX_DUMP_JOB_NAME  -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/summary_split.py $CSV_FILE $HOCR_OUTPUT $SECONDARY_OUTPUT $HOCR_SELECTED $TEXT_SELECTED $GRAPH_IMAGE_FILE
 
-qsub -N $SPELLCHECK_JOB_NAME -pe make 14 -hold_jid  $SUMMARY_SPLIT_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/read_dict5.py $DICTIONARY_FILE $TEXT_SELECTED/output*  $SPELLCHECK_FILE
+qsub -N $SPELLCHECK_JOB_NAME  -hold_jid  $SUMMARY_SPLIT_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/read_dict5.py $DICTIONARY_FILE $TEXT_SELECTED/output*  $SPELLCHECK_FILE
 
 qsub -N $SPELLREPLACE_JOB_NAME -hold_jid  $SPELLCHECK_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/spellcheck_hocr.py $SPELLCHECK_FILE $HOCR_SELECTED   $SPELLCHECKED_HOCR_SELECTED
 
 qsub -N $COMBINE_GREEK_AND_LATIN_JOB_NAME -hold_jid $SPELLREPLACE_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V  $RIGAUDON_HOME/Scripts/mungomatic.sh $ABBYY_DATA $SPELLCHECKED_HOCR_SELECTED $COMBINED_HOCR
 
 qsub -N $POSTPROCESS_JOB_NAME -p 0 -hold_jid  $COMBINE_GREEK_AND_LATIN_JOB_NAME  -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V $RIGAUDON_HOME/Scripts/post_qsub_processing.sh
+echo $JOB_NAME_BASE > $CURRENT_JOB_FILE 
