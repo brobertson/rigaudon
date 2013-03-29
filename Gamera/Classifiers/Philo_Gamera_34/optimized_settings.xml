@@ -5,35 +5,35 @@
       1
     </selection>
     <selection name="diagonal_projection">
-      1
+      0
     </selection>
     <selection name="moments">
-      0 0 1 1 1 1 1 0 1
+      0 0 1 0 0 0 0 0 0
     </selection>
     <selection name="nholes">
-      1 1
+      1 0
     </selection>
     <selection name="nholes_extended">
-      1 0 1 1 1 0 1 1
+      1 1 1 0 1 1 1 0
     </selection>
     <selection name="skeleton_features">
-      0 0 1 1 0 0
+      1 0 1 1 1 0
     </selection>
     <selection name="top_bottom">
-      1 1
+      1 0
     </selection>
     <selection name="volume">
       1
     </selection>
     <selection name="volume16regions">
-      1 1 1 1 0 1 1 1 1 1 0 1 1 1 1 1
+      0 0 1 1 0 1 0 0 1 1 0 0 0 1 1 1
     </selection>
     <selection name="volume64regions">
-      0 0 1 0 1 0 0 1 1 0 0 0 1 0 0 0 1 1 0 1 0 0 1 1 1 1 1 1 1 0 1 0 1 0 1 0
-      0 1 1 0 0 0 1 1 1 1 1 0 1 1 0 0 1 1 0 0 1 1 1 0 1 1 0 1
+      1 1 0 1 1 0 1 1 1 1 1 1 1 0 0 1 1 1 0 1 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0
+      0 0 0 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1 1 1 1 1
     </selection>
     <selection name="zernike_moments">
-      1 0 0 1 0 1 0 0 0 0 1 1 1 1
+      1 1 1 1 1 1 0 1 1 1 1 1 1 0
     </selection>
   </selections>
   <weights>

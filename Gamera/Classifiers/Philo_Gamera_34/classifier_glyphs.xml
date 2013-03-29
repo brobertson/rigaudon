@@ -1,6 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><gamera-database version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<gamera-database version="2.0">
   <glyphs>
-    <!--Removed element skip-->
+    <glyph uly="2" ulx="1462" nrows="4" ncols="5">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        1 3 1 14 1 0 
+      </data>
+    </glyph>
     <glyph uly="1016" ulx="1019" nrows="7" ncols="7">
       <ids state="MANUAL">
         <id name="full.stop" confidence="1.000000"/>
@@ -11,7 +19,8 @@
     </glyph>
     <glyph uly="2842" ulx="1961" nrows="33" ncols="17">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.omicron.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         12 4 12 5 11 6 11 6 11 6 10 6 11 5 12 4 12 5 12 4 14 2 12 4 10 7 9 9
@@ -139,7 +148,8 @@
     </glyph>
     <glyph uly="2293" ulx="653" nrows="32" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         12 5 14 6 14 6 15 5 16 4 16 4 17 3 16 3 17 3 15 4 15 3 17 2 13 5 14 7
@@ -192,7 +202,8 @@
     </glyph>
     <glyph uly="1639" ulx="1893" nrows="40" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         6 6 13 8 12 9 11 10 11 9 13 7 15 5 15 5 16 4 15 5 15 5 14 5 14 5 13 6
@@ -203,7 +214,8 @@
     </glyph>
     <glyph uly="285" ulx="1214" nrows="41" ncols="24">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         10 2 20 6 17 8 16 9 15 9 16 8 16 8 16 8 17 7 18 6 19 5 20 4 21 3 111
@@ -233,7 +245,8 @@
     </glyph>
     <glyph uly="1223" ulx="1440" nrows="39" ncols="24">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         21 2 20 5 19 5 18 6 18 6 17 6 18 5 19 3 20 3 21 1 134 3 8 3 7 9 4 5 5
@@ -350,7 +363,8 @@
     </glyph>
     <glyph uly="1684" ulx="550" nrows="41" ncols="14">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 2 11 5 8 7 8 6 8 6 9 5 10 5 9 5 10 4 10 5 10 4 10 4 11 3 11 3 12 3
@@ -387,7 +401,15 @@
         6 11 9 8 12 4 7 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="670" ulx="2344" nrows="33" ncols="9">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        7 2 6 3 6 3 5 4 5 4 4 5 4 5 3 6 3 6 1 35 4 5 5 4 6 3 6 3 7 2 7 2 7 2
+        7 2 7 2 7 2 6 3 6 3 6 3 6 3 6 3 6 3 6 3 6 3 7 2 8 1 
+      </data>
+    </glyph>
     <glyph uly="2129" ulx="1371" nrows="32" ncols="12">
       <ids state="MANUAL">
         <id name="latin.small.letter.i" confidence="1.000000"/>
@@ -475,7 +497,8 @@
     </glyph>
     <glyph uly="2238" ulx="874" nrows="31" ncols="19">
       <ids state="MANUAL">
-        <id name="latin.small.letter.f.and.latin.small.letter.i" confidence="1.000000"/>
+        <id name="latin.small.letter.f.and.latin.small.letter.i"
+        confidence="1.000000"/>
       </ids>
       <data>
         9 5 14 7 9 3 3 5 7 4 3 5 6 4 4 5 6 4 4 5 6 4 6 1 7 4 15 4 15 4 15 5
@@ -508,7 +531,8 @@
     </glyph>
     <glyph uly="2866" ulx="534" nrows="11" ncols="16">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 4 12 5 4 4 3 6 3 5 2 6 2 5 4 5 2 4 5 5 1 5 5 5 1 4 6 9 6 4 1 4 6 5
@@ -596,7 +620,8 @@
     </glyph>
     <glyph uly="2175" ulx="1435" nrows="34" ncols="10">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         7 1 8 3 6 5 4 6 4 5 5 5 4 5 5 5 5 4 6 4 6 3 7 3 7 2 7 2 7 4 5 6 4 6 4
@@ -696,7 +721,8 @@
     </glyph>
     <glyph uly="2067" ulx="203" nrows="41" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         21 3 21 5 19 6 19 6 18 7 18 6 18 6 18 6 19 5 19 5 19 5 20 4 22 1 89 7
@@ -717,7 +743,8 @@
     </glyph>
     <glyph uly="1147" ulx="723" nrows="41" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         6 4 13 7 12 9 10 9 11 9 12 7 14 5 15 4 16 3 16 3 15 3 15 4 15 2 15 2
@@ -728,7 +755,8 @@
     </glyph>
     <glyph uly="1070" ulx="171" nrows="40" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         21 2 22 5 20 5 19 6 18 6 18 6 18 7 18 6 19 5 20 3 137 6 6 4 8 8 4 6 6
@@ -749,7 +777,8 @@
     </glyph>
     <glyph uly="689" ulx="1092" nrows="41" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 6 12 8 11 9 10 10 9 10 11 9 12 7 14 5 14 4 15 4 14 5 14 5 12 6 12 6
@@ -861,7 +890,8 @@
     </glyph>
     <glyph uly="350" ulx="1823" nrows="15" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 4 2 4 7 12 5 14 4 15 3 6 3 6 2 7 5 4 2 6 6 5 1 5 7 11 7 10 8 9 8 4
@@ -933,7 +963,8 @@
     </glyph>
     <glyph uly="575" ulx="502" nrows="40" ncols="24">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         9 4 19 7 17 8 17 7 19 5 20 5 20 3 21 3 21 3 21 2 183 5 7 4 7 8 4 5 6
@@ -1050,7 +1081,8 @@
     </glyph>
     <glyph uly="1450" ulx="1253" nrows="40" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 5 19 8 17 9 17 8 18 7 20 6 20 5 21 4 21 3 22 3 21 3 22 3 20 3 63 4
@@ -1084,7 +1116,8 @@
     </glyph>
     <glyph uly="2416" ulx="1783" nrows="40" ncols="21">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         8 5 3 4 6 16 4 16 5 16 4 6 1 9 5 4 7 5 5 4 7 5 4 4 7 5 5 3 8 4 6 4 6
@@ -1173,7 +1206,8 @@
     </glyph>
     <glyph uly="2981" ulx="271" nrows="35" ncols="18">
       <ids state="MANUAL">
-        <id name="greek.small.letter.upsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.upsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 2 15 5 12 6 12 7 12 6 13 5 14 4 15 3 15 3 14 4 13 4 13 5 13 4 14 4
@@ -1194,7 +1228,8 @@
     </glyph>
     <glyph uly="2445" ulx="1483" nrows="39" ncols="18">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 3 14 5 13 5 14 5 13 5 14 5 13 5 14 4 14 5 14 4 15 3 15 3 16 2 16 2
@@ -1232,7 +1267,8 @@
     </glyph>
     <glyph uly="2081" ulx="941" nrows="40" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         1 5 14 6 13 7 12 7 13 7 13 6 13 6 14 5 14 5 15 5 15 4 16 4 16 3 17 1
@@ -1273,7 +1309,8 @@
     </glyph>
     <glyph uly="2901" ulx="952" nrows="13" ncols="13">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         9 9 3 10 2 12 1 5 1 12 2 10 3 10 4 8 5 8 4 9 4 8 4 9 5 2 3 1 6 0 
@@ -1324,7 +1361,8 @@
     </glyph>
     <glyph uly="1159" ulx="1909" nrows="11" ncols="16">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 2 4 4 4 6 1 7 1 7 1 48 3 13 5 11 6 3 3 4 7 2 3 4 7 1 5 3 
@@ -1343,7 +1381,8 @@
     </glyph>
     <glyph uly="924" ulx="1105" nrows="39" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         16 2 8 5 6 9 4 7 5 10 3 7 4 11 3 8 2 7 3 3 3 15 5 3 8 9 6 2 9 7 7 2 9
@@ -1355,7 +1394,8 @@
     </glyph>
     <glyph uly="254" ulx="634" nrows="41" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         6 5 13 7 12 8 11 9 11 8 12 8 13 6 14 5 14 5 14 4 15 4 14 4 15 3 15 3
@@ -1491,7 +1531,8 @@
     </glyph>
     <glyph uly="254" ulx="923" nrows="12" ncols="17">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 1 5 6 3 5 2 7 2 15 2 15 2 15 3 15 5 12 6 11 7 4 2 5 6 4 2 5 7 2 4 4
@@ -1511,7 +1552,9 @@
     </glyph>
     <glyph uly="1889" ulx="769" nrows="13" ncols="15">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="combining.greek.perispomeni.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         6 4 7 9 5 12 2 14 2 1 4 9 7 8 8 6 6 7 7 7 7 7 8 5 10 3 13 1 10 0 
@@ -1564,7 +1607,8 @@
     </glyph>
     <glyph uly="1222" ulx="1665" nrows="40" ncols="12">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         0 3 9 5 7 5 7 5 8 5 7 5 8 5 7 5 8 4 8 4 9 4 8 3 56 4 7 6 6 7 5 7 5 7
@@ -1591,7 +1635,8 @@
     </glyph>
     <glyph uly="1301" ulx="975" nrows="41" ncols="26">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.alpha.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         10 6 19 8 4 4 10 8 4 5 10 7 3 6 11 7 2 6 12 6 1 7 13 5 1 6 14 5 1 6
@@ -1611,7 +1656,14 @@
         5 5 7 6 7 3 9 4 3 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="0" ulx="1505" nrows="6" ncols="23">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        0 44 3 16 8 10 14 6 18 3 16 0 
+      </data>
+    </glyph>
     <glyph uly="2794" ulx="2049" nrows="24" ncols="22">
       <ids state="MANUAL">
         <id name="latin.small.letter.n" confidence="1.000000"/>
@@ -1713,7 +1765,8 @@
     </glyph>
     <glyph uly="2727" ulx="1653" nrows="33" ncols="12">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.comma.above.and.combining.greek.perispomeni" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.iota.and.combining.comma.above.and.combining.greek.perispomeni" confidence="1.000000"/>
       </ids>
       <data>
         1 4 7 7 2 15 1 11 2 9 4 7 5 6 6 6 7 5 8 4 8 3 9 3 8 3 9 3 8 5 7 5 7 5
@@ -1776,7 +1829,8 @@
     </glyph>
     <glyph uly="1739" ulx="1189" nrows="39" ncols="46">
       <ids state="MANUAL">
-        <id name="greek.small.letter.lamda.and.greek.small.letter.lamda" confidence="1.000000"/>
+        <id name="greek.small.letter.lamda.and.greek.small.letter.lamda"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 3 19 4 19 5 17 6 18 7 15 7 17 7 15 8 16 8 15 7 18 6 16 7 19 4 17 6
@@ -1790,7 +1844,9 @@
     </glyph>
     <glyph uly="987" ulx="1357" nrows="14" ncols="17">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="combining.greek.perispomeni.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 6 9 9 4 15 1 37 7 9 8 8 7 7 9 8 8 9 8 4 13 4 14 3 14 4 9 0 
@@ -1809,7 +1865,8 @@
     </glyph>
     <glyph uly="2672" ulx="529" nrows="35" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.upsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.upsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 4 15 5 13 7 13 6 13 7 13 6 14 4 16 3 16 3 15 4 15 3 15 4 16 1 24 2
@@ -1941,7 +1998,8 @@
     </glyph>
     <glyph uly="2481" ulx="1760" nrows="33" ncols="38">
       <ids state="MANUAL">
-        <id name="greek.small.letter.tau.and.greek.small.letter.eta" confidence="1.000000"/>
+        <id name="greek.small.letter.tau.and.greek.small.letter.eta"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 12 25 22 6 5 5 23 3 8 3 32 1 3 2 31 4 1 2 3 11 1 8 7 6 1 1 2 21 7 6
@@ -2095,7 +2153,8 @@
     </glyph>
     <glyph uly="908" ulx="529" nrows="41" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 2 14 7 11 9 10 10 10 9 10 10 13 6 14 5 14 5 14 4 15 4 14 4 14 5 14
@@ -2168,10 +2227,36 @@
         16 7 16 7 16 7 16 7 16 6 17 5 3 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="2998" ulx="2348" nrows="325" ncols="5">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 2
+        3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3
+        3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 2
+        3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 1 4
+        1 4 1 4 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 1 4 1 4 1 4 1 4 1 4 1
+        4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4
+        1 4 1 4 2 3 2 3 2 3 2 3 2 3 2 3 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3
+        2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 2 3 2 3 2 3 2 3 2 3 2 3
+        2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 3 2 3 2 3
+        2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2
+        3 2 4 1 4 1 4 1 4 1 3 2 3 2 3 2 3 2 3 2 2 3 2 3 2 3 2 3 1 4 1 4 1 4 1
+        4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3
+        2 3 2 3 2 3 2 3 2 3 2 3 1 4 1 4 1 4 1 4 1 4 1 4 1 29 1 4 1 4 2 3 2 3
+        2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 3 2 3 2 2 3 2
+        3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 1 4
+        1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 2 3 2
+        3 2 3 2 3 2 3 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2
+        3 2 3 2 3 2 3 2 3 2 3 2 3 2 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4 1 4
+        1 4 1 4 1 4 1 4 1 4 1 
+      </data>
+    </glyph>
     <glyph uly="2351" ulx="1696" nrows="33" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         10 3 16 5 15 5 15 5 16 4 16 4 16 4 15 4 15 4 16 2 75 6 12 9 4 3 3 11
@@ -2182,7 +2267,8 @@
     </glyph>
     <glyph uly="2784" ulx="1850" nrows="34" ncols="9">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 3 5 5 4 6 3 6 3 6 4 5 5 4 5 4 4 5 4 4 5 4 5 3 5 2 5 5 4 5 3 6 3 6 3
@@ -2287,7 +2373,8 @@
     </glyph>
     <glyph uly="1042" ulx="961" nrows="40" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         7 2 14 8 11 9 10 9 10 10 13 6 15 4 15 4 16 3 15 4 15 3 15 4 14 4 13 5
@@ -2393,7 +2480,8 @@
     </glyph>
     <glyph uly="1874" ulx="1301" nrows="39" ncols="33">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omega.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.omega.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 3 15 1 13 5 13 4 10 6 5 3 5 5 8 7 3 6 4 6 7 6 4 6 5 6 5 7 4 7 5 6 3
@@ -2405,7 +2493,8 @@
     </glyph>
     <glyph uly="1794" ulx="670" nrows="40" ncols="14">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         12 2 8 6 7 7 7 7 6 7 7 6 8 5 8 5 9 5 8 5 8 5 9 4 10 3 52 3 10 5 9 5 8
@@ -2470,7 +2559,8 @@
     </glyph>
     <glyph uly="1013" ulx="1203" nrows="39" ncols="11">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 5 5 8 3 9 2 9 2 10 3 8 5 6 6 5 6 5 6 4 7 4 6 4 4 6 4 7 4 5 6 1 10 3
@@ -2498,7 +2588,8 @@
     </glyph>
     <glyph uly="2661" ulx="872" nrows="33" ncols="16">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.omicron.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         12 4 11 5 11 5 11 5 10 5 11 4 11 5 11 4 12 3 12 4 12 3 13 1 12 5 9 7
@@ -2567,7 +2658,8 @@
     </glyph>
     <glyph uly="216" ulx="1076" nrows="38" ncols="44">
       <ids state="MANUAL">
-        <id name="greek.small.letter.lamda.and.greek.small.letter.lamda" confidence="1.000000"/>
+        <id name="greek.small.letter.lamda.and.greek.small.letter.lamda"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 3 20 2 18 6 17 5 15 8 15 7 15 7 15 8 14 8 14 9 14 8 14 8 16 6 14 9
@@ -2656,7 +2748,9 @@
     </glyph>
     <glyph uly="430" ulx="1340" nrows="40" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 5 13 8 11 9 10 10 10 9 10 9 11 5 15 5 15 4 16 4 16 5 16 4 17 5 16 6
@@ -2705,7 +2799,8 @@
     </glyph>
     <glyph uly="429" ulx="1157" nrows="16" ncols="20">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         15 4 6 7 2 6 3 10 1 6 2 18 1 19 1 18 1 6 3 9 2 4 8 5 3 4 7 5 4 3 8 4
@@ -2853,7 +2948,8 @@
     </glyph>
     <glyph uly="2337" ulx="342" nrows="41" ncols="11">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 2 7 7 4 7 3 9 3 8 3 9 4 7 7 4 7 4 7 4 7 4 6 4 6 5 4 6 4 6 5 3 7 4 7
@@ -2863,7 +2959,8 @@
     </glyph>
     <glyph uly="214" ulx="1188" nrows="41" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.upsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.upsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 4 15 8 11 10 10 11 9 11 9 11 10 10 12 8 15 5 15 5 16 4 15 4 15 4 14
@@ -2943,7 +3040,8 @@
     </glyph>
     <glyph uly="1595" ulx="1047" nrows="40" ncols="23">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         11 2 6 4 10 4 3 6 9 6 2 6 9 6 2 6 9 6 1 6 11 5 1 5 12 10 13 9 14 9 14
@@ -2976,7 +3074,8 @@
     </glyph>
     <glyph uly="568" ulx="523" nrows="40" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         7 3 15 7 13 8 12 9 12 8 14 6 16 4 17 3 17 3 17 3 16 4 16 3 16 3 15 4
@@ -3025,7 +3124,9 @@
     </glyph>
     <glyph uly="2075" ulx="1838" nrows="17" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="combining.greek.perispomeni.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 5 11 11 6 13 1 2 1 22 5 8 2 2 7 7 8 8 8 9 8 10 8 9 9 5 12 5 14 4 14
@@ -3053,7 +3154,8 @@
     </glyph>
     <glyph uly="2906" ulx="588" nrows="33" ncols="16">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.omicron.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         12 3 12 5 11 5 10 6 9 6 10 6 10 5 11 4 12 4 12 3 13 1 14 2 11 5 9 8 7
@@ -3144,7 +3246,8 @@
     </glyph>
     <glyph uly="2444" ulx="1713" nrows="40" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         6 4 15 7 13 8 12 9 12 9 12 8 15 5 16 4 16 4 16 4 15 5 14 5 14 5 14 4
@@ -3166,7 +3269,8 @@
     </glyph>
     <glyph uly="1127" ulx="934" nrows="38" ncols="11">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 3 7 4 7 4 7 4 6 5 6 4 7 3 7 4 7 3 7 4 7 3 7 3 7 4 7 3 8 3 8 3 8 3 8
@@ -3176,7 +3280,8 @@
     </glyph>
     <glyph uly="363" ulx="701" nrows="41" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 2 23 5 19 7 18 8 17 9 17 8 19 6 21 4 22 3 22 3 21 4 21 3 21 4 18 6
@@ -3229,7 +3334,8 @@
     </glyph>
     <glyph uly="828" ulx="1363" nrows="40" ncols="23">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 3 19 6 17 7 16 7 18 6 19 4 20 3 20 3 20 3 20 2 21 1 104 1 20 6 6 4
@@ -3271,7 +3377,8 @@
     </glyph>
     <glyph uly="1480" ulx="744" nrows="41" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 6 13 7 11 9 10 10 10 9 11 9 13 6 14 5 15 4 14 4 15 4 14 5 13 5 12 5
@@ -3293,7 +3400,8 @@
     </glyph>
     <glyph uly="1705" ulx="1224" nrows="32" ncols="17">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         14 3 13 4 13 4 12 5 12 5 11 6 11 5 11 5 11 6 11 5 11 5 12 5 10 8 8 10
@@ -3378,7 +3486,14 @@
         18 8 17 22 4 23 2 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="254" ulx="1671" nrows="9" ncols="4">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        2 2 2 2 1 3 1 3 1 11 1 3 3 1 
+      </data>
+    </glyph>
     <glyph uly="469" ulx="936" nrows="17" ncols="8">
       <ids state="MANUAL">
         <id name="apostrophe" confidence="1.000000"/>
@@ -3455,7 +3570,8 @@
     </glyph>
     <glyph uly="2751" ulx="1210" nrows="33" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 4 15 6 14 6 14 6 15 5 16 4 17 3 17 3 16 3 17 2 16 3 16 3 33 4 14 8
@@ -3484,7 +3600,8 @@
     </glyph>
     <glyph uly="356" ulx="1019" nrows="41" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         14 2 15 6 12 7 11 7 12 7 12 6 12 6 13 6 13 5 13 5 14 5 14 4 14 4 16 2
@@ -3618,7 +3735,14 @@
         0 5 2 6 1 6 2 5 2 6 2 5 3 4 4 3 5 2 6 1 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="1111" ulx="1541" nrows="7" ncols="4">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        1 1 2 3 1 3 1 3 1 8 1 2 1 0 
+      </data>
+    </glyph>
     <glyph uly="2587" ulx="1278" nrows="23" ncols="22">
       <ids state="MANUAL">
         <id name="latin.small.letter.n" confidence="1.000000"/>
@@ -3752,7 +3876,9 @@
     </glyph>
     <glyph uly="2081" ulx="989" nrows="39" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 5 13 8 11 9 10 10 10 9 11 6 13 6 14 5 16 4 16 4 16 4 17 4 19 3 17 5
@@ -3917,7 +4043,8 @@
     </glyph>
     <glyph uly="325" ulx="1491" nrows="13" ncols="17">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 10 5 13 3 14 2 15 2 7 3 6 1 6 5 5 1 5 6 5 1 5 6 11 7 10 8 10 7 4 1
@@ -4001,7 +4128,8 @@
     </glyph>
     <glyph uly="865" ulx="984" nrows="39" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 7 11 9 10 9 10 10 11 8 13 6 14 5 15 4 15 4 15 4 14 4 14 4 13 5 13 5
@@ -4037,7 +4165,8 @@
     </glyph>
     <glyph uly="799" ulx="1284" nrows="41" ncols="26">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 6 19 8 18 9 17 10 17 9 20 6 21 5 22 4 22 4 22 3 22 4 21 4 19 6 19
@@ -4078,7 +4207,8 @@
     </glyph>
     <glyph uly="470" ulx="983" nrows="41" ncols="22">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         10 3 4 4 7 9 1 6 5 17 4 18 4 17 4 18 3 5 7 6 4 5 7 5 5 5 6 5 6 5 6 5
@@ -4229,7 +4359,8 @@
     </glyph>
     <glyph uly="2965" ulx="508" nrows="33" ncols="11">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         1 3 7 4 7 5 6 5 7 5 7 4 8 4 7 4 8 4 7 4 8 2 10 1 8 3 7 5 6 5 6 5 6 5
@@ -4257,7 +4388,8 @@
     </glyph>
     <glyph uly="1386" ulx="281" nrows="42" ncols="17">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         12 5 10 7 10 7 9 8 9 7 10 6 11 6 11 5 11 5 12 4 13 3 13 4 13 3 14 2
@@ -4277,7 +4409,8 @@
     </glyph>
     <glyph uly="1518" ulx="1334" nrows="40" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 5 19 7 18 8 17 8 17 8 20 6 21 4 21 4 21 4 21 4 20 4 20 5 18 6 18 4
@@ -4288,7 +4421,8 @@
     </glyph>
     <glyph uly="1303" ulx="1456" nrows="39" ncols="24">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 6 17 8 17 7 18 7 19 5 20 5 20 4 20 3 21 3 21 1 22 1 21 3 84 4 8 3
@@ -4299,7 +4433,8 @@
     </glyph>
     <glyph uly="617" ulx="1185" nrows="36" ncols="15">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 1 12 6 8 9 6 9 6 10 6 9 8 7 9 6 9 6 9 6 8 6 9 6 9 5 6 5 9 6 9 7 7 8
@@ -4366,7 +4501,9 @@
     </glyph>
     <glyph uly="2196" ulx="1347" nrows="41" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         9 2 16 7 12 9 10 10 10 10 9 11 9 9 11 7 13 5 15 5 15 5 15 5 16 4 60 1
@@ -4637,7 +4774,8 @@
     </glyph>
     <glyph uly="1509" ulx="1022" nrows="39" ncols="26">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 6 7 7 5 10 4 8 3 12 3 9 2 12 3 18 3 3 3 16 5 2 9 9 6 3 9 8 6 3 9 8
@@ -4767,7 +4905,8 @@
     </glyph>
     <glyph uly="2925" ulx="1297" nrows="45" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         10 3 16 5 14 6 14 5 15 5 14 4 17 3 17 2 18 3 18 2 19 3 18 3 27 3 7 5
@@ -4800,7 +4939,8 @@
     </glyph>
     <glyph uly="2020" ulx="1055" nrows="16" ncols="17">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.comma.above" confidence="1.000000"/>
+        <id name="combining.greek.perispomeni.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 6 10 9 7 11 5 1 2 10 3 1 7 9 9 8 11 5 8 4 12 7 11 6 13 5 13 4 14 3
@@ -4866,7 +5006,8 @@
     </glyph>
     <glyph uly="1200" ulx="1356" nrows="15" ncols="19">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         7 2 5 5 3 9 1 6 2 17 1 36 1 6 4 7 2 4 7 6 2 4 7 5 3 3 8 4 4 4 6 5 4 4
@@ -4875,7 +5016,8 @@
     </glyph>
     <glyph uly="1452" ulx="995" nrows="14" ncols="19">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 5 5 5 2 10 1 6 2 17 1 17 1 5 3 3 1 5 2 4 7 6 2 3 8 5 3 3 7 5 4 3 7
@@ -4904,7 +5046,8 @@
     </glyph>
     <glyph uly="724" ulx="2079" nrows="39" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         1 4 14 6 14 6 13 7 13 6 14 5 16 2 153 3 13 9 7 13 5 15 4 16 2 17 2 5
@@ -4914,7 +5057,8 @@
     </glyph>
     <glyph uly="253" ulx="1069" nrows="41" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         21 1 22 6 18 7 17 8 17 8 17 7 17 7 18 6 18 6 19 5 20 4 21 1 90 4 19 9
@@ -5060,7 +5204,8 @@
     </glyph>
     <glyph uly="2313" ulx="1611" nrows="11" ncols="13">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.comma.above" confidence="1.000000"/>
+        <id name="combining.greek.perispomeni.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 10 2 28 1 8 6 6 7 5 9 4 10 3 10 3 10 2 11 1 5 0 
@@ -5217,7 +5362,8 @@
     </glyph>
     <glyph uly="1929" ulx="789" nrows="39" ncols="13">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 4 8 6 6 7 6 6 7 5 7 5 7 6 7 5 8 4 8 4 9 4 8 4 10 2 49 2 10 4 8 5 8
@@ -5236,7 +5382,8 @@
     </glyph>
     <glyph uly="1305" ulx="499" nrows="13" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         7 2 14 6 2 5 3 15 2 16 1 22 7 5 1 4 7 5 2 3 8 4 3 3 8 4 3 3 7 4 4 2 8
@@ -5253,7 +5400,9 @@
     </glyph>
     <glyph uly="981" ulx="2037" nrows="41" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         9 3 14 6 12 8 10 9 9 9 10 9 9 8 11 5 14 4 15 4 15 4 16 4 15 5 16 4 16
@@ -5285,7 +5434,8 @@
     </glyph>
     <glyph uly="1083" ulx="774" nrows="40" ncols="24">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 5 18 7 17 8 16 9 15 9 18 6 20 4 20 4 20 4 20 3 21 3 21 2 105 8 6 4
@@ -5403,7 +5553,8 @@
     </glyph>
     <glyph uly="2524" ulx="426" nrows="33" ncols="14">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 1 11 5 8 7 8 6 9 6 9 4 11 3 11 3 10 3 10 4 10 3 9 4 9 4 9 8 5 10 3
@@ -5447,7 +5598,8 @@
     </glyph>
     <glyph uly="1819" ulx="1227" nrows="42" ncols="21">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         14 6 14 8 12 9 12 8 13 7 13 7 14 6 14 7 14 6 15 5 15 5 16 4 16 5 16 4
@@ -5755,7 +5907,8 @@
     </glyph>
     <glyph uly="2107" ulx="403" nrows="40" ncols="33">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omega.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.omega.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         23 3 13 4 12 5 10 6 6 2 4 6 9 6 4 5 3 7 7 7 4 5 4 7 5 8 3 7 4 7 4 7 4
@@ -5768,7 +5921,8 @@
     </glyph>
     <glyph uly="921" ulx="1214" nrows="39" ncols="27">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 3 9 6 8 6 6 9 4 9 4 11 3 9 3 12 3 10 2 7 2 4 2 5 1 12 4 3 4 1 4 10
@@ -5965,7 +6119,8 @@
     </glyph>
     <glyph uly="1522" ulx="704" nrows="40" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         6 5 14 7 12 9 11 10 11 9 12 8 15 5 16 4 16 4 16 4 15 5 15 4 15 4 15 4
@@ -6002,7 +6157,8 @@
     </glyph>
     <glyph uly="851" ulx="1244" nrows="15" ncols="19">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 10 8 12 5 15 4 15 3 16 3 7 3 6 3 6 5 5 3 5 6 6 2 5 7 5 2 5 7 6 2 5
@@ -6062,7 +6218,8 @@
     </glyph>
     <glyph uly="1113" ulx="547" nrows="40" ncols="17">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 6 10 8 9 9 8 9 9 9 12 5 14 3 14 3 14 2 14 3 14 3 13 4 11 5 10 5 13
@@ -6097,7 +6254,8 @@
     </glyph>
     <glyph uly="704" ulx="316" nrows="16" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         15 8 7 12 6 13 4 15 3 7 1 7 3 6 5 5 2 5 6 4 2 6 7 3 2 4 9 3 2 4 9 2 2
@@ -6146,7 +6304,8 @@
     </glyph>
     <glyph uly="2024" ulx="1067" nrows="42" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 1 16 5 13 7 12 8 12 7 12 7 13 6 14 6 13 6 14 6 14 5 14 5 15 4 16 4
@@ -6283,7 +6442,8 @@
     </glyph>
     <glyph uly="1859" ulx="1899" nrows="17" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.comma.above" confidence="1.000000"/>
+        <id name="combining.greek.perispomeni.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 7 9 10 7 12 5 15 3 21 4 11 1 1 7 9 11 5 8 6 12 7 12 7 12 6 14 4 14
@@ -6303,7 +6463,7 @@
     </glyph>
     <glyph uly="1479" ulx="1488" nrows="23" ncols="18">
       <ids state="MANUAL">
-        <id name="greek.small.lette.epsilon" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon" confidence="1.000000"/>
       </ids>
       <data>
         3 11 6 14 3 15 3 7 2 7 1 6 7 3 2 3 15 3 15 3 17 11 7 12 6 12 6 12 14
@@ -6436,7 +6596,8 @@
     </glyph>
     <glyph uly="513" ulx="1407" nrows="40" ncols="24">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         21 2 21 4 19 5 18 6 18 6 17 6 17 6 18 5 19 4 20 3 133 1 20 7 6 4 6 9
@@ -6487,7 +6648,8 @@
     </glyph>
     <glyph uly="2924" ulx="381" nrows="33" ncols="9">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 4 4 6 3 6 4 5 5 5 4 4 6 3 6 3 6 3 5 3 5 3 5 3 5 4 5 4 5 5 3 6 3 6 3
@@ -6534,7 +6696,9 @@
     </glyph>
     <glyph uly="2410" ulx="2131" nrows="34" ncols="17">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 1 15 4 12 5 12 5 12 4 13 4 13 4 13 4 13 4 14 4 14 3 15 3 15 3 13 6
@@ -6592,7 +6756,8 @@
     </glyph>
     <glyph uly="1930" ulx="688" nrows="40" ncols="22">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         17 3 8 8 2 5 6 10 1 6 4 17 4 6 2 3 1 5 5 4 7 6 5 3 8 5 6 3 8 4 7 3 7
@@ -6604,7 +6769,8 @@
     </glyph>
     <glyph uly="2582" ulx="434" nrows="10" ncols="13">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 2 10 5 4 9 3 4 1 5 2 5 1 5 1 6 2 4 1 5 3 9 3 9 4 3 1 4 10 2 5 0 
@@ -6776,7 +6942,18 @@
         3 9 2 6 1 9 3 15 5 13 7 11 11 5 9 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="3330" ulx="2348" nrows="77" ncols="5">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        4 1 4 1 4 1 4 1 4 1 3 2 3 2 3 2 3 2 3 2 3 2 2 3 2 3 2 3 2 3 2 3 2 3 2
+        3 2 3 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2
+        3 2 3 2 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2
+        3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 2 3 1 4 1 4 1 4 1 4 1 4 1 4
+        1 4 1 4 1 4 1 4 1 4 1 9 
+      </data>
+    </glyph>
     <glyph uly="372" ulx="957" nrows="23" ncols="18">
       <ids state="MANUAL">
         <id name="greek.small.letter.iota" confidence="1.000000"/>
@@ -6801,7 +6978,8 @@
     </glyph>
     <glyph uly="1343" ulx="681" nrows="41" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
       </ids>
       <data>
         4 11 7 14 6 14 5 15 5 8 1 6 5 6 4 5 4 6 5 6 3 5 7 5 3 5 7 6 2 5 8 5 3
@@ -6870,7 +7048,9 @@
     </glyph>
     <glyph uly="2865" ulx="1253" nrows="35" ncols="17">
       <ids state="MANUAL">
-        <id name="greek.small.letter.upsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.upsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 1 14 5 11 7 10 7 10 6 11 4 13 3 14 3 14 3 15 3 14 3 15 2 16 1 29 2
@@ -6928,7 +7108,8 @@
     </glyph>
     <glyph uly="2583" ulx="914" nrows="12" ncols="14">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 2 2 5 4 4 1 5 3 5 1 5 3 4 3 5 2 4 4 4 2 3 5 9 5 3 1 4 6 3 1 3 5 4
@@ -7003,7 +7184,9 @@
     </glyph>
     <glyph uly="434" ulx="150" nrows="40" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         10 4 13 7 12 9 10 10 10 9 10 9 11 6 13 5 15 4 17 3 17 4 16 4 17 4 17
@@ -7034,7 +7217,9 @@
     </glyph>
     <glyph uly="748" ulx="1714" nrows="12" ncols="17">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="combining.greek.perispomeni.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 3 11 9 7 11 5 18 5 12 7 9 8 8 7 8 7 9 8 8 9 5 12 3 11 0 
@@ -7147,7 +7332,8 @@
     </glyph>
     <glyph uly="567" ulx="917" nrows="40" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 7 13 8 12 9 11 9 11 10 14 6 16 4 17 3 16 3 17 3 16 4 16 3 15 4 14 5
@@ -7187,7 +7373,8 @@
     </glyph>
     <glyph uly="2337" ulx="489" nrows="41" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 4 20 6 19 7 18 8 17 9 17 8 20 5 22 3 22 3 22 3 22 3 20 4 18 6 18 5
@@ -7305,7 +7492,9 @@
     </glyph>
     <glyph uly="506" ulx="2049" nrows="13" ncols="20">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="combining.greek.perispomeni.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 9 9 12 2 4 1 58 2 2 5 11 10 8 10 8 11 8 11 8 12 5 15 4 16 3 12 0 
@@ -7503,7 +7692,8 @@
     </glyph>
     <glyph uly="2278" ulx="428" nrows="13" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 3 8 4 1 7 5 13 4 15 3 6 2 7 3 6 4 5 3 5 7 3 2 5 8 2 3 5 8 2 3 4 9 2
@@ -7643,7 +7833,8 @@
     </glyph>
     <glyph uly="1467" ulx="850" nrows="38" ncols="46">
       <ids state="MANUAL">
-        <id name="greek.small.letter.lamda.and.greek.small.letter.lamda" confidence="1.000000"/>
+        <id name="greek.small.letter.lamda.and.greek.small.letter.lamda"
+        confidence="1.000000"/>
       </ids>
       <data>
         1 4 20 4 18 6 18 5 16 8 17 6 15 8 17 7 15 7 18 6 17 6 20 4 18 4 20 4
@@ -7666,7 +7857,9 @@
     </glyph>
     <glyph uly="2299" ulx="1627" nrows="39" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         7 5 12 8 10 9 10 9 9 9 10 6 13 4 14 5 15 4 15 4 16 4 16 3 17 3 18 4
@@ -7758,7 +7951,8 @@
     </glyph>
     <glyph uly="835" ulx="1859" nrows="40" ncols="13">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         1 5 7 7 6 7 6 7 7 7 7 6 7 6 8 6 8 5 8 5 9 4 9 5 9 4 10 2 11 1 10 4 8
@@ -7779,7 +7973,9 @@
     </glyph>
     <glyph uly="1684" ulx="1211" nrows="41" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         9 4 13 8 11 10 10 10 9 11 9 10 10 7 13 5 14 5 15 5 16 4 16 5 15 5 16
@@ -7828,7 +8024,8 @@
     </glyph>
     <glyph uly="2899" ulx="2082" nrows="34" ncols="11">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         6 3 7 5 6 5 6 6 4 6 5 6 5 6 4 6 5 6 5 5 6 4 7 4 6 4 6 5 6 6 4 8 3 8 3
@@ -7859,7 +8056,8 @@
     </glyph>
     <glyph uly="2159" ulx="580" nrows="42" ncols="21">
       <ids state="MANUAL">
-        <id name="greek.small.letter.upsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.upsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 6 14 8 13 8 12 10 12 10 11 10 13 8 15 6 16 5 16 5 16 5 16 4 15 6 14
@@ -7879,7 +8077,8 @@
     </glyph>
     <glyph uly="2410" ulx="1813" nrows="34" ncols="17">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
       </ids>
       <data>
         4 4 2 3 8 5 1 4 6 6 1 4 6 5 2 5 5 4 3 5 5 3 5 4 5 3 5 4 5 3 6 3 6 3 5
@@ -8069,7 +8268,8 @@
     </glyph>
     <glyph uly="2135" ulx="245" nrows="41" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 4 14 6 13 6 14 6 13 6 14 6 14 5 14 5 15 4 15 5 15 4 15 5 15 3 18 1
@@ -8160,7 +8360,8 @@
     </glyph>
     <glyph uly="1753" ulx="1246" nrows="54" ncols="26">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 7 18 9 16 10 15 11 14 11 15 10 16 9 17 5 21 5 21 4 22 5 22 4 23 5
@@ -8173,7 +8374,8 @@
     </glyph>
     <glyph uly="2983" ulx="892" nrows="45" ncols="21">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 2 17 5 15 6 15 6 15 5 16 4 17 4 17 3 18 4 18 4 18 4 18 3 29 5 5 6
@@ -8185,7 +8387,8 @@
     </glyph>
     <glyph uly="1541" ulx="2070" nrows="37" ncols="23">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         0 3 7 8 5 5 4 10 4 6 2 12 3 6 1 9 1 4 5 11 5 3 6 9 5 3 6 8 6 4 5 8 6
@@ -8324,7 +8527,8 @@
     </glyph>
     <glyph uly="1306" ulx="791" nrows="39" ncols="13">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         0 5 8 6 8 5 9 5 8 5 8 5 9 4 10 4 9 4 9 4 10 4 10 3 11 1 36 2 10 5 7 6
@@ -8345,7 +8549,8 @@
     </glyph>
     <glyph uly="2809" ulx="267" nrows="33" ncols="21">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 4 16 6 15 7 14 7 15 6 16 5 16 5 16 5 16 4 16 4 15 5 16 3 34 6 5 3
@@ -8354,10 +8559,18 @@
         7 5 5 4 2 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="1872" ulx="1470" nrows="6" ncols="5">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        0 1 4 2 4 3 3 3 2 3 3 2 
+      </data>
+    </glyph>
     <glyph uly="2668" ulx="1579" nrows="34" ncols="14">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         9 1 10 5 8 7 8 6 8 6 9 5 10 4 10 4 10 4 10 3 9 5 9 4 9 4 8 7 6 10 3
@@ -8477,7 +8690,15 @@
         3 17 3 17 4 16 4 16 5 2 3 10 11 9 11 10 9 11 9 12 7 4 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="0" ulx="1346" nrows="18" ncols="4">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        0 4 1 2 2 2 2 2 2 2 2 2 1 3 1 3 1 8 1 3 1 3 2 2 2 2 2 2 2 2 2 1 3 1 1
+        0 
+      </data>
+    </glyph>
     <glyph uly="1947" ulx="400" nrows="23" ncols="22">
       <ids state="MANUAL">
         <id name="greek.small.letter.kappa" confidence="1.000000"/>
@@ -8542,7 +8763,8 @@
     </glyph>
     <glyph uly="1201" ulx="725" nrows="14" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         6 8 7 12 5 13 4 14 3 16 2 6 4 6 2 6 5 5 2 5 6 6 1 5 7 5 1 5 7 5 1 5 8
@@ -8593,7 +8815,8 @@
     </glyph>
     <glyph uly="1597" ulx="1857" nrows="41" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.and.combining.grave.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
       </ids>
       <data>
         5 4 1 5 9 12 6 14 6 15 4 8 2 6 4 6 5 5 4 5 6 5 4 5 7 5 3 4 8 5 3 4 9
@@ -8604,7 +8827,8 @@
     </glyph>
     <glyph uly="2260" ulx="1131" nrows="12" ncols="16">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 11 4 13 2 14 1 8 1 6 1 6 4 5 1 5 6 4 1 4 7 9 8 8 8 8 8 4 2 2 9 3 14
@@ -8722,7 +8946,8 @@
     </glyph>
     <glyph uly="2526" ulx="1411" nrows="33" ncols="8">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 3 5 5 2 7 2 6 3 5 4 4 5 3 5 2 6 2 5 2 5 3 4 3 4 3 5 3 4 5 3 5 3 6 2
@@ -8898,7 +9123,8 @@
     </glyph>
     <glyph uly="1071" ulx="1445" nrows="18" ncols="20">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.comma.above" confidence="1.000000"/>
+        <id name="combining.greek.perispomeni.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         7 2 13 9 10 12 3 18 2 47 4 12 2 1 6 10 8 8 11 8 12 8 12 8 14 6 17 4
@@ -8924,7 +9150,15 @@
         6 2 5 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="661" ulx="2317" nrows="30" ncols="3">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        1 1 1 2 1 2 1 2 1 2 1 12 1 1 2 1 2 1 2 1 2 2 1 2 1 2 1 17 1 2 1 2 1 2
+        1 1 2 1 2 1 2 1 2 1 1 0 
+      </data>
+    </glyph>
     <glyph uly="296" ulx="321" nrows="26" ncols="24">
       <ids state="MANUAL">
         <id name="greek.small.letter.alpha" confidence="1.000000"/>
@@ -9002,7 +9236,8 @@
     </glyph>
     <glyph uly="2419" ulx="148" nrows="40" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.omicron.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 7 12 7 12 8 11 9 10 9 13 7 13 6 14 5 14 4 14 5 14 5 13 5 12 7 11 6
@@ -9024,7 +9259,9 @@
     </glyph>
     <glyph uly="938" ulx="708" nrows="39" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 5 14 7 12 9 10 9 11 9 10 9 11 5 15 4 16 4 16 3 138 8 11 10 9 12 7 8
@@ -9114,7 +9351,8 @@
     </glyph>
     <glyph uly="1538" ulx="1348" nrows="36" ncols="13">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.iota.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         2 3 8 6 3 11 1 18 2 11 4 8 5 7 6 7 6 6 7 5 9 3 10 3 9 2 9 5 7 6 7 7 6
@@ -9274,7 +9512,8 @@
     </glyph>
     <glyph uly="1054" ulx="1033" nrows="41" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.and.combining.grave.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
       </ids>
       <data>
         5 10 8 13 7 14 5 15 5 7 1 7 4 6 4 6 4 6 5 5 4 5 6 5 4 5 7 5 3 5 7 5 3
@@ -9286,7 +9525,8 @@
     </glyph>
     <glyph uly="1923" ulx="1421" nrows="17" ncols="21">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         17 1 17 6 6 6 2 7 3 19 1 19 2 19 1 19 2 5 4 9 3 4 6 7 4 3 7 7 4 3 7 6
@@ -9306,7 +9546,8 @@
     </glyph>
     <glyph uly="2868" ulx="871" nrows="32" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         10 5 14 6 13 6 13 7 14 5 14 4 15 4 15 3 16 2 15 3 15 3 31 3 14 7 4 4
@@ -9336,7 +9577,8 @@
     </glyph>
     <glyph uly="909" ulx="486" nrows="41" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.upsilon.and.combining.reversed.comma.above.and.combining.greek.perispomeni" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.upsilon.and.combining.reversed.comma.above.and.combining.greek.perispomeni" confidence="1.000000"/>
       </ids>
       <data>
         5 3 15 6 14 8 3 3 7 13 8 12 10 10 9 10 8 8 11 9 11 8 12 4 16 3 17 3
@@ -9478,7 +9720,8 @@
     </glyph>
     <glyph uly="745" ulx="699" nrows="39" ncols="27">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 4 10 5 7 6 6 10 4 8 4 12 3 9 3 13 2 18 2 5 4 15 5 3 8 11 5 4 9 9 5
@@ -9490,7 +9733,8 @@
     </glyph>
     <glyph uly="1999" ulx="236" nrows="40" ncols="18">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         1 4 13 6 13 6 12 6 12 7 12 6 12 6 13 5 14 4 15 4 14 4 14 4 16 2 53 2
@@ -9573,7 +9817,8 @@
     </glyph>
     <glyph uly="748" ulx="1777" nrows="40" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 6 13 7 12 8 11 8 13 7 14 5 15 4 15 4 15 4 15 3 16 3 15 3 15 3 53 2
@@ -9686,7 +9931,9 @@
     </glyph>
     <glyph uly="1305" ulx="1730" nrows="39" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         7 6 11 8 11 8 10 9 9 9 10 6 13 5 14 4 15 4 15 4 16 3 17 2 91 10 8 13
@@ -9705,7 +9952,9 @@
     </glyph>
     <glyph uly="2259" ulx="1381" nrows="40" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.upsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.upsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         9 4 14 7 12 8 11 9 10 9 11 6 14 5 15 4 16 4 16 4 16 4 17 3 19 2 19 3
@@ -9804,7 +10053,9 @@
     </glyph>
     <glyph uly="1619" ulx="1804" nrows="13" ncols="13">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="combining.greek.perispomeni.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 3 8 7 5 10 3 13 4 9 6 7 7 6 5 6 4 8 5 8 5 6 7 3 11 2 8 0 
@@ -9972,7 +10223,8 @@
     </glyph>
     <glyph uly="2449" ulx="530" nrows="40" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 6 12 8 11 9 10 10 9 10 13 6 14 5 15 4 15 4 14 5 14 4 14 5 13 4 13 5
@@ -10116,7 +10368,8 @@
     </glyph>
     <glyph uly="498" ulx="1343" nrows="53" ncols="27">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         14 5 19 8 18 9 17 10 17 10 16 10 17 7 20 5 22 4 23 4 23 4 24 4 25 4
@@ -10228,10 +10481,18 @@
         4 9 4 8 4 8 5 7 5 7 5 8 4 9 4 8 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="1192" ulx="2320" nrows="11" ncols="7">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        3 2 5 1 4 3 3 4 3 4 3 4 3 6 2 6 1 6 1 5 3 2 3 0 
+      </data>
+    </glyph>
     <glyph uly="1959" ulx="925" nrows="33" ncols="22">
       <ids state="MANUAL">
-        <id name="latin.small.letter.f.and.latin.small.letter.i" confidence="1.000000"/>
+        <id name="latin.small.letter.f.and.latin.small.letter.i"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 3 17 8 13 9 12 3 2 6 10 3 4 5 9 4 4 5 9 4 4 5 8 4 6 3 9 4 18 4 18
@@ -10295,7 +10556,8 @@
     </glyph>
     <glyph uly="2010" ulx="1108" nrows="39" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         16 3 7 6 6 9 4 7 4 11 2 9 2 13 1 9 2 13 1 18 3 3 1 2 5 10 4 4 7 9 6 3
@@ -10337,7 +10599,8 @@
     </glyph>
     <glyph uly="373" ulx="571" nrows="34" ncols="18">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         7 4 12 12 5 14 4 14 3 15 3 14 3 15 3 5 3 6 4 5 3 6 4 5 3 5 5 12 6 12
@@ -10384,7 +10647,8 @@
     </glyph>
     <glyph uly="2226" ulx="1497" nrows="13" ncols="17">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 1 15 5 3 5 3 6 2 16 1 16 1 16 1 16 1 17 2 15 5 12 6 5 1 5 6 4 2 5
@@ -10498,7 +10762,8 @@
     </glyph>
     <glyph uly="1438" ulx="910" nrows="38" ncols="32">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omega.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.omega.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 3 16 1 11 5 14 4 8 6 4 5 5 5 7 6 4 5 5 6 5 6 4 7 5 6 3 7 4 7 6 6 2
@@ -10583,7 +10848,8 @@
     </glyph>
     <glyph uly="1789" ulx="1400" nrows="41" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 7 13 7 13 9 11 9 11 9 15 5 17 4 16 4 16 3 17 3 15 5 15 5 12 7 13 5
@@ -10613,7 +10879,8 @@
     </glyph>
     <glyph uly="670" ulx="1077" nrows="35" ncols="15">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         10 4 10 6 8 7 8 6 8 6 9 5 9 5 10 4 10 4 11 3 12 3 11 3 11 3 11 5 9 6
@@ -10720,7 +10987,9 @@
     </glyph>
     <glyph uly="2866" ulx="149" nrows="34" ncols="15">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 3 11 5 9 6 8 7 8 7 8 6 9 5 10 5 10 5 12 3 12 5 12 3 12 3 8 9 5 11 4
@@ -10762,7 +11031,9 @@
     </glyph>
     <glyph uly="907" ulx="1896" nrows="40" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.upsilon.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.upsilon.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 5 14 7 12 9 10 9 11 9 10 9 11 6 13 6 14 5 16 4 16 4 17 3 18 3 18 4
@@ -10794,7 +11065,8 @@
     </glyph>
     <glyph uly="1726" ulx="716" nrows="54" ncols="23">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 2 20 6 17 7 16 7 17 6 18 5 18 5 19 5 19 4 19 4 20 3 20 4 20 3 21 2
@@ -10817,7 +11089,8 @@
     </glyph>
     <glyph uly="2296" ulx="1063" nrows="41" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.omicron.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 3 16 6 14 7 13 7 14 6 14 7 14 6 14 7 14 6 15 5 15 5 15 6 15 5 16 4
@@ -10891,7 +11164,8 @@
     </glyph>
     <glyph uly="1660" ulx="331" nrows="39" ncols="11">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         1 3 7 4 7 5 6 5 7 5 7 4 7 4 8 3 8 4 8 3 8 3 9 3 9 2 39 4 7 5 5 6 5 6
@@ -11026,7 +11300,8 @@
     </glyph>
     <glyph uly="1557" ulx="1526" nrows="37" ncols="27">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 4 7 8 7 6 5 10 5 8 3 12 3 9 3 7 2 4 2 10 1 7 4 3 9 10 5 3 11 8 6 3
@@ -11148,7 +11423,8 @@
     </glyph>
     <glyph uly="2924" ulx="925" nrows="34" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         7 4 5 3 6 5 5 3 7 5 3 4 8 4 3 4 8 5 1 4 9 5 1 3 10 9 9 4 1 4 9 5 1 3
@@ -11189,7 +11465,32 @@
         8 5 9 2 10 3 8 3 10 3 8 3 10 3 8 4 9 3 7 5 8 5 5 7 6 20 1 5 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="0" ulx="1646" nrows="204" ncols="29">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        5 24 5 24 5 24 6 23 6 23 6 23 7 22 8 21 9 20 8 21 6 23 4 25 3 113 2
+        27 3 26 5 24 7 22 9 20 9 20 9 20 10 19 10 19 9 20 9 20 9 20 8 21 9 20
+        10 19 10 19 10 19 10 19 10 19 10 19 10 19 9 20 8 21 8 21 8 21 8 21 10
+        19 12 17 13 16 13 16 12 17 12 17 12 17 12 17 12 17 12 17 12 17 13 16
+        13 16 13 16 14 15 14 15 14 15 14 15 14 15 14 15 13 16 13 16 12 17 12
+        17 13 16 13 16 13 16 13 16 13 16 13 16 13 16 13 16 13 16 13 16 13 16
+        13 16 13 16 14 15 14 15 14 15 15 14 16 13 16 13 13 16 11 18 8 14 1 6
+        7 15 1 6 8 21 8 21 8 21 9 8 2 10 9 8 3 9 9 8 2 10 10 7 2 10 12 17 16
+        13 17 12 17 12 17 12 17 12 17 12 14 15 14 4 1 10 14 3 3 9 15 1 4 9 20
+        9 20 9 20 9 20 9 20 9 20 9 19 10 17 12 16 13 15 14 15 14 14 15 14 15
+        14 15 14 15 15 14 15 9 1 4 16 8 1 4 17 7 1 4 17 7 1 4 18 6 1 4 19 5 1
+        4 20 9 20 9 20 9 20 9 20 9 20 9 20 9 20 9 19 10 19 10 19 10 19 10 19
+        10 19 10 19 5 2 3 19 5 2 2 20 5 1 4 20 4 1 4 20 9 23 6 23 6 20 9 19
+        10 18 11 18 8 2 1 18 7 3 1 18 7 3 1 18 7 3 1 18 7 3 1 18 7 3 1 18 2 2
+        3 2 2 25 4 24 5 19 3 2 5 19 3 1 6 19 10 19 10 19 10 19 10 19 10 18 11
+        18 11 18 11 18 11 18 11 18 11 14 1 2 12 12 17 13 16 13 16 13 9 2 5 12
+        10 2 5 11 10 4 4 11 10 4 4 7 12 6 4 7 7 1 3 7 4 7 7 11 4 7 5 13 4 8 3
+        15 3 11 3 11 4 25 4 25 4 24 5 24 5 23 6 21 8 20 9 20 9 19 10 19 10 19
+        10 19 10 19 10 20 9 22 7 
+      </data>
+    </glyph>
     <glyph uly="1906" ulx="1359" nrows="23" ncols="22">
       <ids state="MANUAL">
         <id name="greek.small.letter.kappa" confidence="1.000000"/>
@@ -11305,7 +11606,8 @@
     </glyph>
     <glyph uly="2409" ulx="1509" nrows="33" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         8 4 5 2 8 5 4 4 7 6 3 3 9 5 2 4 9 5 2 3 11 4 1 3 11 5 1 3 11 3 1 4 11
@@ -11389,7 +11691,8 @@
     </glyph>
     <glyph uly="838" ulx="1076" nrows="41" ncols="18">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         12 5 12 7 11 7 10 7 11 7 11 6 11 6 12 5 12 6 12 5 13 4 14 3 15 3 15 2
@@ -11420,7 +11723,8 @@
     </glyph>
     <glyph uly="216" ulx="1447" nrows="39" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 7 11 9 10 9 10 10 10 9 11 9 14 5 14 5 15 4 14 4 15 3 15 4 13 5 13 4
@@ -11555,7 +11859,8 @@
     </glyph>
     <glyph uly="1861" ulx="807" nrows="16" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.comma.above" confidence="1.000000"/>
+        <id name="combining.greek.perispomeni.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 9 9 10 7 12 5 21 4 10 2 1 6 8 12 5 10 4 13 6 12 7 13 5 15 3 15 3 14
@@ -11576,7 +11881,9 @@
     </glyph>
     <glyph uly="2234" ulx="1130" nrows="33" ncols="17">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 4 13 5 11 6 11 5 12 4 13 4 13 4 13 4 14 3 15 3 15 3 16 2 15 2 12 7
@@ -11626,7 +11933,8 @@
     </glyph>
     <glyph uly="1128" ulx="1055" nrows="40" ncols="21">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.epsilon.and.combining.reversed.comma.above.and.combining.grave.accent" confidence="1.000000"/>
       </ids>
       <data>
         3 12 8 14 7 14 6 16 4 7 3 7 4 6 5 6 4 5 7 5 4 5 7 6 3 5 8 5 3 6 7 5 4
@@ -11707,7 +12015,8 @@
     </glyph>
     <glyph uly="1085" ulx="678" nrows="37" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         1 5 8 6 6 6 5 10 3 8 3 11 3 8 3 7 1 3 4 16 15 9 17 8 6 2 9 7 7 3 8 7
@@ -11730,7 +12039,8 @@
     </glyph>
     <glyph uly="1229" ulx="1033" nrows="40" ncols="25">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         14 5 19 8 16 9 16 10 16 9 18 8 20 5 20 5 21 3 21 4 21 3 21 3 19 5 19
@@ -11769,7 +12079,8 @@
     </glyph>
     <glyph uly="430" ulx="1029" nrows="41" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         12 6 12 7 11 8 11 7 12 6 13 6 12 6 13 5 13 5 14 5 14 4 14 4 15 4 15 2
@@ -11847,7 +12158,8 @@
     </glyph>
     <glyph uly="1858" ulx="1162" nrows="42" ncols="18">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         13 4 12 7 11 7 11 7 11 6 12 6 11 6 12 5 12 6 12 5 13 4 13 4 14 4 13 4
@@ -11877,7 +12189,8 @@
     </glyph>
     <glyph uly="302" ulx="1101" nrows="39" ncols="45">
       <ids state="MANUAL">
-        <id name="greek.small.letter.tau.and.greek.small.letter.eta" confidence="1.000000"/>
+        <id name="greek.small.letter.tau.and.greek.small.letter.eta"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 14 27 18 3 6 6 8 3 20 2 7 4 10 2 30 2 12 1 19 1 24 1 19 2 26 6 3 4
@@ -11945,7 +12258,8 @@
     </glyph>
     <glyph uly="1446" ulx="965" nrows="17" ncols="20">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.comma.above" confidence="1.000000"/>
+        <id name="combining.greek.perispomeni.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 5 12 10 9 12 5 17 1 28 4 11 2 2 7 8 12 7 11 2 17 5 15 7 14 6 16 4
@@ -11996,7 +12310,8 @@
     </glyph>
     <glyph uly="1724" ulx="1059" nrows="40" ncols="18">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 4 13 7 11 8 10 9 9 9 10 8 14 4 15 3 15 3 15 3 14 4 13 4 13 4 12 5
@@ -12145,7 +12460,9 @@
     </glyph>
     <glyph uly="2752" ulx="546" nrows="11" ncols="14">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="combining.greek.perispomeni.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 5 7 9 4 14 1 13 7 7 8 6 5 4 9 5 9 5 9 4 10 3 7 0 
@@ -12208,7 +12525,8 @@
     </glyph>
     <glyph uly="278" ulx="840" nrows="40" ncols="24">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         12 6 18 8 16 8 16 9 16 8 18 6 20 4 20 4 21 3 21 3 20 3 20 3 20 3 22 1
@@ -12219,7 +12537,8 @@
     </glyph>
     <glyph uly="2925" ulx="1690" nrows="33" ncols="13">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         6 3 9 5 8 6 8 5 9 4 10 3 10 3 23 1 11 2 10 3 9 2 10 3 9 7 5 9 3 10 3
@@ -12229,7 +12548,8 @@
     </glyph>
     <glyph uly="518" ulx="797" nrows="37" ncols="32">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omega.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.omega.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         21 3 12 4 13 5 9 5 6 3 5 5 7 6 5 5 4 5 6 7 4 6 5 6 4 6 5 6 6 5 4 6 5
@@ -12290,7 +12610,14 @@
         10 3 3 6 8 16 3 12 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="873" ulx="2003" nrows="9" ncols="6">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        1 1 4 3 3 3 3 3 3 4 2 5 1 12 1 2 3 0 
+      </data>
+    </glyph>
     <glyph uly="1623" ulx="968" nrows="40" ncols="24">
       <ids state="MANUAL">
         <id name="greek.small.letter.theta" confidence="1.000000"/>
@@ -12531,7 +12858,8 @@
     </glyph>
     <glyph uly="2226" ulx="1357" nrows="43" ncols="24">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         18 5 9 15 7 18 5 18 5 19 5 19 5 18 6 5 4 8 7 4 6 7 7 3 7 6 8 3 7 5 9
@@ -12569,7 +12897,8 @@
     </glyph>
     <glyph uly="286" ulx="1078" nrows="11" ncols="21">
       <ids state="MANUAL">
-        <id name="combining.reversed.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.reversed.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 9 3 4 4 18 2 19 1 19 2 19 1 6 5 7 3 5 7 6 3 4 8 5 5 3 7 5 6 3 7 4 7
@@ -12690,7 +13019,8 @@
     </glyph>
     <glyph uly="2337" ulx="848" nrows="40" ncols="26">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         14 6 19 8 18 9 17 10 16 10 19 7 21 5 21 5 22 4 21 5 18 8 17 8 17 8 15
@@ -12723,7 +13053,8 @@
     </glyph>
     <glyph uly="432" ulx="1562" nrows="12" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         0 5 9 1 3 7 5 5 1 7 4 15 3 7 2 6 3 7 3 5 2 7 5 4 1 7 6 4 1 6 7 4 1 5
@@ -12793,7 +13124,8 @@
     </glyph>
     <glyph uly="1608" ulx="179" nrows="38" ncols="27">
       <ids state="MANUAL">
-        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni" confidence="1.000000"/>
+        <id name="greek.small.letter.eta.and.combining.greek.ypogegrammeni"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 4 11 4 7 7 5 10 4 9 4 11 3 9 3 12 3 10 2 7 3 3 2 18 5 2 3 1 6 9 6 3
@@ -12941,7 +13273,8 @@
     </glyph>
     <glyph uly="2295" ulx="1128" nrows="42" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.omicron.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 3 15 7 12 9 11 10 10 10 10 11 10 10 13 7 14 6 15 4 16 4 15 5 14 6
@@ -12962,7 +13295,9 @@
     </glyph>
     <glyph uly="1889" ulx="1438" nrows="42" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.omicron.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.omicron.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         10 4 15 6 12 9 10 10 9 11 9 11 9 11 9 9 11 6 14 5 15 5 15 5 15 5 17 4
@@ -13051,7 +13386,8 @@
     </glyph>
     <glyph uly="500" ulx="599" nrows="40" ncols="18">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 5 12 7 11 8 10 9 9 9 13 6 14 4 14 4 14 3 15 3 14 4 13 4 14 3 12 5
@@ -13069,7 +13405,8 @@
     </glyph>
     <glyph uly="2409" ulx="1121" nrows="33" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.alpha.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 4 14 6 13 7 13 6 14 5 14 5 15 4 15 3 15 3 15 4 14 4 14 3 13 5 12 6
@@ -13211,7 +13548,8 @@
     </glyph>
     <glyph uly="232" ulx="2018" nrows="39" ncols="47">
       <ids state="MANUAL">
-        <id name="greek.small.letter.tau.and.greek.small.letter.eta" confidence="1.000000"/>
+        <id name="greek.small.letter.tau.and.greek.small.letter.eta"
+        confidence="1.000000"/>
       </ids>
       <data>
         9 7 8 2 24 16 3 6 21 18 1 8 5 10 4 29 3 11 4 44 2 40 1 5 1 24 4 11 4
@@ -13291,7 +13629,8 @@
     </glyph>
     <glyph uly="1252" ulx="171" nrows="40" ncols="10">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         2 5 4 7 3 8 2 9 3 7 4 6 6 4 7 3 7 3 6 4 6 4 5 4 3 6 3 6 5 3 16 3 7 4
@@ -13301,7 +13640,8 @@
     </glyph>
     <glyph uly="2236" ulx="1993" nrows="32" ncols="21">
       <ids state="MANUAL">
-        <id name="greek.small.letter.alpha.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
+        <id
+        name="greek.small.letter.alpha.and.combining.comma.above.and.combining.acute.accent" confidence="1.000000"/>
       </ids>
       <data>
         9 4 4 1 12 5 2 4 10 5 2 5 9 5 2 5 10 10 10 10 11 10 10 10 11 9 11 3 3
@@ -13470,7 +13810,9 @@
     </glyph>
     <glyph uly="1273" ulx="1033" nrows="16" ncols="18">
       <ids state="MANUAL">
-        <id name="combining.greek.perispomeni.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id
+        name="combining.greek.perispomeni.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 6 9 11 6 13 5 22 1 13 1 1 5 11 8 9 7 9 7 9 8 9 9 8 10 5 14 4 14 4
@@ -13506,7 +13848,72 @@
         5 8 0 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="0" ulx="2322" nrows="619" ncols="31">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        6 25 6 25 6 25 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24
+        7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 8 23 8 23 8 23 8 23 8 23 8 23
+        8 23 8 23 8 23 8 23 8 23 8 23 8 23 8 23 8 23 8 23 8 23 8 23 8 23 8 23
+        8 23 8 23 8 23 8 23 8 23 8 23 8 23 8 23 7 24 7 24 7 9 1 14 7 9 1 14 7
+        24 7 24 7 24 7 24 7 24 6 25 6 25 6 25 7 24 7 24 8 23 8 23 8 23 8 23 8
+        23 8 23 8 23 8 23 8 23 8 23 8 23 9 22 9 22 9 22 8 23 8 23 8 23 8 23 8
+        23 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 6 25 5
+        26 4 27 3 28 3 28 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2
+        29 2 29 1 30 1 30 2 29 2 29 3 28 3 28 3 28 3 28 4 27 4 27 4 7 1 19 3
+        7 2 19 3 7 2 19 3 28 3 28 3 28 2 1 2 26 2 1 2 26 2 1 2 26 2 1 2 26 2
+        1 2 26 2 1 2 26 2 1 2 26 2 2 1 26 2 2 1 26 2 1 2 26 5 26 5 26 5 26 5
+        26 6 25 6 25 6 25 5 26 4 27 4 27 4 27 4 27 5 26 5 26 5 26 5 26 5 26 6
+        25 6 25 6 25 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 7 24 8 23 7 24 7
+        24 7 24 7 24 6 25 6 25 6 25 6 25 5 26 4 27 3 28 2 29 2 29 2 29 2 3 1
+        25 2 2 2 25 2 2 2 25 1 2 3 25 1 2 3 25 1 2 3 25 1 2 3 25 6 25 5 26 5
+        26 5 26 5 26 5 26 5 26 5 26 5 26 5 26 6 25 6 25 6 25 5 26 5 26 4 27 4
+        27 4 27 4 27 2 29 1 30 1 30 1 30 1 30 1 30 1 30 2 29 2 29 2 29 1 30 1
+        247 1 30 1 30 1 30 1 30 1 30 1 30 1 30 1 30 1 61 1 30 2 29 2 29 2 29
+        2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 21 1 7 2 20 2 7 2 20 2 7 2
+        20 3 6 2 20 3 6 2 20 3 6 2 20 3 6 1 21 3 6 1 21 3 6 1 21 3 6 1 21 3 6
+        1 21 3 6 1 21 3 6 1 21 3 6 1 21 3 6 1 21 3 6 1 21 2 7 1 30 1 30 2 29
+        2 29 2 29 3 18 3 7 3 17 4 7 2 18 5 6 2 18 5 6 2 19 4 6 1 20 4 6 1 20
+        4 6 1 20 4 6 1 20 4 6 1 20 4 27 4 27 4 27 4 27 4 27 4 6 1 20 4 6 1 20
+        4 6 1 20 3 7 1 20 3 7 1 21 1 8 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2
+        29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2
+        29 1 30 1 30 1 30 1 30 1 30 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2
+        21 3 5 2 21 3 5 2 21 3 5 2 21 3 5 1 30 1 30 1 30 1 30 1 30 1 30 1 30
+        1 30 1 30 2 29 2 29 2 29 1 30 1 30 1 30 1 30 2 29 2 29 2 29 2 29 2 29
+        2 20 3 6 1 20 6 4 1 21 7 2 2 20 7 2 2 20 8 1 2 21 7 1 2 21 6 2 1 22 5
+        3 1 22 5 3 1 22 5 3 2 29 2 20 1 8 2 20 2 7 2 20 6 3 2 20 6 3 2 19 6 4
+        1 20 6 4 1 20 6 4 1 20 5 5 1 20 5 5 1 20 4 6 1 21 3 6 1 21 2 7 1 21 1
+        8 1 21 1 8 1 30 1 30 1 22 2 6 1 22 2 6 1 22 2 6 1 22 2 6 1 23 1 6 2
+        29 2 29 2 29 2 29 2 5 1 23 2 29 2 29 2 29 2 21 1 7 2 20 2 7 2 20 2 7
+        2 19 3 7 2 19 3 7 2 19 3 7 2 19 4 6 2 19 4 6 1 20 4 6 1 20 4 6 1 20 4
+        6 2 19 4 6 2 19 3 7 2 19 3 7 2 19 3 7 2 19 3 7 2 19 3 7 2 19 3 7 2 19
+        3 7 2 19 3 7 2 19 3 7 2 19 3 7 1 21 2 7 1 21 2 7 1 21 2 7 1 21 2 7 1
+        21 2 7 1 21 3 6 1 21 3 6 1 21 3 6 1 21 4 5 1 21 5 4 1 21 5 4 2 20 5 4
+        2 20 5 4 2 20 5 4 2 20 5 4 2 4 2 15 4 4 2 4 4 14 3 4 2 4 4 15 2 4 2 4
+        5 20 2 4 5 20 2 4 5 20 2 4 5 20 2 4 4 21 2 4 4 21 1 5 4 21 1 6 3 21 1
+        6 3 21 1 9 1 20 1 30 1 30 1 30 1 30 1 30 1 30 1 6 1 23 1 6 1 23 1 5 2
+        23 1 5 2 23 2 4 2 23 2 4 2 23 2 4 2 23 1 5 2 23 1 5 2 23 1 5 2 23 1 5
+        2 23 1 5 1 24 1 30 1 30 1 30 2 29 2 29 2 29 2 29 2 29 2 29 2 29 2 29
+        2 29 2 29 2 29 2 29 2 29 2 29 1 30 1 30 1 24 2 28 3 28 3 28 3 27 4 4
+        1 22 4 4 1 22 4 4 1 22 4 4 1 22 4 4 1 22 4 4 1 21 5 4 1 21 5 4 2 20 5
+        4 2 20 5 4 2 20 3 6 2 20 2 7 1 21 1 8 1 21 1 8 1 21 1 8 1 30 1 30 1
+        30 1 30 1 30 1 30 1 30 1 30 1 30 1 30 1 30 1 5 1 24 1 5 1 24 1 5 1 24
+        1 5 1 24 1 5 1 24 1 4 3 23 2 3 4 22 2 3 4 22 2 3 5 21 2 3 5 21 2 3 4
+        22 2 3 4 22 2 3 3 23 2 3 3 23 2 3 3 23 2 3 4 22 2 3 4 22 2 3 4 22 2 3
+        4 22 2 3 4 22 2 3 4 22 2 3 4 22 2 3 4 22 2 4 3 22 2 4 2 5 2 16 2 4 3
+        4 2 16 2 3 4 3 3 16 2 3 5 1 4 16 1 3 10 17 1 3 10 17 1 3 10 17 2 2 9
+        18 2 2 9 18 2 1 10 18 2 1 10 18 13 18 13 18 13 18 13 18 13 18 12 19
+        12 19 12 19 12 19 12 13 2 4 12 12 3 4 12 11 5 3 12 10 6 3 12 10 6 3
+        13 8 8 2 13 8 8 2 13 7 9 2 13 7 9 2 14 6 9 2 14 7 8 2 15 7 7 2 15 8 6
+        2 15 8 7 1 15 9 6 1 15 9 6 1 15 9 6 1 15 9 22 9 22 9 21 10 21 10 21
+        10 21 10 20 11 20 11 20 11 20 11 20 11 20 11 20 11 20 10 21 10 21 11
+        20 11 20 11 20 11 20 11 20 11 20 5 1 5 20 4 3 4 20 10 21 10 20 11 19
+        5 6 1 19 5 27 5 26 5 27 4 27 4 27 4 27 4 27 4 26 6 25 6 25 6 25 6 26
+        5 1 2 23 4 2 2 23 4 2 3 22 4 2 3 22 5 1 3 22 8 23 8 24 5 26 5 26 4 13
+        0 
+      </data>
+    </glyph>
     <glyph uly="2977" ulx="548" nrows="21" ncols="20">
       <ids state="MANUAL">
         <id name="greek.small.letter.kappa" confidence="1.000000"/>
@@ -13519,7 +13926,8 @@
     </glyph>
     <glyph uly="1305" ulx="343" nrows="15" ncols="15">
       <ids state="MANUAL">
-        <id name="combining.diaeresis.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="combining.diaeresis.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         11 1 11 5 10 5 9 6 9 6 8 6 9 5 10 5 6 1 3 4 2 1 2 4 1 5 1 8 1 5 1 8 1
@@ -13539,7 +13947,8 @@
     </glyph>
     <glyph uly="471" ulx="2099" nrows="40" ncols="19">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 3 15 5 13 7 12 7 12 8 12 7 12 7 12 7 13 7 13 6 14 5 15 4 15 4 16 3
@@ -13592,7 +14001,8 @@
     </glyph>
     <glyph uly="789" ulx="1943" nrows="13" ncols="17">
       <ids state="MANUAL">
-        <id name="combining.comma.above.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="combining.comma.above.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         3 1 7 4 3 6 3 5 2 8 2 6 1 9 1 6 2 8 1 7 1 9 1 6 4 6 2 5 6 4 2 5 7 3 3
@@ -13670,7 +14080,15 @@
         10 7 5 1 4 6 6 1 5 5 6 2 4 5 6 3 14 4 5 4 4 
       </data>
     </glyph>
-    <!--Removed element skip-->
+    <glyph uly="2522" ulx="147" nrows="4" ncols="526">
+      <ids state="MANUAL">
+        <id name="skip" confidence="1.000000"/>
+      </ids>
+      <data>
+        0 5 521 88 1 12 1 9 23 10 5 3 2 5 8 7 2 9 1 7 2 141 3 3 3 180 1 526 1
+        437 3 37 3 2 6 1 11 3 22 0 
+      </data>
+    </glyph>
     <glyph uly="2287" ulx="887" nrows="22" ncols="19">
       <ids state="MANUAL">
         <id name="latin.small.letter.n" confidence="1.000000"/>
@@ -13754,7 +14172,8 @@
     </glyph>
     <glyph uly="433" ulx="724" nrows="34" ncols="11">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.reversed.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.reversed.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         4 5 4 7 3 8 3 8 2 9 2 7 4 4 7 4 7 4 8 5 7 6 7 4 7 4 6 5 5 6 5 6 5 6 5
@@ -13805,7 +14224,8 @@
     </glyph>
     <glyph uly="2983" ulx="1223" nrows="34" ncols="10">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.grave.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.grave.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         1 2 7 4 6 4 6 5 5 5 6 4 7 4 6 4 7 4 7 3 26 3 6 5 5 5 5 6 4 6 4 5 5 5
@@ -13883,7 +14303,8 @@
     </glyph>
     <glyph uly="1411" ulx="703" nrows="42" ncols="20">
       <ids state="MANUAL">
-        <id name="greek.small.letter.epsilon.and.combining.comma.above" confidence="1.000000"/>
+        <id name="greek.small.letter.epsilon.and.combining.comma.above"
+        confidence="1.000000"/>
       </ids>
       <data>
         8 2 16 6 13 8 11 10 11 10 10 10 11 9 15 6 14 6 15 4 15 5 15 5 14 5 14
@@ -13959,7 +14380,8 @@
     </glyph>
     <glyph uly="2964" ulx="671" nrows="33" ncols="9">
       <ids state="MANUAL">
-        <id name="greek.small.letter.iota.and.combining.acute.accent" confidence="1.000000"/>
+        <id name="greek.small.letter.iota.and.combining.acute.accent"
+        confidence="1.000000"/>
       </ids>
       <data>
         5 3 5 5 4 5 4 5 3 6 3 5 3 5 4 5 4 5 4 4 5 3 6 3 6 3 4 5 4 6 3 6 3 6 3
