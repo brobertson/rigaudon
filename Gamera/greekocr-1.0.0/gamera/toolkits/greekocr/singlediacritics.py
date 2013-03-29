@@ -275,7 +275,7 @@ class SingleTextline(Textline):
             for other in self.glyphs:
               if g.center_x > other.ul_x and g.center_x < other.lr_x and g.center_y < other.center_y:
                 g.classify_automatic("combining.reversed.comma.above")
-         if g.get_main_id() == 'hyphen-minus':
+         if (g.get_main_id() == 'hyphen-minus') or (g.get_main_id() == 'combining.greek.perispomeni'):
             glyph_cl_x = (g.ul_x + (g.lr_x - g.ul_x)/2)
             glyph_cl_y = (g.ul_y + (g.lr_y - g.ul_y)/2)
 ##            print g.get_main_id(), " at: ", glyph_cl_x, glyph_cl_y
@@ -288,6 +288,8 @@ class SingleTextline(Textline):
 ##                     print "there is something below:", other.id_name
                      g.classify_automatic("combining.greek.perispomeni")
                      break
+            else:
+               g.classify_automatic("hyphen-minus")
          greek_small_vowels = ['greek.small.letter.alpha','greek.small.letter.epsilon','greek.small.letter.eta','greek.small.letter.iota','greek.small.letter.omicron','greek.small.letter.upsilon','greek.small.letter.omega']  
          #if a middle.dot has something below it, it is  in fact a smooth breathing. Refine so that the 'something' has to be a vowel.
          if g.get_main_id() == 'middle.dot':
