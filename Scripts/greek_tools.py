@@ -78,7 +78,6 @@ def is_greek_string(string_in):
         else:
                 return False
 
-
 #@memoize
 def delete_non_greek_tokens(tokens):
         tokens_out = []
@@ -92,9 +91,16 @@ def delete_non_greek_tokens(tokens):
 
 def split_text_token(stringIn):
 	import re
-	word_parts = re.match(ur'(^[\[\("〈]*)(.*?)([.,!?;†·:〉\)\d]*$)',stringIn,re.UNICODE)
+        word_parts = re.match(ur'(^[„\[\("〈]*)(.*?)([„.,!?;†·:〉\)\d\]]*$)',stringIn,re.UNICODE)
+ 
    	try:
       		parts = word_parts.groups()
 	except AttributeError:
 		parts = ('',stringIn,'')
 	return parts
+
+#this really doesn't do anything special, but it is handy to have
+#a memoized version around :-)
+@memoize
+def greek_string_length(stringIn):
+    return len(stringIn)
