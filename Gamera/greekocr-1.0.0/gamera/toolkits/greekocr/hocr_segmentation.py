@@ -99,6 +99,6 @@ def generateCCsFromHocr(parser,image):
                 for item in dellist:
                     tmplist.remove(item)
                 dellist = []
-                seg_ccs.append(new_seg)
+                #seg_ccs.append(new_seg)
 
         return seg_ccs
