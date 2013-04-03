@@ -50,7 +50,8 @@ teubner_serif_weights = [
 #    ['replace', ur'σ', ur'ς', 2],  # for lunate fonts
     ['replace', ur'χΧ', ur'χΧ', 2],
     ['replace', ur'κΚ', ur'κΚ', 2],
-    ['replace',ur'r',ur'γ',4]
+    ['replace',ur'r',ur'γ',4],
+    ['replace',ur'ζ',ur'ς',3]
   #  ['replace', ur'ι'+iota_subscript_replacement, ur'ι'+iota_subscript_replacement, 3]
 ]
 
@@ -226,7 +227,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
       print "Are they capitalized?"
       from greek_tools import is_capitalized 
       for wordIn in vocab:
-        wordIn = preprocess_word(wordIn)
+        #wordIn = preprocess_word(wordIn)
         print wordIn, is_capitalized(wordIn)
     print "making dicts"
     import time
@@ -262,6 +263,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
     (dict_words, words_clean, words_freq) = word_dicts
     output_string = ''
     for wordIn in vocab:
+        wordIn_original = wordIn
         wordIn = preprocess_word(wordIn)
         output_words = getCloseWords(
             wordIn, word_dicts, teubner_serif_weights, max_weight, threshold=3)
@@ -301,8 +303,8 @@ def process_vocab((vocab,word_dicts, max_weight)):
                 best_result_word = words_clean[output_words[0][0]]
                 if (hasBeenLowered):
                     best_result_word = best_result_word.capitalize()
-                if not best_result_word == wordIn:
-                    output_string += wordIn + "," + best_result_word + '\n'
+                if not (best_result_word == wordIn or best_result_word == wordIn.lower()):
+                    output_string += wordIn_original + "," + best_result_word  + '\n'
                 # dump(wordIn)
                 # print
                 # dump(best_result_word)
@@ -351,6 +353,7 @@ def makeDict(fileName):
 
 
 def preprocess_word(word):
+    import re
     # ensures that word is in Python's NFD, and checks for bogus circumflexes
     # that don't compose properly
     word = word.replace(' ', '')
@@ -359,6 +362,10 @@ def preprocess_word(word):
     other_circumflex = unicode(u"\N{COMBINING CIRCUMFLEX ACCENT}")
     greek_koronis = unicode(u"\N{GREEK KORONIS}")
     apostrophe = unicode(u"\N{APOSTROPHE}")
+    smooth_breathing = unicode(u"\N{COMBINING COMMA ABOVE}")
+    apostrophe = unicode(u"\N{APOSTROPHE}")
+    import unicodedata
+    word = re.sub(ur'^' + apostrophe + ur'([I1ΙιΕEAP])(.*)$', r'\1' + smooth_breathing+ r'\2', word)
     word = word.replace(other_circumflex, circumflex)
     word = word.replace(greek_koronis, apostrophe)
     word = unicodedata.normalize('NFD', word)
