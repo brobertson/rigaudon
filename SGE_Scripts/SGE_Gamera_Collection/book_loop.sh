@@ -64,6 +64,11 @@ SPELLREPLACE_JOB_NAME=$JOB_NAME_BASE-spellreplace
 COMBINE_GREEK_AND_LATIN_JOB_NAME=$JOB_NAME_BASE-combine-hocrs
 POSTPROCESS_JOB_NAME=$JOB_NAME_BASE-postprocess
 
+if [ ! -f $CURRENT_JOB_FILE ] 
+then
+  touch $CURRENT_JOB_FILE
+fi
+
 qstat -r | grep `cat $CURRENT_JOB_FILE`
 RETVAL=$?
 if [ $RETVAL -eq 0 ]
