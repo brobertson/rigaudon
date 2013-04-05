@@ -187,22 +187,20 @@ def performGreekOCR(options):
          if options.has_key("filter") and options["filter"] == True:
              count = 0
              ccs = image.cc_analysis()
-             if options.has_key("debug") and options["debug"] == True:
-                print "filter started on",len(ccs) ,"elements..."
+             if options.has_key("debug"):
+                if options["debug"] == True:
+                   print "filter started on",len(ccs) ,"elements..."
              #filter long vertical runs left over from margins
-	          median_height = median([cc.nrows for cc in ccs])
-	          #TODO: put the body following in a loop so that it can raise this and be skipped
-                  ##if len(ccs) < 2:
-		  ##        raise ImageSegmentationError("there are " + str(len(ccs)) +  " ccs")
-	          ##if len(ccs) > MAX_CCS:
-		  ##        raise ImageSegmentationError("there are more than " + str(MAX_CCS) + " ccs.")
-
-	          for cc in ccs:
-	          #TODO: add another condition that keeps these at edges of page
-		          if((cc.nrows / cc.ncols > 6) and (cc.nrows > 1.5 * median_height) ):
-			          cc.fill_white()
-			          del cc
-			          count = count + 1
+	     
+	          
+##               #Agressive run filtering
+##               median_height = median([cc.nrows for cc in ccs])
+##               for cc in ccs:
+##               #TODO: add another condition that keeps these at edges of page
+##                       if((cc.nrows / cc.ncols > 6) and (cc.nrows > 1.5 * median_height) ):
+##                               cc.fill_white()
+##                               del cc
+##                               count = count + 1
              median_black_area = median([cc.black_area()[0] for cc in ccs])
              for cc in ccs:
                if(cc.black_area()[0] > (median_black_area * 10)):
@@ -216,55 +214,57 @@ def performGreekOCR(options):
                  count = count + 1
              if options.has_key("debug") and options["debug"] == True:
                 print "filter done.",len(ccs)-count,"elements left."
-         
-         if options.has_key("deskew") and options["deskew"] == True:
-           #from gamera.toolkits.otr.otr_staff import *
-           if options.has_key("debug") and options["debug"] == True:
-             print "\ntry to skew correct..."
-           rotation = image.rotation_angle_projections(-10,10)[0]
-           img = image.rotate(rotation,0)
-           if options.has_key("debug") and options["debug"] == True:
-             print "rotated with",rotation,"angle"
-         if options.has_key("mode") and options["mode"] == "teubner":
-            (body_image, app_crit_image) = splitAppCritTeubner(image)
-            output = g.process_image(body_image)
-            if app_crit_image:
-               print "there is an app. crit image"
-               appcrit_output = g_appcrit.process_image(app_crit_image)
-            else:
-               print "there is no app. crit image"
-               appcrit_output = ""
-            output = output + appcrit_output
+         if (len(ccs) < 2) or (len(ccs) > MAX_CCS):
+                 raise ImageSegmentationError("Error: there are " + str(len(ccs)) +  " ccs. Max is " + str( MAX_CCS) +  " Omitting this image.")
          else:
-            output = g.process_image(image) 
-         output_file_name_base = options["unicodeoutfile"] + imageBase + "_" +imageEx[1:] + "_" + threshold_info
-         if options.has_key("debug") and options["debug"] == True:
-            g.save_debug_images(output_file_name_base)
-            if options.has_key("mode") and options["mode"] == "teubner" and app_crit_image:
-               #TODO: make more general
-               g_appcrit.save_debug_images(output_file_name_base + "_appcrit")
-         if options.has_key("hocrout") and options["hocrout"]:
-            #if we turned this on, we would make a separate div for each page of input
-            #hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
-            g.store_hocr(internal_image_file_path,hocr_tree)
-            if options.has_key("mode") and options["mode"] == "teubner" and app_crit_image:
-               g_appcrit.store_hocr(internal_image_file_path,hocr_tree)
-         if options.has_key("sql") and options["sql"]:
-            page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
-            g.store_sql(image_path,page_id) 
-         if options.has_key("unicodeoutfile"):
-             
+            if options.has_key("deskew") and options["deskew"] == True:
+              #from gamera.toolkits.otr.otr_staff import *
+              if options.has_key("debug") and options["debug"] == True:
+                print "\ntry to skew correct..."
+              rotation = image.rotation_angle_projections(-10,10)[0]
+              img = image.rotate(rotation,0)
+              if options.has_key("debug") and options["debug"] == True:
+                print "rotated with",rotation,"angle"
+            if options.has_key("mode") and options["mode"] == "teubner":
+               (body_image, app_crit_image) = splitAppCritTeubner(image)
+               output = g.process_image(body_image)
+               if app_crit_image:
+                  print "there is an app. crit image"
+                  appcrit_output = g_appcrit.process_image(app_crit_image)
+               else:
+                  print "there is no app. crit image"
+                  appcrit_output = ""
+               output = output + appcrit_output
+            else:
+               output = g.process_image(image) 
+            output_file_name_base = options["unicodeoutfile"] + imageBase + "_" +imageEx[1:] + "_" + threshold_info
+            if options.has_key("debug") and options["debug"] == True:
+               g.save_debug_images(output_file_name_base)
+               if options.has_key("mode") and options["mode"] == "teubner" and app_crit_image:
+                  #TODO: make more general
+                  g_appcrit.save_debug_images(output_file_name_base + "_appcrit")
             if options.has_key("hocrout") and options["hocrout"]:
-               g.save_text_hocr(hocr_tree, output_file_name_base + ".html")
+               #if we turned this on, we would make a separate div for each page of input
+               #hocr_tree = hocr_make_page_and_return_div(internal_image_file_path,image_file_count,book_id,hocr_tree)
+               g.store_hocr(internal_image_file_path,hocr_tree)
+               if options.has_key("mode") and options["mode"] == "teubner" and app_crit_image:
+                  g_appcrit.store_hocr(internal_image_file_path,hocr_tree)
+            if options.has_key("sql") and options["sql"]:
+               page_id = sql_make_page_and_return_id(internal_image_file_path,image_file_count,book_id)
+               g.store_sql(image_path,page_id) 
+            if options.has_key("unicodeoutfile"):
+                
+               if options.has_key("hocrout") and options["hocrout"]:
+                  g.save_text_hocr(hocr_tree, output_file_name_base + ".html")
+               else:
+                  g.save_text_unicode( output_file_name_base + ".txt")
+                  if options.has_key("mode") and options["mode"] == "teubner":
+                     #TODO: make the above more general
+                     g_appcrit.save_text_unicode( output_file_name_base + "_appcrit.txt")
+            elif options.has_key("teubneroutfile"):
+               g.save_text_teubner(options["teubneroutfile"])
             else:
-               g.save_text_unicode( output_file_name_base + ".txt")
-               if options.has_key("mode") and options["mode"] == "teubner":
-                  #TODO: make the above more general
-                  g_appcrit.save_text_unicode( output_file_name_base + "_appcrit.txt")
-         elif options.has_key("teubneroutfile"):
-            g.save_text_teubner(options["teubneroutfile"])
-         else:
-            print output
+               print output
       image_file_count += 1
 
 def splitAppCritTeubner(imageIn):
