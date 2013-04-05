@@ -214,8 +214,9 @@ def performGreekOCR(options):
                  count = count + 1
              if options.has_key("debug") and options["debug"] == True:
                 print "filter done.",len(ccs)-count,"elements left."
-         if (len(ccs) < 2) or (len(ccs) > MAX_CCS):
-                 raise ImageSegmentationError("Error: there are " + str(len(ccs)) +  " ccs. Max is " + str( MAX_CCS) +  " Omitting this image.")
+         if (len(ccs) < 5) or (len(ccs) > MAX_CCS):
+                 print "Error: there are " + str(len(ccs)) +  " ccs. Max is " + str( MAX_CCS) +  " Omitting this image."
+		 #raise ImageSegmentationError("Error: there are " + str(len(ccs)) +  " ccs. Max is " + str( MAX_CCS) +  " Omitting this image.")
          else:
             if options.has_key("deskew") and options["deskew"] == True:
               #from gamera.toolkits.otr.otr_staff import *
