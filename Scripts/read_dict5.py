@@ -21,7 +21,9 @@ teubner_serif_weights = [
      unicode(u"\N{APOSTROPHE}"), 1],
     ['replace', smooth_breathing_replacement, acute_accent_replacement, 1],
     ['replace', rough_breathing_replacement, grave_accent_replacement, 1],
-    ['replace', ur'ΟοO0o', ur'ΟοO0o', 2],
+    ['replace',ur'0', ur'Ο',1],#zero to capital omicron
+    ['replace',ur'0',ur'οΘθ',2],#zero to small omicron and thetas
+    ['replace', ur'ΟοOo', ur'ΟοOo', 2],
     ['replace', ur'Λλ', ur'Λλ', 1],
     ['replace', ur'A', ur'Α', 1],
     ['replace', ur'BβΒ', ur'BβΒ', 1],
@@ -246,7 +248,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     # why doesn't this trimm all the ones that pass spellcheck?
     # vocab = sorted(set(vocab).difference(set(dict_words)))
     # print "vocab trimmed of dictionary words to ", len(vocab)
-    p = Pool(processes=6)
+    p = Pool(processes=20)
     output = p.map(process_vocab,processed_vocab_chunks)
     for output_chunk in output:
         output_file.write(output_chunk)
