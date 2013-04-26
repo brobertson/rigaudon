@@ -24,6 +24,7 @@ export RELATIVE_SECONDARY_OUTPUT=${DATE}_${filename}_output_tc
 export RELATIVE_TESS_OUTPUT=tess_eng_output
 export CSV_FILE=$SECONDARY_OUTPUT/${DATE}_${filename}_summary.csv
 export GRAPH_IMAGE_FILE=$HOCR_SELECTED/${DATE}_${filename}_summary.png
+export GRAPH_IMAGE_FILE_3D=$HOCR_SELECTED/3d.png
 #export DICTIONARY_FILE=/usr/local/OCR_Processing/Dictionary/MORPHEUS_DUMP_PLUS-greek-dictionary-with-bogus-freq.txt
 export SPELLCHECK_FILE=$TEXT_SELECTED/${DATE}_${filename}_spellcheck.csv
 export SIDE_BY_SIDE_VIEW=$BOOK_DIR/${barebookname}_${DATE}_${filename}_sidebyside
@@ -121,7 +122,7 @@ qsub -N $LYNX_DUMP_JOB_NAME -p -150 -hold_jid $OCR_BATCH_JOB_NAME -o $OUTPUT_DIR
 #1. Copy the highest-scoring text file to the 'selected' dir
 #2. Copy the corresponding highest-scoring hocr file to the 'selected' dir
 #3. Make a graph of page# vs. score for these highest-scoring pages.
-qsub -N $SUMMARY_SPLIT_JOB_NAME -p -100 -hold_jid  $LYNX_DUMP_JOB_NAME  -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/summary_split.py $CSV_FILE $HOCR_OUTPUT $PRIMARY_OUTPUT $HOCR_SELECTED $TEXT_SELECTED $GRAPH_IMAGE_FILE
+qsub -N $SUMMARY_SPLIT_JOB_NAME -p -100 -hold_jid  $LYNX_DUMP_JOB_NAME  -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/summary_split.py $CSV_FILE $HOCR_OUTPUT $PRIMARY_OUTPUT $HOCR_SELECTED $TEXT_SELECTED $GRAPH_IMAGE_FILE $barebookname $filename
 
 qsub -N $SPELLCHECK_JOB_NAME  -hold_jid  $SUMMARY_SPLIT_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/read_dict5.py $DICTIONARY_FILE $TEXT_SELECTED/output*  $SPELLCHECK_FILE
 

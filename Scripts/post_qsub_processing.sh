@@ -71,7 +71,7 @@ scp -r $RELATIVE_SPELLCHECKED_HOCR_SELECTED heml:/home/brucerob/Rigaudon/${BOOK_
 
 scp -r $SIDE_BY_SIDE_VIEW heml:/home/brucerob/Rigaudon/Views/SideBySide
 
-echo "$BOOK_DIR $DATE done using $filename classifier. `ls $HOCR_SELECTED | wc -l` files created with total score `cat $HOCR_SELECTED/best_scores_sum.txt`. Materials at http://heml.mta.ca/Rigaudon/Views/SideBySide/${RELATIVE_SIDE_BY_SIDE_VIEW}" | mutt -s "$BOOK_DIR at sharcnet" -a $GRAPH_IMAGE_FILE -- bruce.g.robertson@gmail.com
+echo "$BOOK_DIR $DATE done using $filename classifier. `ls $HOCR_SELECTED | wc -l` files created with total score `cat $HOCR_SELECTED/best_scores_sum.txt`. Materials at http://heml.mta.ca/Rigaudon/Views/SideBySide/${RELATIVE_SIDE_BY_SIDE_VIEW} `cat $INFO_FILE`" | mutt -s "$BOOK_DIR at sharcnet" -a $GRAPH_IMAGE_FILE $GRAPH_IMAGE_FILE_3D -- bruce.g.robertson@gmail.com
 
 rm -rf  $HOCR_OUTPUT
 rm -rf  $PRIMARY_OUTPUT
