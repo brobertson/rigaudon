@@ -56,14 +56,16 @@ for line in summary:
         [thresh_good, junk] = thresh.split('-')
         thresh_good = int(thresh_good)
     except ValueError:
+        print "got a value error for first run"
         [text_name, page_number, file_type, junk] = text_line.split('_')
         thresh_good = -1
-        image_type_dictionary[page_number] = file_type
-        try:
-            pairs = dictionary[page_number]
-            pairs.append([thresh_good, float(bValue)])
-        except KeyError:
-            dictionary[page_number] = [[thresh_good, float(bValue)]]
+    image_type_dictionary[page_number] = file_type
+    try:
+        pairs = dictionary[page_number]
+        pairs.append([thresh_good, float(bValue)])
+    except KeyError:
+        print "got a key error"
+        dictionary[page_number] = [[thresh_good, float(bValue)]]
 
 # This makes a 3-d graph of all the results
 # needs matplotlib version => 1.0
