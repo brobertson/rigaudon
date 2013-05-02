@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# vim: set fileencoding=UTF-8 :
 from gamera.core import init_gamera
 init_gamera()
 import lxml
@@ -191,6 +192,7 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
     print "lines2 on return: ", len(lines2)
     return lines2
 
+
 def select_best(dictionary,right_lines):
     import unicodedata
     print 'linematches length: ', len(right_lines)
@@ -207,15 +209,15 @@ def select_best(dictionary,right_lines):
                 left_test_word = ' '.join([a.text for a in left_match])
                 print "test_words: ", left_test_word, right_test_word
                 left_is_number = is_number(split_text_token(left_test_word)[1])
-                left_in_dict = split_text_token(left_test_word)[1] in dictionary
-                right_in_dict = split_text_token(right_test_word)[1] in dictionary
-                print '\t', left_test_word, "is in dict?", left_in_dict
-                print '\t', right_test_word, "is in dict?", right_in_dict
-                left_lower_in_dict = split_text_token(left_test_word)[1].lower() in dictionary
-                right_lower_in_dict = split_text_token(right_test_word)[1].lower() in dictionary
-                print '\t', left_test_word, "is lower dict?", left_lower_in_dict
-                print '\t', right_test_word, "is lower dict?", right_lower_in_dict
-                if right_in_dict and not left_in_dict:
+                left_in_dict = split_text_token(left_test_word)[1].replace('\'',u'’') in dictionary
+                right_in_dict = split_text_token(right_test_word)[1].replace('\'',u'’') in dictionary
+                #print '\t', left_test_word, "is in dict?", left_in_dict
+                #print '\t', right_test_word, "is in dict?", right_in_dict
+                left_lower_in_dict =split_text_token(left_test_word)[1].replace('\'',u'’').lower() in dictionary
+                right_lower_in_dict = split_text_token(right_test_word)[1].replace('\'',u'’').lower() in dictionary
+                #print '\t', left_test_word, "is lower dict?", left_lower_in_dict
+                #print '\t', right_test_word, "is lower dict?", right_lower_in_dict
+                if (right_in_dict and not left_in_dict) or (right_lower_in_dict and not (left_in_dict or left_lower_in_dict)):
                     print '\t', "replacing left"
                     left_match[0].element.text = unicodedata.normalize('NFD',right_test_word)
                     left_match[0].element.set("lang","grc")
@@ -236,17 +238,15 @@ for line in dictionaryFile:
     dictionary.append(word)
 fileIn1 = open(sys.argv[2],'r')
 tree1 = etree.parse(fileIn1)
-fileIn2 = open(sys.argv[3],'r')
-tree2 = etree.parse(fileIn2)
-lines_1 = get_hocr_lines_for_tree(tree1)
-lines_2 = get_hocr_lines_for_tree(tree2)
-
-my_line_matches = compare_hocr_lines(lines_1, lines_2,15,15)
-
-select_best(dictionary,my_line_matches)
-
-out_file = open(sys.argv[4],'w')
+for fileInName in sys.argv[3:-2]:
+    print "now doing:", fileInName
+    fileIn2 = open(fileInName,'r')
+    tree2 = etree.parse(fileIn2)
+    lines_1 = get_hocr_lines_for_tree(tree1)
+    lines_2 = get_hocr_lines_for_tree(tree2)
+    my_line_matches = compare_hocr_lines(lines_1, lines_2,15,15)
+    select_best(dictionary,my_line_matches)
+out_file = open(sys.argv[-1],'w')
 out_file.write(etree.tostring(tree1.getroot(), xml_declaration=True))
 out_file.close()
-
 
