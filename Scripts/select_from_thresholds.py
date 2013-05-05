@@ -192,12 +192,31 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
     print "lines2 on return: ", len(lines2)
     return lines2
 
+def memoized_in_dict(memo,dictionary,word):
+    from greek_tools import in_dict
+    try:
+        return memo[word]
+    except:
+        result = in_dict(dictionary,word)
+        memo[word] = result
+        return result
+
+def memoized_in_dict_lower(memo, dictionary, word):
+    from greek_tools import in_dict_lower
+    try:
+        return memo[word]
+    except:
+        result = in_dict_lower(dictionary,word)
+        memo[word] = result
+        return result
+
 
 def select_best(dictionary,right_lines):
     import unicodedata
     print 'linematches length: ', len(right_lines)
-    from greek_tools import is_greek_string, is_number, split_text_token
-
+    from greek_tools import in_dict, in_dict_lower, is_greek_string, is_number, split_text_token
+    in_dict_memo = {}
+    in_dict_memo_lower = {}
     for lines in right_lines:
         try:
             for match in lines.line_matches:
@@ -209,12 +228,12 @@ def select_best(dictionary,right_lines):
                 left_test_word = ' '.join([a.text for a in left_match])
                 print "test_words: ", left_test_word, right_test_word
                 left_is_number = is_number(split_text_token(left_test_word)[1])
-                left_in_dict = split_text_token(left_test_word)[1].replace('\'',u'’') in dictionary
-                right_in_dict = split_text_token(right_test_word)[1].replace('\'',u'’') in dictionary
+                left_in_dict = memoized_in_dict(in_dict_memo,dictionary,left_test_word)#left_in_dict = split_text_token(left_test_word)[1].replace('\'',u'’') in dictionary
+                right_in_dict = memoized_in_dict(in_dict_memo,dictionary,right_test_word)
                 #print '\t', left_test_word, "is in dict?", left_in_dict
                 #print '\t', right_test_word, "is in dict?", right_in_dict
-                left_lower_in_dict =split_text_token(left_test_word)[1].replace('\'',u'’').lower() in dictionary
-                right_lower_in_dict = split_text_token(right_test_word)[1].replace('\'',u'’').lower() in dictionary
+                left_lower_in_dict = memoized_in_dict_lower(in_dict_memo_lower,dictionary, left_test_word)
+                right_lower_in_dict = memoized_in_dict_lower(in_dict_memo_lower,dictionary, right_test_word)
                 #print '\t', left_test_word, "is lower dict?", left_lower_in_dict
                 #print '\t', right_test_word, "is lower dict?", right_lower_in_dict
                 if (right_in_dict and not left_in_dict) or (right_lower_in_dict and not (left_in_dict or left_lower_in_dict)):
