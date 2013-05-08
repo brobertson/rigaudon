@@ -57,7 +57,7 @@ teubner_serif_weights = [
   #  ['replace', ur'ι'+iota_subscript_replacement, ur'ι'+iota_subscript_replacement, 3]
 ]
 
-debug = False
+debug =True
 
 """
 A generator function for chopping up a given list into chunks of
@@ -157,7 +157,7 @@ def Dehyphenate(lines):
 			line = line[:-2]
 	except IndexError:
 		pass
-    
+
     n = 0
     for line in text_array[:-2]:
    #             print line
@@ -209,7 +209,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
         tokens  =  Dehyphenate(lines)
 	#if tokens[-1][-1] = '-':
         #       tokens = tokens[:-1]
-	
+
         if debug:
             for token in tokens:
                 print token
@@ -227,7 +227,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     print "non-capital words: ", len(vocab)
     if debug:
       print "Are they capitalized?"
-      from greek_tools import is_capitalized 
+      from greek_tools import is_capitalized
       for wordIn in vocab:
         #wordIn = preprocess_word(wordIn)
         print wordIn, is_capitalized(wordIn)
@@ -418,8 +418,9 @@ def getCloseWords(wordIn, word_dicts, rules, max_weight, threshold=3, fast=True,
     n = 0
     # print "Now comparing to..."
     if wordInTrans in dict_words:
-        print "short-circuting dictionary word"
-        output_words.append((wordInTrans,0,0,0,'xxx','yyy'))
+        pass
+    #    print "short-circuting dictionary word"
+    #    output_words.append((wordInTrans,0,0,0,'xxx','yyy'))
     else:
       for word in dict_words:
           # print u"*****" + words_clean[n]
@@ -433,7 +434,7 @@ def getCloseWords(wordIn, word_dicts, rules, max_weight, threshold=3, fast=True,
               edits = Levenshtein.editops(wordInTrans, word)
               w = weight_for_leven_edits(wordInTrans, word, edits, rules, max_weight, debug=False)
               output_words.append(
-                  (word, lev_distance, len(edits), w, 'xxx', 'yyy')) 
+                  (word, lev_distance, len(edits), w, 'xxx', 'yyy'))
               if (lev_distance == 0) and (fast == True):
                   # In the case of an exact match, cut the search short
                   # We might have got some close matches ahead of time, so this

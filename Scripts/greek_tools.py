@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: utf8 -*- 
+# -*- coding: utf8 -*-
 import unicodedata
 
 def memoize(f):
@@ -10,6 +10,31 @@ def memoize(f):
         return cache[x]
     return memf
 
+@memoize
+def can_combine(char1,char2):
+    #print "can"  + unicodedata.name(char1).encode('utf-8') + " and " + unicodedata.name(char2).encode('utf-8') + " combine?"
+    normalized_form = unicodedata.normalize('NFC',char1+char2)
+    length = len(normalized_form)
+    #print "it is length: ", length
+    if length == 1:
+        return normalized_form
+    else:
+        return False
+
+@memoize
+def recursive_combine(chars, rejects):
+    if len(chars) == 1:
+        return [chars, rejects]
+
+    combo = can_combine(chars[0], chars[1])
+    the_rest = chars[2:]
+    if len(the_rest) == 0:
+        the_rest = ''
+    if combo:
+        return recursive_combine(combo + the_rest, rejects)
+    else:
+        rejects = rejects + chars[1]
+        return recursive_combine(chars[0] + the_rest, rejects)
 
 def dump(stringIn):
         for char in stringIn:
@@ -92,7 +117,7 @@ def delete_non_greek_tokens(tokens):
 def split_text_token(stringIn):
 	import re
         word_parts = re.match(ur'(^[„\[\("〈]*)(.*?)([„.,!?;†·:〉\)\d\]]*$)',stringIn,re.UNICODE)
- 
+
    	try:
       		parts = word_parts.groups()
 	except AttributeError:
@@ -104,3 +129,19 @@ def split_text_token(stringIn):
 @memoize
 def greek_string_length(stringIn):
     return len(stringIn)
+
+@memoize
+def strip_accents(stringIn):
+    import unicodedata
+    return ''.join(c for c in unicodedata.normalize('NFD', stringIn)
+                   if not unicodedata.combining(c))
+
+
+def in_dict(dictionary,word):
+    from greek_tools import split_text_token
+    return split_text_token(word)[1].replace('\'',u'’') in dictionary
+
+
+def in_dict_lower(dictionary,word):
+    from greek_tools import split_text_token
+    return split_text_token(word)[1].replace('\'',u'’').lower() in dictionary

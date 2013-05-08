@@ -5,7 +5,7 @@ init_gamera()
 import lxml
 from lxml import etree
 import sys
-
+DEBUG=False
 class hocrWord():
     """associates word text with bbox"""
 
@@ -102,7 +102,7 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
     lines1 = sort_lines_top_bottom_left_right(lines1)
     lines2 = sort_lines_top_bottom_left_right(lines2)
     lines2_copy = lines2[:]
-    print "at start lines2 is: ", len(lines2)
+    #print "at start lines2 is: ", len(lines2)
     line_pairs = []
     if not len(lines1) == len(lines2):
         raise ValueError("hocr lines are not equal in number: ", len(lines1), " and ", len(lines2))
@@ -125,11 +125,11 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
         lines2_copy.remove(min_distance_candidate)
     if not len(line_pairs) == len(lines1):
         raise ValueError("not all lines were matched")
-    print "at end lines2 is ", len(lines2)
+    #print "at end lines2 is ", len(lines2)
     max_x_offset = 0
     max_y_offset = 0
     for line_pair in line_pairs:
-        print "new line"
+        #print "new line"
         words_1 = line_pair[0].words
         words_2 = line_pair[1].words
         line_matches = []
@@ -155,25 +155,25 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
                     left_match.append(unmatched_words_1[current_word_1])
                     right_match.append(unmatched_words_2[current_word_2])
                     while abs(right_difference) > x_tolerance and (current_word_2 < len(unmatched_words_2)-1 or current_word_1 < len(unmatched_words_1)-1):
-                        print "did loop"
+                        if DEBUG: print "did loop"
                         if right_difference > 0 and (current_word_2 < len(unmatched_words_2)-1) and (unmatched_words_2[current_word_2 + 1].bbox.ul_x < unmatched_words_1[current_word_1].bbox.lr.x):
                             #ensure that the next word of the second document is within the box of the first
-                            print "case1 adding one from right"
+                            if DEBUG: print "case1 adding one from right"
                             current_word_2 += 1
                             right_match.append(unmatched_words_2[current_word_2])
                         elif right_difference < 0 and (current_word_1 < len(unmatched_words_1)-1) and (unmatched_words_1[current_word_1 + 1].bbox.ul_x < unmatched_words_2[current_word_2].bbox.lr.x):
                             #ensured that the next word from the first document is within the box of the second
-                            print "case 2 adding one from left"
+                            if DEBUG: print "case 2 adding one from left"
                             current_word_1 += 1
                             left_match.append(unmatched_words_1[current_word_1])
                         else:#means that one of the above are bigger than they ought to be, so we'll just append what we have
-                            print "breaking"
+                            if DEBUG: print "breaking"
                             break
                         right_difference = unmatched_words_1[current_word_1].bbox.lr_x - unmatched_words_2[current_word_2].bbox.lr_x
-                        print "right difference: ", right_difference
-                    print "appending values:"
-                    print "\tleft ", len(left_match), "starting with ", left_match[0].text
-                    print "\tright ", len(right_match), "starting with ", right_match[0].text
+                        if DEBUG: print "right difference: ", right_difference
+                    if DEBUG: print "appending values:"
+                    if DEBUG: print "\tleft ", len(left_match), "starting with ", left_match[0].text
+                    if DEBUG: print "\tright ", len(right_match), "starting with ", right_match[0].text
                     line_matches.append((left_match,right_match))
                     left_match=[]
                     right_match= []
@@ -183,13 +183,13 @@ def compare_hocr_lines(lines1, lines2, x_tolerance, y_tolerance):
         for match in line_matches:
             (left_match, right_match) = match
             for word in left_match:
-                print word.text, word.element,
-            print "\t\t\t\t",
+                if DEBUG: print word.text, word.element,
+            if DEBUG: print "\t\t\t\t",
             for word in right_match:
-                print  word.text, word.element
-            print
+                if DEBUG: print  word.text, word.element
+            if DEBUG: print
             line_pair[1].line_matches = line_matches
-    print "lines2 on return: ", len(lines2)
+    if DEBUG: print "lines2 on return: ", len(lines2)
     return lines2
 
 def memoized_in_dict(memo,dictionary,word):
@@ -213,7 +213,7 @@ def memoized_in_dict_lower(memo, dictionary, word):
 
 def select_best(dictionary,right_lines):
     import unicodedata
-    print 'linematches length: ', len(right_lines)
+    if DEBUG: print 'linematches length: ', len(right_lines)
     from greek_tools import in_dict, in_dict_lower, is_greek_string, is_number, split_text_token
     in_dict_memo = {}
     in_dict_memo_lower = {}
@@ -226,9 +226,9 @@ def select_best(dictionary,right_lines):
 
                 left_test_word = ""
                 left_test_word = ' '.join([a.text for a in left_match])
-                print "test_words: ", left_test_word, right_test_word
+                if DEBUG: print "test_words: ", left_test_word, right_test_word
                 left_is_number = is_number(split_text_token(left_test_word)[1])
-                left_in_dict = memoized_in_dict(in_dict_memo,dictionary,left_test_word)#left_in_dict = split_text_token(left_test_word)[1].replace('\'',u'’') in dictionary
+                left_in_dict = memoized_in_dict(in_dict_memo,dictionary,left_test_word)
                 right_in_dict = memoized_in_dict(in_dict_memo,dictionary,right_test_word)
                 #print '\t', left_test_word, "is in dict?", left_in_dict
                 #print '\t', right_test_word, "is in dict?", right_in_dict
@@ -237,7 +237,7 @@ def select_best(dictionary,right_lines):
                 #print '\t', left_test_word, "is lower dict?", left_lower_in_dict
                 #print '\t', right_test_word, "is lower dict?", right_lower_in_dict
                 if (right_in_dict and not left_in_dict) or (right_lower_in_dict and not (left_in_dict or left_lower_in_dict)):
-                    print '\t', "replacing left"
+                    print '\t', "replacing ", left_test_word, "with", right_test_word
                     left_match[0].element.text = unicodedata.normalize('NFD',right_test_word)
                     left_match[0].element.set("lang","grc")
                     left_match[0].element.set("{http://www.w3.org/XML/1998/namespace}lang","grc")
@@ -258,7 +258,7 @@ for line in dictionaryFile:
 fileIn1 = open(sys.argv[2],'r')
 tree1 = etree.parse(fileIn1)
 for fileInName in sys.argv[3:-2]:
-    print "now doing:", fileInName
+    print "processing:", fileInName
     fileIn2 = open(fileInName,'r')
     tree2 = etree.parse(fileIn2)
     lines_1 = get_hocr_lines_for_tree(tree1)
