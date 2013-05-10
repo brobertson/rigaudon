@@ -251,6 +251,8 @@ def select_best(dictionary,right_lines):
             pass
 dictionary = []
 import codecs
+import os
+#sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 dictionaryFile = codecs.open(sys.argv[1],'r',encoding='UTF-8')
 for line in dictionaryFile:
     (word,freq) = line.split(',')
@@ -258,13 +260,16 @@ for line in dictionaryFile:
 fileIn1 = open(sys.argv[2],'r')
 tree1 = etree.parse(fileIn1)
 for fileInName in sys.argv[3:-2]:
-    print "processing:", fileInName
-    fileIn2 = open(fileInName,'r')
-    tree2 = etree.parse(fileIn2)
-    lines_1 = get_hocr_lines_for_tree(tree1)
-    lines_2 = get_hocr_lines_for_tree(tree2)
-    my_line_matches = compare_hocr_lines(lines_1, lines_2,15,15)
-    select_best(dictionary,my_line_matches)
+    try:
+        print "processing:", fileInName
+        fileIn2 = open(fileInName,'r')
+        tree2 = etree.parse(fileIn2)
+        lines_1 = get_hocr_lines_for_tree(tree1)
+        lines_2 = get_hocr_lines_for_tree(tree2)
+        my_line_matches = compare_hocr_lines(lines_1, lines_2,15,15)
+        select_best(dictionary,my_line_matches)
+    except Exception as e:
+        print e 
 out_file = open(sys.argv[-1],'w')
 out_file.write(etree.tostring(tree1.getroot(), xml_declaration=True))
 out_file.close()
