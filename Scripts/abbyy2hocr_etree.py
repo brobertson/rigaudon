@@ -85,11 +85,11 @@ def loads(data):
                     if DEBUG: print 'skipping space for dimension'
                 else:
                     word_dimensions = greatest_dimensions(word_dimensions, dimensions(elem))
-            output = elem.text or ''
-            try:
-                xml_word.text = xml_word.text + output
-            except:
-                xml_word.text = output
+                    output = elem.text or ''
+                    try:
+                        xml_word.text = xml_word.text + output
+                    except:
+                        xml_word.text = output
             if DEBUG: print output
             just_started_line = False
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}block':
