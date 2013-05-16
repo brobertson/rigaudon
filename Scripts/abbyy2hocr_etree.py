@@ -17,7 +17,7 @@ def dimensions(char_elem):
     return out
 
 
-def generate_new_output_page(page_no):
+def generate_new_output_page():
     root = etree.XML('''<html xmlns:abbyy="http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml">
                        <head>
                          <meta name="ocr-id" value="abbyy"/>
@@ -25,8 +25,12 @@ def generate_new_output_page(page_no):
                        </head>
                        <body/>
                       </html>''')
-    print 'new page:',page_no
     return root
+
+def output_filepath( base_dir, ident, page_no):
+    import os.path
+    filename = ident + '_' + str(page_no).zfill(4) + '.html'
+    return os.path.join(base_dir,filename)
 
 def hocr_span(class_str):
     return etree.XML('<span class="' + class_str + '"/>')
@@ -36,21 +40,27 @@ def add_hocr_dim_to_xml_elem(xml_elem, dim):
     xml_elem.set('title',title_str)
     return xml_elem
 
-def loads(data):
+def main(abbyy_in, dir_out):
+    import os.path
+    base_name = os.path.split(abbyy_in)[1].split('_')[0]
+    print base_name
     word_dimensions = []
     just_started_line = False
     params = method = None
     page_no = 0
     xml_page = xml_carea = xml_para = xml_line = xml_word = None
-    for action, elem in etree.iterparse(data, events=("start", "end")):
+    for action, elem in etree.iterparse(abbyy_in, events=("start", "end")):
         if DEBUG: print action, elem.tag
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}page':
             if action == 'start':
-                xml_page = generate_new_output_page(page_no)
+                xml_page = generate_new_output_page()
             elif action == 'end':
                 if DEBUG: print 'closing page'
                 page_no = page_no + 1
-                print(etree.tostring(xml_page, xml_declaration=False, pretty_print=True, encoding="UTF-8"))
+                page_filepath = output_filepath(dir_out, base_name, page_no)
+                print "I print to", page_filepath
+                outfile = open(page_filepath,'w')
+                outfile.write(etree.tostring(xml_page, xml_declaration=False, pretty_print=True, encoding="UTF-8"))
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}line':
             if action == 'start':
                 if DEBUG: print 'opening line'
@@ -85,11 +95,14 @@ def loads(data):
                     if DEBUG: print 'skipping space for dimension'
                 else:
                     word_dimensions = greatest_dimensions(word_dimensions, dimensions(elem))
-                    output = elem.text or ''
-                    try:
-                        xml_word.text = xml_word.text + output
-                    except:
-                        xml_word.text = output
+            output = elem.text or ''
+                    #try:
+            if not xml_word.text:
+                xml_word.text = ''
+            if not output == ' ':
+                    xml_word.text = xml_word.text + output
+                    #except:
+                    #    xml_word.text = output
             if DEBUG: print output
             just_started_line = False
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}block':
@@ -101,6 +114,7 @@ def loads(data):
                 if DEBUG: print(etree.tostring(xml_carea, xml_declaration=False, encoding="UTF-8"))
                 xml_body = xml_page.xpath('/html/body')[0]
                 xml_body.append(xml_carea)
+                xml_carea = None
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}par':
             if action == 'start':
                 if DEBUG: print 'start paragraph'
@@ -109,13 +123,13 @@ def loads(data):
                 if DEBUG: print 'end paragraph'
                 try:
                     xml_carea.append(xml_par)
+                    xml_par = None
                 except:
                     pass
                 if DEBUG: print(etree.tostring(xml_par, xml_declaration=False, encoding="UTF-8"))
         #elem.clear()
     return params, method
 
-def main(filename, output_dir):
 
     loads(filename)
 
