@@ -38,13 +38,18 @@ if [ ! -d $PROCESSING_DIR ]; then
   echo 'Uncompressing ...'
   gunzip *gz
   unzip *zip
-
-  echo "Flattening abbyy file"
-  $RIGAUDON_HOME/Scripts/flatten_for_abbyy.sh ${ARCHIVE_ID}_abbyy 
-  echo 'Converting abbyy.xml file to hocr'
-  $RIGAUDON_HOME/Scripts/abbyy_to_hocr.sh ${ARCHIVE_ID}_abbyy_flat.xml
-  echo 'Renumbering HOCR files to concur with image files'
-  $RIGAUDON_HOME/Scripts/renumber_hocr_out.sh ${ARCHIVE_ID}_jp2
+  
+  echo "Converting abbyy file to hocr"
+  HOCR_DIR=${ARCHIVE_ID}_hocr
+  #echo "hocrDir: $hocrDir"
+  mkdir $HOCR_DIR
+  python $RIGAUDON_HOME/Scripts/abbyy2hocr_etree.py ${ARCHIVE_ID}_abbyy $HOCR_DIR  ${ARCHIVE_ID}_jp2
+  #echo "Flattening abbyy file"
+  #$RIGAUDON_HOME/Scripts/flatten_for_abbyy.sh ${ARCHIVE_ID}_abbyy 
+  #echo 'Converting abbyy.xml file to hocr'
+  #$RIGAUDON_HOME/Scripts/abbyy_to_hocr.sh ${ARCHIVE_ID}_abbyy_flat.xml
+  #echo 'Renumbering HOCR files to concur with image files'
+  #$RIGAUDON_HOME/Scripts/renumber_hocr_out.sh ${ARCHIVE_ID}_jp2
 fi
 #done downloading and pre-processing
 
