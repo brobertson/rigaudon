@@ -1,6 +1,4 @@
 from lxml import etree
-#from cStringIO import StringIO
-
 DEBUG = False
 
 def greatest_dimensions(dim_in, test_dim):
@@ -27,27 +25,31 @@ def generate_new_output_page():
                       </html>''')
     return root
 
+
 def output_filepath( base_dir, ident, page_no):
     import os.path
     filename = ident + '_' + str(page_no).zfill(4) + '.html'
     return os.path.join(base_dir,filename)
 
+
 def hocr_span(class_str):
     return etree.XML('<span class="' + class_str + '"/>')
+
 
 def add_hocr_dim_to_xml_elem(xml_elem, dim):
     title_str = "bbox {0} {1} {2} {3}".format(dim[0],dim[2],dim[1],dim[3])# ltrb
     xml_elem.set('title',title_str)
     return xml_elem
 
-def main(abbyy_in, dir_out):
+
+def main(abbyy_in, dir_out, first_file_num):
     import os.path
     base_name = os.path.split(abbyy_in)[1].split('_')[0]
     print base_name
     word_dimensions = []
     just_started_line = False
     params = method = None
-    page_no = 0
+    page_no = first_file_num
     xml_page = xml_carea = xml_para = xml_line = xml_word = None
     for action, elem in etree.iterparse(abbyy_in, events=("start", "end")):
         if DEBUG: print action, elem.tag
@@ -56,11 +58,11 @@ def main(abbyy_in, dir_out):
                 xml_page = generate_new_output_page()
             elif action == 'end':
                 if DEBUG: print 'closing page'
-                page_no = page_no + 1
                 page_filepath = output_filepath(dir_out, base_name, page_no)
                 print "I print to", page_filepath
                 outfile = open(page_filepath,'w')
                 outfile.write(etree.tostring(xml_page, xml_declaration=False, pretty_print=True, encoding="UTF-8"))
+                page_no = page_no + 1
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}line':
             if action == 'start':
                 if DEBUG: print 'opening line'
@@ -133,7 +135,20 @@ def main(abbyy_in, dir_out):
 
     loads(filename)
 
+
 if __name__ == "__main__":
     import sys
     #input file, output dir
-    main(sys.argv[1], sys.argv[2])
+    import glob, os
+    try:
+        image_dir = sys.argv[3]
+        first_filename =  sorted(glob.glob(image_dir + '/' + '*jp2'))[0]
+        first_filename = os.path.split(first_filename)[1]
+        print "first_filename", first_filename
+        first_file_num_str = first_filename.split('.')[0].split('_')[1]
+        print 'first file num:', first_file_num_str
+        first_file_num = int(first_file_num_str)
+        print 'first file num:', first_file_num
+    except:
+        first_file_num = 1
+    main(sys.argv[1], sys.argv[2], first_file_num)
