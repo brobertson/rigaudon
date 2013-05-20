@@ -210,7 +210,7 @@ def grecify_left(right_lines):
                 left_is_number = is_number(left_test_word)
                 print '\t', left_test_word, "is a number?", left_is_number
 		print '\t', right_test_word, "is greek?", is_greek_string(right_test_word)
-                if is_greek_string(right_test_word) and not left_is_number:
+                if is_greek_string(right_test_word):# and not left_is_number:
                     print '\t', "replacing left"
                     left_match[0].element.text = unicodedata.normalize('NFD',right_test_word)
                     left_match[0].element.set("lang","grc")
