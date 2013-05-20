@@ -70,6 +70,7 @@ scp -r $RELATIVE_COMBINED_HOCR heml:/home/brucerob/Rigaudon/${BOOK_NAME}
 scp -r $RELATIVE_SPELLCHECKED_HOCR_SELECTED heml:/home/brucerob/Rigaudon/${BOOK_NAME}
 
 scp -r $SIDE_BY_SIDE_VIEW heml:/home/brucerob/Rigaudon/Views/SideBySide
+scp  $BOOK_DIR/robertson_${DATE}_${BOOK_NAME}_${filename}_full.tar.gz heml:/home/brucerob/Rigaudon/Inbox
 
 echo "$BOOK_DIR $DATE done using $filename classifier. `ls $HOCR_SELECTED | wc -l` files created with total score `cat $HOCR_SELECTED/best_scores_sum.txt`. Materials at http://heml.mta.ca/Rigaudon/Views/SideBySide/${RELATIVE_SIDE_BY_SIDE_VIEW} `cat $INFO_FILE`" | mutt -s "$BOOK_DIR at sharcnet" -a $GRAPH_IMAGE_FILE $GRAPH_IMAGE_FILE_3D -- bruce.g.robertson@gmail.com
 
