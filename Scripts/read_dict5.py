@@ -44,6 +44,7 @@ teubner_serif_weights = [
     ['replace', ur'E', ur'ε', 2],
     ['replace', ur'Z', ur'Ζ', 1],
     ['replace', ur'K', ur'κΚ', 1],
+    ['replace', ur'Η', ur'Π', 2],
     ['replace', ur'a', ur'α', 1],
     ['replace', ur'ΛΑ', ur'ΛΑ', 1],
     ['insert', ur'*', all_accents, 3],
@@ -238,7 +239,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     dict_time = time.time() - start_time
     minutes = dict_time / 60.0
     print "dict building took", minutes, " minutes."
-    vocab_chunks = list(chunks(vocab, len(vocab) / 6))
+    vocab_chunks = list(chunks(vocab, len(vocab) / 10))
     print "vocab is ", len(vocab)
     processed_vocab_chunks = zip(vocab_chunks, repeat(word_dicts), repeat(max_weight))
     print "there are ", len(processed_vocab_chunks), "chunks"
@@ -248,7 +249,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     # why doesn't this trimm all the ones that pass spellcheck?
     # vocab = sorted(set(vocab).difference(set(dict_words)))
     # print "vocab trimmed of dictionary words to ", len(vocab)
-    p = Pool(processes=20)
+    p = Pool(processes=30)
     output = p.map(process_vocab,processed_vocab_chunks)
     for output_chunk in output:
         output_file.write(output_chunk)
@@ -415,6 +416,7 @@ def getCloseWords(wordIn, word_dicts, rules, max_weight, threshold=3, fast=True,
       print "getCloseWords for", wordInTrans.encode('utf-8'), "(", wordIn.encode('utf-8'),")"
       dump(wordIn)
     output_words = []
+    #dict_words_set = set(dict_words)
     n = 0
     # print "Now comparing to..."
     if wordInTrans in dict_words:
