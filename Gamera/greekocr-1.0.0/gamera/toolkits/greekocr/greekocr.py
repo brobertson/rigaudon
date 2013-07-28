@@ -73,7 +73,70 @@ class HocrPager(SinglePage):
          print "Exiting."
          exit(1) 
       self.ccs_lines =  generateCCsFromHocr(lineParser,self.img)
+   def chars_to_words(self): 
+      #copied from page_to_lines above
+      parser = SpanLister('ocr_word')
+      try:
+         parser.feed(open(self.hocr).read())
+      except IOError as e:
+         print "Error: could not open hocr file '" + self.hocr + "'"
+         print "Exiting."
+         exit(1)
+      #copied from generateCCsFromHocr, in hocr_segmentation
+      word_rects = []
+      for span in parser.spans:
+         print span
+         boxes =  span.split(';')[0].split()
+         point1 = Point(int(boxes[1]),int(boxes[2]))
+         point2 = Point(int(boxes[3]),int(boxes[4]))
+         try:
+            word_rects.append(Rect(point1, point2))
+         except RuntimeError as e:
+            print e
+            print "failed to make Cc from Hocr box: "
+            print boxes 
+            pass
+      #sort the word_rects?
+         
+      # end copy from generateCCsFromHocr
+      for textline in self.textlines:
 
+         # we need word bboxes within the line. Grrr. This is because not
+         # all characters in the line will be within a word bbox, so we
+         # will use this list to find horizontal divisions between words in
+         # the line.
+         word_rects_in_textline=[]
+         textline_rect = Rect(textline.bbox)
+         for word_rect in word_rects:
+            if textline_rect.contains_point(word_rect.center):
+               word_rects_in_textline.append(word_rect)
+         #print
+         #print "here's a bunch of rects:"
+         #for rect in word_rects_in_textline:
+         #  print "\t",rect
+         # compare the horizontally-sorted char bbox to the words.
+         # if char bbox is outside the word bbox
+         # then make a new output word and add it to that.
+         wordlist=[]
+         for word_rect in word_rects_in_textline:
+            word = []
+            for glyph in textline.printing_glyphs:
+               if word_rect.contains_x(glyph.center_x):
+                  print 'apparently', word_rect, 'contains', glyph.center_x, glyph.get_main_id()
+                  word.append(glyph)
+            print 'word length:', len(word)
+            if len(word) > 0: wordlist.append(word)
+            print
+         print 'number of words:', len(wordlist)
+         textline.words = wordlist
+         for word_out in wordlist:
+            print
+            for glyph in word_out:
+               print glyph.get_main_id()
+         #later, the dimensions of the word will be calculated elsewhere
+         #perhaps we should stipulate here.
+
+            
 class GreekOCR(object):
    """Provides the functionality for GreekOCR. The following parameters
 control the recognition process:
