@@ -49,6 +49,59 @@ class SinglePage(Page):
    #don't allow the built-in chars_to_words to add more spaces
    def chars_to_words(self):
       print "doing my chars_to_words ln 50 singlediacr"
+      for textline in self.textlines:
+         wordlist=[]
+         word=[]
+         glyphs = []
+         for g in textline.glyphs:
+            if textline.is_combining_glyph(g) or textline.is_small_glyph(g):
+               continue
+            glyphs.append(g)
+         spacelist = []
+         total_space = 0
+         for i in range(len(glyphs) - 1):
+            #print "between ", glyphs[i].id_name, " and ", glyphs[i+1].id_name, (glyphs[i + 1].ul_x - glyphs[i].lr_x)
+            spacelist.append(glyphs[i + 1].ul_x - glyphs[i].lr_x)
+         if(len(spacelist) > 0):
+            threshold = median(spacelist)
+            #print "threshold: ", threshold
+            threshold = threshold * 2.7#Meineke, Kaibel: 3
+         else:
+            threshold  = 0
+         #end calculating threshold for word-spacing
+         previousNonCombining = None
+         currentNonCombining = None
+         for i in range(len(textline.printing_glyphs)):
+               if not textline.is_combining_glyph(textline.printing_glyphs[i]): 
+                 previousNonCombining = currentNonCombining
+   ##              print "PNC now: ",
+   ##              if previousNonCombining:
+   ##                print previousNonCombining.id_name
+   ##              else:
+   ##                print "NONE"
+                 currentNonCombining = textline.printing_glyphs[i]
+   ##              print "CNC now: ", currentNonCombining.id_name
+                 if(previousNonCombining and currentNonCombining and ((currentNonCombining.ul_x - previousNonCombining.lr_x) > threshold)):
+   ##                  print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
+                     cnc_dist = abs(currentNonCombining.center_x - word[-1].center_x)
+                     pnc_dist = abs(previousNonCombining.center_x - word[-1].center_x)
+                     #sometimes the initial smooth breathing hangs over its initial vowel, putting it before that vowel in order
+                    #this is a poor attempt to make sure it doesn't get glommed onto the previous word. A positional analysis would be much better TODO
+                     if ( ('combining.comma.above' in word[-1].get_main_id() or 'combining.reversed.comma.above' in word[-1].get_main_id()) and cnc_dist < pnc_dist) :# ['combining.comma.above.and.combining.acute.accent.above','combining.comma.above', 'combining.reversed.comma.above'] and cnc_dist < pnc_dist):# and not (previousNonCombining.get_main_id() in (greek_small_vowels + ['greek.small.letter.rho'] + greek_capital_vowels)):
+   ##                     print "word[-1] is ", word[-1].get_main_id(), " with cl ", word[-1].center_x 
+   ##                     print "cnc is ", currentNonCombining.get_main_id(), " with cl ", currentNonCombining.center_x
+   ##                     print "pnc is ", previousNonCombining.get_main_id(), "with cl ", previousNonCombining.center_x
+    #print "I'm worried about ", word[-1].get_main_id(), "being put with", previousNonCombining.get_main_id()
+                        wordlist.append(word[:-1])
+                        word = [word[-1]]
+                     else:
+                        wordlist.append(word)
+                        word = []
+               word.append(textline.printing_glyphs[i])
+         if(len(word) > 0):
+            wordlist.append(word)
+         textline.words= wordlist
+
       
 class ImageSegmentationError(Exception):
 	def __init__(self, value):
@@ -329,7 +382,7 @@ class SingleTextline(Textline):
       self.identify_ambiguous_glyphs()
       #begin calculating threshold for word-spacing
       glyphs = []
-      printing_glyphs = []
+      self.printing_glyphs = []
       for g in self.glyphs:
          # print g.id_name, g.ul_x, self.is_small_glyph(g)
          if self.is_combining_glyph(g) or self.is_small_glyph(g):
@@ -341,14 +394,14 @@ class SingleTextline(Textline):
          if self.is_skip(g):
             continue
          # print g.id_name, g.ul_x
-         printing_glyphs.append(g)  
+         self.printing_glyphs.append(g)  
       #scan for breathing + (accent) + capital letter
       glyphs_out = []
       reordered_glyphs = []
       just_reordered = False
 ##      print "printing glyphs before cap. reordering:"
      
-      for glyph in printing_glyphs:
+      for glyph in self.printing_glyphs:
 #         if self.is_greek_capital_letter(glyph) and len(glyphs_out):
 #            print "Cap:" 
 #            print glyph.id_name
@@ -386,58 +439,11 @@ class SingleTextline(Textline):
          else:
             glyphs_out.append(glyph)
             just_reordered = False
-      printing_glyphs = glyphs_out
+      self.printing_glyphs = glyphs_out
 ##      print "printing glyphs after cap. reordering:"
 ##      for glyph in printing_glyphs:
 ##         print glyph.get_main_id()
-      spacelist = []
-      total_space = 0
-      for i in range(len(glyphs) - 1):
-         #print "between ", glyphs[i].id_name, " and ", glyphs[i+1].id_name, (glyphs[i + 1].ul_x - glyphs[i].lr_x)
-         spacelist.append(glyphs[i + 1].ul_x - glyphs[i].lr_x)
-      if(len(spacelist) > 0):
-         threshold = median(spacelist)
-         #print "threshold: ", threshold
-         threshold = threshold * 2.7#Meineke, Kaibel: 3
-      else:
-         threshold  = 0
-      #end calculating threshold for word-spacing
-      
 
-      wordlist=[]
-      word = []
-      previousNonCombining = None
-      currentNonCombining = None
-      for i in range(len(printing_glyphs)):
-            if not self.is_combining_glyph(printing_glyphs[i]): 
-              previousNonCombining = currentNonCombining
-##              print "PNC now: ",
-##              if previousNonCombining:
-##                print previousNonCombining.id_name
-##              else:
-##                print "NONE"
-              currentNonCombining = printing_glyphs[i]
-##              print "CNC now: ", currentNonCombining.id_name
-              if(previousNonCombining and currentNonCombining and ((currentNonCombining.ul_x - previousNonCombining.lr_x) > threshold)):
-##                  print "space: ", previousNonCombining.id_name, " and ", currentNonCombining.id_name, " : ", (currentNonCombining.ul_x - previousNonCombining.lr_x), " over ", threshold
-                  cnc_dist = abs(currentNonCombining.center_x - word[-1].center_x)
-                  pnc_dist = abs(previousNonCombining.center_x - word[-1].center_x)
-                  #sometimes the initial smooth breathing hangs over its initial vowel, putting it before that vowel in order
-                 #this is a poor attempt to make sure it doesn't get glommed onto the previous word. A positional analysis would be much better TODO
-                  if ( ('combining.comma.above' in word[-1].get_main_id() or 'combining.reversed.comma.above' in word[-1].get_main_id()) and cnc_dist < pnc_dist) :# ['combining.comma.above.and.combining.acute.accent.above','combining.comma.above', 'combining.reversed.comma.above'] and cnc_dist < pnc_dist):# and not (previousNonCombining.get_main_id() in (greek_small_vowels + ['greek.small.letter.rho'] + greek_capital_vowels)):
-##                     print "word[-1] is ", word[-1].get_main_id(), " with cl ", word[-1].center_x 
-##                     print "cnc is ", currentNonCombining.get_main_id(), " with cl ", currentNonCombining.center_x
-##                     print "pnc is ", previousNonCombining.get_main_id(), "with cl ", previousNonCombining.center_x
- #print "I'm worried about ", word[-1].get_main_id(), "being put with", previousNonCombining.get_main_id()
-                     wordlist.append(word[:-1])
-                     word = [word[-1]]
-                  else:
-                     wordlist.append(word)
-                     word = []
-            word.append(printing_glyphs[i])
-      if(len(word) > 0):
-         wordlist.append(word)
-      self.words= wordlist
 
 
 
