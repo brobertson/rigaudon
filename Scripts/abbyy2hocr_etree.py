@@ -1,5 +1,7 @@
 from lxml import etree
-DEBUG = False
+import HTMLParser
+html_parser = HTMLParser.HTMLParser()
+DEBUG = False 
 
 def greatest_dimensions(dim_in, test_dim):
     l_out = min(dim_in[0], test_dim[0])
@@ -44,6 +46,7 @@ def add_hocr_dim_to_xml_elem(xml_elem, dim):
 
 def main(abbyy_in, dir_out, first_file_num):
     import os.path
+    import codecs
     base_name = os.path.split(abbyy_in)[1].split('_')[0]
     print base_name
     word_dimensions = []
@@ -60,8 +63,8 @@ def main(abbyy_in, dir_out, first_file_num):
                 if DEBUG: print 'closing page'
                 page_filepath = output_filepath(dir_out, base_name, page_no)
                 print "I print to", page_filepath
-                outfile = open(page_filepath,'w')
-                outfile.write(etree.tostring(xml_page, xml_declaration=False, pretty_print=True, encoding="UTF-8"))
+                outfile = codecs.open(page_filepath,'w','UTF-8')
+                outfile.write(etree.tostring(xml_page,encoding=unicode))
                 page_no = page_no + 1
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}line':
             if action == 'start':
@@ -79,8 +82,9 @@ def main(abbyy_in, dir_out, first_file_num):
                 if DEBUG: print (etree.tostring(xml_line, xml_declaration=False, encoding="UTF-8"))
                 try:
                     xml_par.append(xml_line)
-                except:
-                    pass
+                except Exception, e:
+                    print e
+		    #pass
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}charParams' and action == 'start':
             if elem.get('wordStart') == 'true':
                 if just_started_line == False:
@@ -88,11 +92,12 @@ def main(abbyy_in, dir_out, first_file_num):
                     xml_word = add_hocr_dim_to_xml_elem(xml_word, word_dimensions)
                     if DEBUG: print(etree.tostring(xml_word, xml_declaration=False, encoding="UTF-8"))
                     xml_line.append(xml_word)
+            if elem.get('wordStart') == 'true' or just_started_line:
                 if DEBUG: print 'new word'
                 word_dimensions = dimensions(elem)
                 xml_word = hocr_span('ocr_word')
             #TODO: fix logic here
-            else:
+            if (not elem.get('wordStart') == 'true'):
                 if  elem.text == ' ':
                     if DEBUG: print 'skipping space for dimension'
                 else:
@@ -126,9 +131,12 @@ def main(abbyy_in, dir_out, first_file_num):
                 try:
                     xml_carea.append(xml_par)
                     xml_par = None
-                except:
-                    pass
-                if DEBUG: print(etree.tostring(xml_par, xml_declaration=False, encoding="UTF-8"))
+                except Exception, e:
+                    print e
+		    #pass
+                if DEBUG: 
+		    if xml_par:
+			print(etree.tostring(xml_par, xml_declaration=False, encoding="UTF-8"))
         #elem.clear()
     return params, method
 
