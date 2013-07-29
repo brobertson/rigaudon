@@ -29,7 +29,7 @@ do
 	java -Xmx10000m -classpath $FBEVALUATOR_HOME/transgamera-20110622/transgamera.jar eu/himeros/transcoder/TransGamera $FBEVALUATOR_HOME/transgamera-20110622/comb2u.txt $2/$file $3/$file
 done
 
-cd $FBEVALUATOR_HOME/textevaluator 
+cd $FBEVALUATOR_HOME 
 echo "Federizing $3"
 echo "$JAVA_PATH/java -Xmx10000m -jar textevaluator.jar $3/"
 $JAVA_PATH/java -Xmx10000m -jar textevaluator.jar $3/ 
