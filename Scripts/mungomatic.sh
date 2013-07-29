@@ -8,7 +8,7 @@ GREEK_FILE=$GREEK_HOCR_DIR/$file
 
 if [ -e $GREEK_FILE ] 
 then
-~/rigaudon/Scripts/munge_hocr.py   $LATIN_HOCR_DIR/$file $GREEK_HOCR_DIR/$file /tmp/$file > /dev/null
+~/rigaudon/Scripts/munge_hocr.py   $LATIN_HOCR_DIR/$file $GREEK_HOCR_DIR/$file /tmp/$file 
 xsltproc ~/rigaudon/Scripts/add_hocr_css.xsl /tmp/$file > $OUTPUT_DIR/$file
  rm /tmp/$file
 fi
