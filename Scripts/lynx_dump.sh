@@ -24,11 +24,15 @@ lynx --dump $1/$file > $2/$TRUNC_FILENAME.txt
 done
 
 echo "regularizing files in $2 and putting into $3"
-java -classpath $FBEVALUATOR_HOME/transgamera-20110622/src eu/himeros/transcoder/TransGamera $2 $3
+for file in `ls $2`
+do
+	java -Xmx10000m -classpath $FBEVALUATOR_HOME/transgamera-20110622/transgamera.jar eu/himeros/transcoder/TransGamera $FBEVALUATOR_HOME/transgamera-20110622/comb2u.txt $2/$file $3/$file
+done
 
-cd $FBEVALUATOR_HOME 
+cd $FBEVALUATOR_HOME/textevaluator 
 echo "Federizing $3"
-$JAVA_PATH/java -jar textevaluator.jar $3/ 
+echo "$JAVA_PATH/java -Xmx10000m -jar textevaluator.jar $3/"
+$JAVA_PATH/java -Xmx10000m -jar textevaluator.jar $3/ 
 echo "Done Federizing, now summarizing results in csv file"
 cd -
 for file in `ls $3/*eval.txt` 
