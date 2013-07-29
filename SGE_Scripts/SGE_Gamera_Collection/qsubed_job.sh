@@ -3,6 +3,7 @@
 #$ -j y
 #$ -l h_rt=01:18:00
 #$ -l h_vmem=1G
+
 echo "CLASSIFIER_FILE: $CLASSIFIER_FILE"
 echo "GAMERA CMDS: $GAMERA_CMDS"
 echo "HOCR: $HOCR"
@@ -47,5 +48,5 @@ if [ "$HOCR" = "ABBYY" ]; then
     echo "executing HOCR with command \'$HOCR_COMMAND\'"
 fi
 
-python  /usr/local/bin/greekocr4gamera.py -x $CLASSIFIER_FILE/classifier_glyphs.xml  --settings $CLASSIFIER_FILE/optimized_settings.xml -s ${GAMERA_CMDS}${HOCR_COMMAND} --hocrout -u $HOCR_OUTPUT/output-${OUTPUT_STUB} $IMAGE_FILENAME 
+python /usr/local/bin/greekocr4gamera.py -x $CLASSIFIER_FILE/classifier_glyphs.xml  --settings $CLASSIFIER_FILE/optimized_settings.xml -s ${GAMERA_CMDS}${HOCR_COMMAND} --hocrout -u $HOCR_OUTPUT/output-${OUTPUT_STUB} $IMAGE_FILENAME 
 fi
