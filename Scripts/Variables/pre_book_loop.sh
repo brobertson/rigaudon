@@ -32,7 +32,6 @@ export RELATIVE_TESS_OUTPUT=tess_eng_output
 export CSV_FILE=$SECONDARY_OUTPUT/${DATE}_${filename}_summary.csv
 export GRAPH_IMAGE_FILE=$HOCR_SELECTED/${DATE}_${filename}_summary.png
 export GRAPH_IMAGE_FILE_3D=$HOCR_SELECTED/3d.png
-export DICTIONARY_FILE=/home/fbaumgardt/MORPHEUS_DUMP_PLUS-greek-dictionary-with-bogus-freq.txt
 export SPELLCHECK_FILE=$TEXT_SELECTED/${DATE}_${filename}_spellcheck.csv
 export SIDE_BY_SIDE_VIEW=$BOOK_DIR/${barebookname}_${DATE}_${filename}_sidebyside
 export RELATIVE_SIDE_BY_SIDE_VIEW=${barebookname}_${DATE}_${filename}_sidebyside
