@@ -34,8 +34,8 @@ teubner_serif_weights = [
     ['replace', ur'M', ur'Μ', 1],
     ['replace', ur'N', ur'Ν', 1],
     ['replace', ur'Pp', ur'Ρρ', 1],
- #   ['replace', ur'ϲϹ', ur'σςΣ', 1],#for lunate fonts
- #   ['replace', ur'c', ur'σς', 1],#for lunate fonts
+    ['replace', ur'ϲϹ', ur'σςΣ', 1],#for lunate fonts
+    ['replace', ur'c', ur'σς', 1],#for lunate fonts
     ['replace', ur'T', ur'Ττ', 1],
     ['replace', ur'Τr', ur'τ', 1],
     ['replace', ur'Uu', ur'υ', 1],
@@ -205,6 +205,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
         n = 0
         lines = raw.split("\n")
         if debug:
+            print 'page:', url
             for line in lines:
                 print line
         tokens  =  Dehyphenate(lines)
@@ -306,11 +307,14 @@ def process_vocab((vocab,word_dicts, max_weight)):
                 best_result_word = words_clean[output_words[0][0]]
                 if (hasBeenLowered):
                     best_result_word = best_result_word.capitalize()
-                if not (best_result_word == wordIn or best_result_word == wordIn.lower()):
+                if not (best_result_word == wordIn_original or best_result_word == wordIn_original.lower()):
                     output_string += wordIn_original + "," + best_result_word  + '\n'
-                # dump(wordIn)
-                # print
-                # dump(best_result_word)
+                if debug:
+                    dump(wordIn_original)
+                    print
+                    dump(wordIn)
+                    print
+                    dump(best_result_word)
             for word, lev_distance, n, w, junk1, junk2 in output_words[:8]:
                 if (hasBeenLowered):
                     word_to_print = word.capitalize()
@@ -372,6 +376,8 @@ def preprocess_word(word):
     word = word.replace(other_circumflex, circumflex)
     word = word.replace(greek_koronis, apostrophe)
     word = unicodedata.normalize('NFD', word)
+    #remove internal punctuation. Uses negative lookahead and lookbehind assertions
+    word =  re.sub(ur'(?<!^)[·.,\'](?!$)',r'',word)
     return word
 
 
