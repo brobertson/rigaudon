@@ -68,9 +68,13 @@ def get_hocr_lines_for_tree(treeIn):
 
 
 def close_enough(bbox1, bbox2):
-    fudge = 2
+    total_circum1 = (bbox1.lr_x - bbox1.ul_x) * 2 + (bbox1.lr_y - bbox1.ul_y) * 2
+    total_circum2 =  (bbox1.lr_x - bbox1.ul_x) * 2 + (bbox1.lr_y - bbox1.ul_y) * 2
+    fudge = (total_circum1 + total_circum2) * 0.1
+    if DEBUG: print 'fudge', fudge
     total_diff = (abs(bbox1.lr_x - bbox2.lr_x) + abs(bbox1.lr_y - bbox2.lr_y) + abs(bbox1.ul_x  - bbox2.ul_x) + abs(bbox1.ul_y - bbox2.ul_y))
-    if total_diff < fudge * 4:
+    if DEBUG: print 'total_diff', total_diff
+    if total_diff < fudge:
         return True
     else:
         return False
@@ -178,7 +182,7 @@ for word in words_1:
     for replacement_word in replacement_words:
         word.score = score_word(word.text)
         if close_enough(word.bbox,replacement_word.bbox) and (word.score < replacement_word.score):
-            print "replacing", word.text, word.score, "with", replacement_word.text, replacement_word.score
+            if DEBUG: print "replacing", word.text, word.score, "with", replacement_word.text, replacement_word.score
             word.element.text = replacement_word.text
 
 
