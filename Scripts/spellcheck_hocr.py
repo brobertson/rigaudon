@@ -10,6 +10,8 @@ from greek_tools import dump, split_text_token
 import codecs
 import os
 import unicodedata
+import HTMLParser
+html_parser = HTMLParser.HTMLParser()
 spellcheck_dict = {}
 with codecs.open(sys.argv[1],'r','utf-8') as spellcheck_file:
 	for line in spellcheck_file:
@@ -43,8 +45,9 @@ for file_name in os.listdir(dir_in):
                 fileIn_name = os.path.join(dir_in,file_name)
                 fileOut_name = os.path.join(dir_out,simplified_name)
                 fileIn= codecs.open(fileIn_name,'r','utf-8')
-                fileOut = codecs.open(fileOut_name, 'w','utf-8')
-                print "checking", fileIn_name, "sending to ", fileOut_name
+                #fileOut = codecs.open(fileOut_name, 'w','utf-8')
+                fileOut = open(fileOut_name,'w')
+		print "checking", fileIn_name, "sending to ", fileOut_name
                 treeIn = etree.parse(fileIn)
                 root = treeIn.getroot()
                 hocr_word_elements = treeIn.xpath("//html:span[@class='ocr_word'] | //span[@class='ocr_word']",namespaces={'html':"http://www.w3.org/1999/xhtml"})
@@ -66,12 +69,13 @@ for file_name in os.listdir(dir_in):
                       dump(error_word)
                       print 
                       dump(parts[1])
+                      word_element.set('data-pre-spellcheck',word)
                     #  dump(parts[1])
                    except KeyError:
                       #print "no check"
                       pass
                  #  print parts[0]+parts[1]+parts[2]
                    word_element.text = parts[0]+parts[1]+parts[2]
-                fileOut.write(etree.tostring(treeIn.getroot(), xml_declaration=True))
+                fileOut.write(html_parser.unescape(etree.tostring(treeIn.getroot(), encoding="UTF-8",xml_declaration=True)))
                 fileOut.close()
 
