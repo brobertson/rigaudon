@@ -24,10 +24,7 @@ lynx --dump $1/$file > $2/$TRUNC_FILENAME.txt
 done
 
 echo "regularizing files in $2 and putting into $3"
-for file in `ls $2`
-do
-	java -Xmx10000m -classpath $FBEVALUATOR_HOME/transgamera-20110622/transgamera.jar eu/himeros/transcoder/TransGamera $FBEVALUATOR_HOME/transgamera-20110622/comb2u.txt $2/$file $3/$file
-done
+	$JAVA_PATH/java -classpath $FBEVALUATOR_HOME/transgamera-20110622/src eu/himeros/transcoder/TransGamera $2 $3
 
 cd $FBEVALUATOR_HOME 
 echo "Federizing $3"
