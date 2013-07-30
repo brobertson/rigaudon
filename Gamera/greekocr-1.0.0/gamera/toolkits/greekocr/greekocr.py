@@ -65,7 +65,7 @@ class HocrPager(SinglePage):
       self.hocr = hocr
       SinglePage.__init__(self,image,glyphs,classify_ccs)
    def page_to_lines(self):
-      lineParser = SpanLister('ocr_line')
+      lineParser = SpanLister(['ocr_line','ocrx_line'])
       try:
          lineParser.feed(open(self.hocr).read())
       except IOError as e:
@@ -75,7 +75,7 @@ class HocrPager(SinglePage):
       self.ccs_lines =  generateCCsFromHocr(lineParser,self.img)
    def chars_to_words(self): 
       #copied from page_to_lines above
-      parser = SpanLister('ocr_word')
+      parser = SpanLister(['ocr_word','ocrx_word'])
       try:
          parser.feed(open(self.hocr).read())
       except IOError as e:
