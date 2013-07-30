@@ -15,6 +15,8 @@ classifier_filename=${classifier_filename%.*}
 BOOK_DIR_TRUNC=$(basename $BOOK_DIR)
 #NUM=`printf "%08d" $SGE_TASK_ID`
 #NUM=`printf "%08d" 123`
+# here, we take the SGE_TSK_ID-th line in the file list to be our filename.
+# Neat, huh?
 IMAGE_FILENAME=`head -$SGE_TASK_ID $FILE_LIST | tail -1`
 TRUNC_IMAGE_FILENAME=$(basename $IMAGE_FILENAME)
 TRUNC_IMAGE_FILENAME=${TRUNC_IMAGE_FILENAME%.*}

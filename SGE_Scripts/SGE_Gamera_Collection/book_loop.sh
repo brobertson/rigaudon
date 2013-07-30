@@ -10,6 +10,8 @@ export PRIMARY_OUTPUT=$BOOK_DIR/${DATE}_${filename}_txt_output
 export SECONDARY_OUTPUT=$BOOK_DIR/${DATE}_${filename}_output_tc
 export TESS_OUTPUT=$BOOK_DIR/tess_eng_output
 export HOCR_SELECTED=$BOOK_DIR/${DATE}_${filename}_selected_hocr_output
+export HOCR_BLENDED=$BOOK_DIR/${DATE}_${filename}_blended_hocr_output
+export TEXT_BLENDED=$BOOK_DIR/${DATE}_${filename}_blended_text_output
 export SPELLCHECKED_HOCR_SELECTED=$BOOK_DIR/${DATE}_${filename}_selected_hocr_output_spellchecked
 export COMBINED_HOCR=$BOOK_DIR/${DATE}_${filename}_combined_hocr_output
 export TEXT_SELECTED=$BOOK_DIR/${DATE}_${filename}_selected_text_output
@@ -33,6 +35,8 @@ export RELATIVE_SIDE_BY_SIDE_VIEW=${barebookname}_${DATE}_${filename}_sidebyside
 rm -rf $PRIMARY_OUTPUT > /dev/null
 rm -rf $SECONDARY_OUTPUT > /dev/null 
 rm -rf $HOCR_OUTPUT > /dev/null
+rm -rf $HOCR_BLENDED > /dev/null
+rm -rf $TEXT_BLENDED > /dev/null
 rm -rf $HOCR_SELECTED > /dev/null
 rm -rf $SPELLCHECKED_HOCR_SELECTED > /dev/null
 rm -rf $COMBINED_HOCR > /dev/null
@@ -48,6 +52,8 @@ mkdir  $PRIMARY_OUTPUT
 mkdir  $SECONDARY_OUTPUT
 mkdir $TESS_OUTPUT > /dev/null
 mkdir $HOCR_SELECTED
+mkdir $HOCR_BLENDED
+mkdir $TEXT_BLENDED
 mkdir $SPELLCHECKED_HOCR_SELECTED
 mkdir $COMBINED_HOCR
 mkdir $TEXT_SELECTED
@@ -60,6 +66,7 @@ JOB_NAME_BASE=$barebookname-$DATE
 OCR_BATCH_JOB_NAME=$JOB_NAME_BASE-ocr-batch
 LYNX_DUMP_JOB_NAME=$JOB_NAME_BASE-lynx-dump
 SUMMARY_SPLIT_JOB_NAME=$JOB_NAME_BASE-summary-split
+BLEND_JOB_NAME=$JOB_NAME_BASE-blend
 SPELLCHECK_JOB_NAME=$JOB_NAME_BASE-spellcheck
 SPELLREPLACE_JOB_NAME=$JOB_NAME_BASE-spellreplace
 COMBINE_GREEK_AND_LATIN_JOB_NAME=$JOB_NAME_BASE-combine-hocrs
@@ -124,9 +131,13 @@ qsub -N $LYNX_DUMP_JOB_NAME -p -150 -hold_jid $OCR_BATCH_JOB_NAME -o $OUTPUT_DIR
 #3. Make a graph of page# vs. score for these highest-scoring pages.
 qsub -N $SUMMARY_SPLIT_JOB_NAME -p -100 -hold_jid  $LYNX_DUMP_JOB_NAME  -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/summary_split.py $CSV_FILE $HOCR_OUTPUT $PRIMARY_OUTPUT $HOCR_SELECTED $TEXT_SELECTED $GRAPH_IMAGE_FILE $barebookname $filename
 
-qsub -N $SPELLCHECK_JOB_NAME  -hold_jid  $SUMMARY_SPLIT_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/read_dict5.py $DICTIONARY_FILE $TEXT_SELECTED/output*  $SPELLCHECK_FILE
+# this does a array job to blend all HOCRs that pertain to a given page image, selecting words that
+# appear in our dictionary over ones that do not
+qsub -N $BLEND_JOB_NAME  -hold_jid $SUMMARY_SPLIT_JOB_NAME -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_blend_hocrs.sh
 
-qsub -N $SPELLREPLACE_JOB_NAME -hold_jid  $SPELLCHECK_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/spellcheck_hocr.py $SPELLCHECK_FILE $HOCR_SELECTED   $SPELLCHECKED_HOCR_SELECTED
+qsub -N $SPELLCHECK_JOB_NAME  -hold_jid  $BLEND_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/read_dict5.py $DICTIONARY_FILE $TEXT_BLENDED/output*  $SPELLCHECK_FILE
+
+qsub -N $SPELLREPLACE_JOB_NAME -hold_jid  $SPELLCHECK_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/spellcheck_hocr.py $SPELLCHECK_FILE $HOCR_BLENDED   $SPELLCHECKED_HOCR_SELECTED
 
 qsub -N $COMBINE_GREEK_AND_LATIN_JOB_NAME -hold_jid $SPELLREPLACE_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V  $RIGAUDON_HOME/Scripts/mungomatic.sh $ABBYY_DATA $SPELLCHECKED_HOCR_SELECTED $COMBINED_HOCR
 
