@@ -4,9 +4,9 @@ from gamera.core import *
 init_gamera()
 from gamera.plugin import *
 class SpanLister(HTMLParser):
-    def __init__(self, id_string):
+    def __init__(self, id_strings):
 	HTMLParser.__init__(self)
-	self.id_string = id_string
+	self.id_strings = id_strings
     def reset(self):
             HTMLParser.reset(self)
             self.spans = []
@@ -14,7 +14,7 @@ class SpanLister(HTMLParser):
             foo = [v for k, v in attrs if k=='class']
             bar = [j for i, j in attrs if i=='title']
             if foo:
-		if foo[0] == self.id_string:
+		if foo[0] in self.id_strings:
                 	self.spans.extend(bar)
 
 def generateCCsFromHocr(parser,image):
@@ -72,6 +72,8 @@ def generateCCsFromHocr(parser,image):
                         # mark original image with segment label
 
                     #new, experimental universal solution:
+
+                        
 		    #This matches if:
 			#1. the character's bottom is above the line, or;
 			#2. The character's bottom is below the line, and the amount of the character that is below the line is less than 40% of its height
