@@ -1,4 +1,12 @@
-#!/usr/bin/bash
+#!/bin/bash
+echo "Entering book_loop.sh"
+#check for dictionary file
+if [ ! -f $DICTIONARY_FILE ]; then
+    echo "Dictionary file '$DICTIONARY_FILE' not found."
+    echo "Aborting book processing"
+    exit 1
+fi
+
 #start prep
 filename=$(basename $CLASSIFIER_FILE)
 export filename=${filename%.*}
@@ -21,13 +29,14 @@ export RELATIVE_SPELLCHECKED_HOCR_SELECTED=${DATE}_${filename}_selected_hocr_out
 export RELATIVE_COMBINED_HOCR=${DATE}_${filename}_combined_hocr_output
 export RELATIVE_TEXT_SELECTED=${DATE}_${filename}_selected_text_output
 export RELATIVE_HOCR_OUTPUT=${DATE}_${filename}_raw_hocr_output
+export RELATIVE_HOCR_BLENDED=${DATE}_${filename}_blended_hocr_output
+export RELATIVE_TEXT_BLENDED=${DATE}_${filename}_blended_text_output
 export RELATIVE_PRIMARY_OUTPUT=${DATE}_${filename}_txt_output
 export RELATIVE_SECONDARY_OUTPUT=${DATE}_${filename}_output_tc
 export RELATIVE_TESS_OUTPUT=tess_eng_output
 export CSV_FILE=$SECONDARY_OUTPUT/${DATE}_${filename}_summary.csv
 export GRAPH_IMAGE_FILE=$HOCR_SELECTED/${DATE}_${filename}_summary.png
 export GRAPH_IMAGE_FILE_3D=$HOCR_SELECTED/3d.png
-#export DICTIONARY_FILE=/usr/local/OCR_Processing/Dictionary/MORPHEUS_DUMP_PLUS-greek-dictionary-with-bogus-freq.txt
 export SPELLCHECK_FILE=$TEXT_SELECTED/${DATE}_${filename}_spellcheck.csv
 export SIDE_BY_SIDE_VIEW=$BOOK_DIR/${barebookname}_${DATE}_${filename}_sidebyside
 export RELATIVE_SIDE_BY_SIDE_VIEW=${barebookname}_${DATE}_${filename}_sidebyside
@@ -77,7 +86,7 @@ then
   touch $CURRENT_JOB_FILE
 fi
 
-qstat -r | grep `cat $CURRENT_JOB_FILE`
+qstat -r | sed '2d' | grep `cat $CURRENT_JOB_FILE`
 RETVAL=$?
 if [ $RETVAL -eq 0 ]
 then
@@ -117,6 +126,7 @@ fi
 #end prep
 #This does an array job the size of the number of files in the book
 #directory
+
 qsub -N $OCR_BATCH_JOB_NAME  -p -200 $PREV_BOOK_HOLD -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_job.sh
 
 #Now we use this script to:
@@ -135,6 +145,7 @@ qsub -N $SUMMARY_SPLIT_JOB_NAME -p -100 -hold_jid  $LYNX_DUMP_JOB_NAME  -b y -o 
 # appear in our dictionary over ones that do not
 qsub -N $BLEND_JOB_NAME  -hold_jid $SUMMARY_SPLIT_JOB_NAME -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_blend_hocrs.sh
 
+# spellchecking 
 qsub -N $SPELLCHECK_JOB_NAME  -hold_jid  $BLEND_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/read_dict5.py $DICTIONARY_FILE $TEXT_BLENDED/output*  $SPELLCHECK_FILE
 
 qsub -N $SPELLREPLACE_JOB_NAME -hold_jid  $SPELLCHECK_JOB_NAME -b y -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/spellcheck_hocr.py $SPELLCHECK_FILE $HOCR_BLENDED   $SPELLCHECKED_HOCR_SELECTED

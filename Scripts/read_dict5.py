@@ -34,8 +34,8 @@ teubner_serif_weights = [
     ['replace', ur'M', ur'Μ', 1],
     ['replace', ur'N', ur'Ν', 1],
     ['replace', ur'Pp', ur'Ρρ', 1],
- #   ['replace', ur'ϲϹ', ur'σςΣ', 1],#for lunate fonts
- #   ['replace', ur'c', ur'σς', 1],#for lunate fonts
+    ['replace', ur'ϲϹ', ur'σςΣ', 1],#for lunate fonts
+    ['replace', ur'c', ur'σς', 1],#for lunate fonts
     ['replace', ur'T', ur'Ττ', 1],
     ['replace', ur'Τr', ur'τ', 1],
     ['replace', ur'Uu', ur'υ', 1],
@@ -44,6 +44,7 @@ teubner_serif_weights = [
     ['replace', ur'E', ur'ε', 2],
     ['replace', ur'Z', ur'Ζ', 1],
     ['replace', ur'K', ur'κΚ', 1],
+    ['replace', ur'Η', ur'Π', 2],
     ['replace', ur'a', ur'α', 1],
     ['replace', ur'ΛΑ', ur'ΛΑ', 1],
     ['insert', ur'*', all_accents, 3],
@@ -204,6 +205,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
         n = 0
         lines = raw.split("\n")
         if debug:
+            print 'page:', url
             for line in lines:
                 print line
         tokens  =  Dehyphenate(lines)
@@ -238,7 +240,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     dict_time = time.time() - start_time
     minutes = dict_time / 60.0
     print "dict building took", minutes, " minutes."
-    vocab_chunks = list(chunks(vocab, len(vocab) / 6))
+    vocab_chunks = list(chunks(vocab, len(vocab) / 10))
     print "vocab is ", len(vocab)
     processed_vocab_chunks = zip(vocab_chunks, repeat(word_dicts), repeat(max_weight))
     print "there are ", len(processed_vocab_chunks), "chunks"
@@ -248,7 +250,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     # why doesn't this trimm all the ones that pass spellcheck?
     # vocab = sorted(set(vocab).difference(set(dict_words)))
     # print "vocab trimmed of dictionary words to ", len(vocab)
-    p = Pool(processes=20)
+    p = Pool(processes=30)
     output = p.map(process_vocab,processed_vocab_chunks)
     for output_chunk in output:
         output_file.write(output_chunk)
@@ -305,11 +307,14 @@ def process_vocab((vocab,word_dicts, max_weight)):
                 best_result_word = words_clean[output_words[0][0]]
                 if (hasBeenLowered):
                     best_result_word = best_result_word.capitalize()
-                if not (best_result_word == wordIn or best_result_word == wordIn.lower()):
+                if not (best_result_word == wordIn_original or best_result_word == wordIn_original.lower()):
                     output_string += wordIn_original + "," + best_result_word  + '\n'
-                # dump(wordIn)
-                # print
-                # dump(best_result_word)
+                if debug:
+                    dump(wordIn_original)
+                    print
+                    dump(wordIn)
+                    print
+                    dump(best_result_word)
             for word, lev_distance, n, w, junk1, junk2 in output_words[:8]:
                 if (hasBeenLowered):
                     word_to_print = word.capitalize()
@@ -371,6 +376,8 @@ def preprocess_word(word):
     word = word.replace(other_circumflex, circumflex)
     word = word.replace(greek_koronis, apostrophe)
     word = unicodedata.normalize('NFD', word)
+    #remove internal punctuation. Uses negative lookahead and lookbehind assertions
+    word =  re.sub(ur'(?<!^)[·.,\'](?!$)',r'',word)
     return word
 
 
@@ -415,6 +422,7 @@ def getCloseWords(wordIn, word_dicts, rules, max_weight, threshold=3, fast=True,
       print "getCloseWords for", wordInTrans.encode('utf-8'), "(", wordIn.encode('utf-8'),")"
       dump(wordIn)
     output_words = []
+    #dict_words_set = set(dict_words)
     n = 0
     # print "Now comparing to..."
     if wordInTrans in dict_words:

@@ -54,7 +54,7 @@ def is_greek_capital(char):
 
 @memoize
 def is_capitalized(word):
-    return is_greek_capital(word[0])
+    return (is_greek_capital(word[0]) or (word == word.capitalize()))
 
 @memoize
 def is_uc_word(string_in):

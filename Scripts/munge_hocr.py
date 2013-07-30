@@ -210,8 +210,18 @@ def grecify_left(right_lines):
                 left_is_number = is_number(left_test_word)
                 print '\t', left_test_word, "is a number?", left_is_number
 		print '\t', right_test_word, "is greek?", is_greek_string(right_test_word)
-                if is_greek_string(right_test_word) and not left_is_number:
+                if is_greek_string(right_test_word):# and not left_is_number:
                     print '\t', "replacing left"
+                    right_pre_spellcheck = ""
+                    for a_word in right_match:
+                        print 'checking', a_word.element.text
+                        if a_word.element.get('data-pre-spellcheck'):
+                           print '\t adding', a_word.element.get('data-pre-spellcheck')
+                           right_pre_spellcheck += a_word.element.get('data-pre-spellcheck')
+#right_pre_spellcheck = ' '.join([a.data-pre-spellcheck for a in right_match])
+                    #store the latin script original in a data attribute so that if our identification is bad, manual editing can fix it
+                    left_match[0].element.set('data-lat-original',left_match[0].element.text)
+                    left_match[0].element.set('data-pre-spellcheck',right_pre_spellcheck)
                     left_match[0].element.text = unicodedata.normalize('NFD',right_test_word)
                     left_match[0].element.set("lang","grc")
                     left_match[0].element.set("{http://www.w3.org/XML/1998/namespace}lang","grc")
@@ -221,7 +231,8 @@ def grecify_left(right_lines):
                             match.element.getparent().remove(match.element)
         #maybe there isn't a line_matches attribute. In which case, keep the left
         #value
-        except AttributeError:
+        except AttributeError, e:
+            print e
             pass
 
 fileIn1 = open(sys.argv[1],'r')
