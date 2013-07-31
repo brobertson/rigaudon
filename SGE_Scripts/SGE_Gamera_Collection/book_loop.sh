@@ -10,7 +10,7 @@ fi
 #start prep
 filename=$(basename $CLASSIFIER_FILE)
 export filename=${filename%.*}
-export barebookname=${BOOK_NAME%%_jp2}
+export barebookname=${BOOK_NAME%%_*}
 export JPG_GRAY_IMAGES=$BOOK_DIR/${barebookname}_gray
 export JPG_COLOR_IMAGES=$BOOK_DIR/${barebookname}_color
 export HOCR_OUTPUT=$BOOK_DIR/${DATE}_${filename}_raw_hocr_output
