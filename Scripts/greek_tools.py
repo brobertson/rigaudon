@@ -116,7 +116,8 @@ def delete_non_greek_tokens(tokens):
 
 def split_text_token(stringIn):
 	import re
-        word_parts = re.match(ur'(^[„\[\("〈]*)(.*?)([„.,!?;†·:〉\)\d\]]*$)',stringIn,re.UNICODE)
+	superscripts = u'\u00B2\u00B3\u00B9\u2070\u2074\u2075\u2076\u2077\u2078\u2079'
+        word_parts = re.match(u'(^[„\[\("〈]*)(.*?)([„.,!?;†·:〉\)\d\]' + superscripts + u']*$)',stringIn,re.UNICODE)
 
    	try:
       		parts = word_parts.groups()
