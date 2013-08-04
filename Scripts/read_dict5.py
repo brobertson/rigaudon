@@ -35,7 +35,7 @@ teubner_serif_weights = [
     ['replace', ur'N', ur'Ν', 1],
     ['replace', ur'Pp', ur'Ρρ', 1],
     ['replace', ur'ϲϹ', ur'σςΣ', 1],#for lunate fonts
-    ['replace', ur'c', ur'σς', 1],#for lunate fonts
+    #['replace', ur'c', ur'σς', 1],#for lunate fonts
     ['replace', ur'T', ur'Ττ', 1],
     ['replace', ur'Τr', ur'τ', 1],
     ['replace', ur'Uu', ur'υ', 1],
@@ -50,11 +50,13 @@ teubner_serif_weights = [
     ['insert', ur'*', all_accents, 3],
     ['delete', all_accents, ur'*', 3],
     ['replace', all_upper_accents, all_upper_accents, 2],
-#    ['replace', ur'σ', ur'ς', 2],  # for lunate fonts
+    ['replace', ur'σ', ur'ς', 2],  # for lunate fonts
     ['replace', ur'χΧ', ur'χΧ', 2],
     ['replace', ur'κΚ', ur'κΚ', 2],
     ['replace',ur'r',ur'γ',4],
-    ['replace',ur'ζ',ur'ς',3]
+    ['replace',ur'ζ',ur'ς',3],
+    #this should cost less than the conversion of 'σ to ς'
+    ['insert',ur'*',u"\N{APOSTROPHE}",1]
   #  ['replace', ur'ι'+iota_subscript_replacement, ur'ι'+iota_subscript_replacement, 3]
 ]
 
@@ -204,17 +206,17 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
         raw = urlopen(url).read().decode('utf-8')
         n = 0
         lines = raw.split("\n")
-        if debug:
-            print 'page:', url
-            for line in lines:
-                print line
+        #if debug:
+            #print 'page:', url
+            #for line in lines:
+            #    print line
         tokens  =  Dehyphenate(lines)
 	#if tokens[-1][-1] = '-':
         #       tokens = tokens[:-1]
 
-        if debug:
-            for token in tokens:
-                print token
+        #if debug:
+        #    for token in tokens:
+        #        print token
         all_tokens = all_tokens + delete_non_greek_tokens(tokens)
     if debug:
         for token in all_tokens:
@@ -368,13 +370,14 @@ def preprocess_word(word):
     circumflex = unicode(u"\N{COMBINING GREEK PERISPOMENI}")
     other_circumflex = unicode(u"\N{COMBINING CIRCUMFLEX ACCENT}")
     greek_koronis = unicode(u"\N{GREEK KORONIS}")
-    apostrophe = unicode(u"\N{APOSTROPHE}")
     smooth_breathing = unicode(u"\N{COMBINING COMMA ABOVE}")
     apostrophe = unicode(u"\N{APOSTROPHE}")
+    right_single_quote = unicode(u"\N{RIGHT SINGLE QUOTATION MARK}")
     import unicodedata
     word = re.sub(ur'^' + apostrophe + ur'([I1ΙιΕEAP])(.*)$', r'\1' + smooth_breathing+ r'\2', word)
     word = word.replace(other_circumflex, circumflex)
     word = word.replace(greek_koronis, apostrophe)
+    word = word.replace(right_single_quote, apostrophe)
     word = unicodedata.normalize('NFD', word)
     #remove internal punctuation. Uses negative lookahead and lookbehind assertions
     word =  re.sub(ur'(?<!^)[·.,\'](?!$)',r'',word)
