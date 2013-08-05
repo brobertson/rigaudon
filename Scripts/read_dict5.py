@@ -132,12 +132,10 @@ def Dehyphenate(lines):
     from greek_tools import split_text_token, is_number
     import string
     import re
-    regex = re.compile(
-        '[%s]' % re.escape(string.punctuation + u'〉〈“‘†”—·' + u'0123456789'))
     import nltk
     from nltk.tokenize import RegexpTokenizer
     n = 0
-    tokenizer = RegexpTokenizer('[)(·;><.,\s]+', gaps=True)
+    tokenizer = RegexpTokenizer('[)(;><.\s]+', gaps=True)
     # lines = raw.split("\n")
     text_array = []
 #        print "lines: ", len(lines)
