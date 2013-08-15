@@ -4,9 +4,6 @@
     <selection name="aspect_ratio">
       1
     </selection>
-    <selection name="diagonal_projection">
-      1
-    </selection>
     <selection name="moments">
       0 1 0 1 1 1 1 1 0
     </selection>
@@ -38,9 +35,6 @@
   </selections>
   <weights>
     <weight name="aspect_ratio">
-      1.0
-    </weight>
-    <weight name="diagonal_projection">
       1.0
     </weight>
     <weight name="moments">
