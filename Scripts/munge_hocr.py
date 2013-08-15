@@ -41,7 +41,7 @@ def get_hocr_lines_for_tree(treeIn):
     for hocr_line_element in hocr_line_elements:
         #print "line: ", line_counter, parse_bbox(hocr_line_element.get('title'))
         line_counter += 1
-        words = hocr_line_element.xpath(".//html:span[@class='ocr_word'] | .//span[@class='ocr_word'] ",namespaces={'html':"http://www.w3.org/1999/xhtml"})
+        words = hocr_line_element.xpath(".//html:span[@class='ocrx_word'] | .//span[@class='ocrx_word'] | .//html:span[@class='ocr_word'] | .//span[@class='ocr_word'] ",namespaces={'html':"http://www.w3.org/1999/xhtml"})
         word_counter = 0
         words_out = []
         for word in words:        
