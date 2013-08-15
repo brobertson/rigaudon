@@ -266,6 +266,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
     debug = True
     (dict_words, words_clean, words_freq) = word_dicts
     output_string = ''
+    euro_sign = unicode(u"\N{EURO SIGN}") 
     for wordIn in vocab:
         wordIn_original = wordIn
         wordIn = preprocess_word(wordIn)
@@ -308,7 +309,7 @@ def process_vocab((vocab,word_dicts, max_weight)):
                 if (hasBeenLowered):
                     best_result_word = best_result_word.capitalize()
                 if not (best_result_word == wordIn_original or best_result_word == wordIn_original.lower()):
-                    output_string += wordIn_original + "," + best_result_word  + '\n'
+                    output_string += wordIn_original + euro_sign + best_result_word  + '\n'
                 if debug:
                     dump(wordIn_original)
                     print

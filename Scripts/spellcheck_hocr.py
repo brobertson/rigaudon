@@ -13,10 +13,11 @@ import unicodedata
 import HTMLParser
 html_parser = HTMLParser.HTMLParser()
 spellcheck_dict = {}
+euro_sign = unicode(u"\N{EURO SIGN}") 
 with codecs.open(sys.argv[1],'r','utf-8') as spellcheck_file:
 	for line in spellcheck_file:
 		line = line.strip()
-		pair = line.split(',')
+		pair = line.split(euro_sign)
 #		dump(pair[0])
 #		print 
 #		dump(unicodedata.normalize('NFD',pair[0]))
