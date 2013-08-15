@@ -9,7 +9,7 @@ def is_latin_text(url):
         		return True
 	return False
 import sys
-print 'testing', sys.argv[1], ' Is latin text?'
+#print 'testing', sys.argv[1], ' Is latin text?'
 print is_latin_text("http://www.archive.org/download/" + sys.argv[1] +  "/" + sys.argv[1] + '_djvu.txt')
         
 
