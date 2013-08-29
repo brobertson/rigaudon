@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gamera-knn-settings version="1.0" num-k="1" distance-type="CITY-BLOCK">
+  <selections>
+    <selection name="aspect_ratio">
+      1
+    </selection>
+    <selection name="moments">
+      0 1 0 1 0 1 0 1 0
+    </selection>
+    <selection name="nholes">
+      0 0
+    </selection>
+    <selection name="nholes_extended">
+      0 0 1 1 1 1 1 0
+    </selection>
+    <selection name="skeleton_features">
+      0 0 0 0 0 0
+    </selection>
+    <selection name="top_bottom">
+      0 1
+    </selection>
+    <selection name="volume">
+      0
+    </selection>
+    <selection name="volume16regions">
+      0 0 0 1 0 0 1 1 0 0 0 0 1 0 0 1
+    </selection>
+    <selection name="volume64regions">
+      0 0 0 1 0 1 0 0 0 0 1 1 0 0 1 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0 0 1 0 1 0
+      1 0 0 1 0 0 0 1 0 1 0 0 0 0 1 1 1 1 0 1 1 0 0 1 0 0 0 0
+    </selection>
+    <selection name="zernike_moments">
+      1 1 0 1 0 0 1 1 1 1 0 0 0 0
+    </selection>
+  </selections>
+  <weights>
+    <weight name="aspect_ratio">
+      1.0
+    </weight>
+    <weight name="moments">
+      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+    </weight>
+    <weight name="nholes">
+      1.0 1.0
+    </weight>
+    <weight name="nholes_extended">
+      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+    </weight>
+    <weight name="skeleton_features">
+      1.0 1.0 1.0 1.0 1.0 1.0
+    </weight>
+    <weight name="top_bottom">
+      1.0 1.0
+    </weight>
+    <weight name="volume">
+      1.0
+    </weight>
+    <weight name="volume16regions">
+      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+    </weight>
+    <weight name="volume64regions">
+      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+    </weight>
+    <weight name="zernike_moments">
+      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+    </weight>
+  </weights>
+</gamera-knn-settings>
