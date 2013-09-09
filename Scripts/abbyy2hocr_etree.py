@@ -16,6 +16,14 @@ def dimensions(char_elem):
     if DEBUG: print out
     return out
 
+def scaled_dimensions(char_elem, page_width, page_height):
+	dim = dimensions(char_elem)
+	print "dim", dim
+	print "page_width", page_width
+	print "page_height", page_height
+	out = [float(dim[0]) / float(page_width), float(dim[1]) / float(page_width), float(dim[2]) / float(page_height), float(dim[3]) / float(page_height)]
+	print out
+	return out
 
 def generate_new_output_page():
     root = etree.XML('''<html xmlns:abbyy="http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml">
@@ -58,6 +66,8 @@ def main(abbyy_in, dir_out, first_file_num):
         if DEBUG: print action, elem.tag
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}page':
             if action == 'start':
+		page_width = int(elem.get('width'))
+		page_height = int(elem.get('height'))
                 xml_page = generate_new_output_page()
             elif action == 'end':
                 if DEBUG: print 'closing page'
@@ -112,16 +122,20 @@ def main(abbyy_in, dir_out, first_file_num):
                     #    xml_word.text = output
             if DEBUG: print output
             just_started_line = False
-        if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}block':
-            if action == 'start':
-                if DEBUG: print 'start carea'
-                xml_carea = hocr_span('ocr_carea')
-            elif action == 'end':
-                if DEBUG: print 'end carea'
-                if DEBUG: print(etree.tostring(xml_carea, xml_declaration=False, encoding="UTF-8"))
-                xml_body = xml_page.xpath('/html/body')[0]
-                xml_body.append(xml_carea)
-                xml_carea = None
+        if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}block' and elem.get('blockType') == "Text":	
+	    if action == 'start':
+	        if DEBUG: print 'start carea'
+	        xml_carea = hocr_span('ocr_carea')
+	    elif action == 'end':
+	        if DEBUG: print 'end carea'
+	        if DEBUG: print(etree.tostring(xml_carea, xml_declaration=False, encoding="UTF-8"))
+	        xml_body = xml_page.xpath('/html/body')[0]
+	        xml_body.append(xml_carea)
+	        xml_carea = None
+	if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}block' and elem.get('blockType') == "Picture" and action == "start":
+		xml_body = xml_page.xpath('/html/body')[0]
+	        dim = scaled_dimensions(elem, page_width, page_height)
+		xml_body.append(etree.Comment("Picture!: " + str(dim)))#xml_body.append(xml_carea)
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}par':
             if action == 'start':
                 if DEBUG: print 'start paragraph'
