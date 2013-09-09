@@ -240,7 +240,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     dict_time = time.time() - start_time
     minutes = dict_time / 60.0
     print "dict building took", minutes, " minutes."
-    vocab_chunks = list(chunks(vocab, len(vocab) / 10))
+    vocab_chunks = list(chunks(vocab, len(vocab) / 8))
     print "vocab is ", len(vocab)
     processed_vocab_chunks = zip(vocab_chunks, repeat(word_dicts), repeat(max_weight))
     print "there are ", len(processed_vocab_chunks), "chunks"
@@ -250,7 +250,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     # why doesn't this trimm all the ones that pass spellcheck?
     # vocab = sorted(set(vocab).difference(set(dict_words)))
     # print "vocab trimmed of dictionary words to ", len(vocab)
-    p = Pool(processes=30)
+    p = Pool(processes=10)
     output = p.map(process_vocab,processed_vocab_chunks)
     for output_chunk in output:
         output_file.write(output_chunk)
