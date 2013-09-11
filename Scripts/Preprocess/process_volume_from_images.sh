@@ -23,6 +23,31 @@ export PREPPED_IMAGE_DIR=$PROCESSING_DIR/${ID}_tif
 export HOCR_DIR=$PROCESSING_DIR/${ID}_hocr
 export TESS_BIN_DIR=/usr/local/bin
 
+usage(){
+	echo "Usage: $0 RAW_IMAGE_DIR ID_STRING METADATA_FILE.XML CLASSIFIER_DIR"
+	exit 1
+}
+
+#Check for proper arguments
+if [ $# -ne 4 ]; then
+ echo "Improper number of arguments"
+ usage
+fi
+
+if [ ! -d "$1" ]; then
+  echo "Raw image directory not found"
+  usage
+fi
+
+if [ ! -d "$4" ]; then
+  echo "Classifier directory not found"
+  usage
+fi
+
+if [ ! -d "$3" ]; then
+  echo "Metadata file not found"
+  usage
+fi
 
 #Download and preprocess the text images and data if they aren't downloaded yet
 if [ ! -d $PROCESSING_DIR ]; then
