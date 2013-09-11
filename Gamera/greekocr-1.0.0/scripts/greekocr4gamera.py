@@ -166,7 +166,7 @@ def performGreekOCR(options):
          if options.has_key("hocrout") and options["hocrout"]:
             hocr_tree = hocr_make_tree_and_return(book_code)
          if imageIn.data.pixel_type == ONEBIT:
-            threshold_info = "onebit_128"
+            threshold_info = "thresh_128"
             otsu_thresh = 1.0
             image = imageIn
             if options["debug"]:
