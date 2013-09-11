@@ -61,7 +61,7 @@ def main(abbyy_in, dir_out, first_file_num):
     just_started_line = False
     params = method = None
     page_no = first_file_num
-    xml_page = xml_carea = xml_para = xml_line = xml_word = None
+    xml_page = current_text_container = xml_para = xml_line = xml_word = None
     for action, elem in etree.iterparse(abbyy_in, events=("start", "end")):
         if DEBUG: print action, elem.tag
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}page':
@@ -122,20 +122,35 @@ def main(abbyy_in, dir_out, first_file_num):
                     #    xml_word.text = output
             if DEBUG: print output
             just_started_line = False
-        if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}block' and elem.get('blockType') == "Text":	
+        if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}row':
+		if action == 'start':
+			row_element= etree.XML('<tr/>')
+		if action == 'end':
+			table_element.append(row_element)
+	if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}cell':
+		if action == 'start':
+			current_text_container = etree.XML('<td/>')
+		if action == 'end':
+			row_element.append(current_text_container)
+	if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}block' and elem.get('blockType') == "Table":
+		if action == 'start':
+			table_element= etree.XML('<table/>')
+		if action == 'end':
+			xml_body.append(table_element)		
+	if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}block' and elem.get('blockType') == "Text":	
 	    if action == 'start':
 	        if DEBUG: print 'start carea'
-	        xml_carea = hocr_span('ocr_carea')
+	        current_text_container = hocr_span('ocr_carea')
 	    elif action == 'end':
 	        if DEBUG: print 'end carea'
-	        if DEBUG: print(etree.tostring(xml_carea, xml_declaration=False, encoding="UTF-8"))
+	        if DEBUG: print(etree.tostring(current_text_container, xml_declaration=False, encoding="UTF-8"))
 	        xml_body = xml_page.xpath('/html/body')[0]
-	        xml_body.append(xml_carea)
-	        xml_carea = None
+	        xml_body.append(current_text_container)
+	        current_text_container = None
 	if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}block' and elem.get('blockType') == "Picture" and action == "start":
 		xml_body = xml_page.xpath('/html/body')[0]
 	        dim = scaled_dimensions(elem, page_width, page_height)
-		xml_body.append(etree.Comment("Picture!: " + str(dim)))#xml_body.append(xml_carea)
+		xml_body.append(etree.Comment("Picture!: " + str(dim)))
         if elem.tag == '{http://www.abbyy.com/FineReader_xml/FineReader6-schema-v1.xml}par':
             if action == 'start':
                 if DEBUG: print 'start paragraph'
@@ -143,7 +158,7 @@ def main(abbyy_in, dir_out, first_file_num):
             elif action == 'end':
                 if DEBUG: print 'end paragraph'
                 try:
-                    xml_carea.append(xml_par)
+                    current_text_container.append(xml_par)
                     xml_par = None
                 except Exception, e:
                     print e
