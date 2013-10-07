@@ -45,7 +45,7 @@ def dump(stringIn):
 @memoize
 def is_greek_char(char):
                 import re
-                return bool(re.match(ur'([\u0373-\u03FF]|[\u1F00-\u1FFF]|\u0300|\u0301|\u0313|\u0314|\u0345)',char,re.UNICODE))
+                return bool(re.match(ur'([\u0373-\u03FF]|[\u1F00-\u1FFF]|\u0300|\u0301|\u0313|\u0314|\u0345|\u0342|\u0308)',char,re.UNICODE))
 
 @memoize
 def is_greek_capital(char):
