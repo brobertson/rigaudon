@@ -88,8 +88,10 @@ def sort_words_bbox(words):
 
 
 def score_word(word):
+    from greek_tools import in_dict, in_dict_lower, is_greek_string
     IN_DICT_SCORE = 1000
     IN_DICT_LOWER_SCORE = 100
+    IS_GREEK_WORD_SCORE = 50
     CAMEL_CASE_SCORE = 1
     ALL_CAPS_SCORE = 10
     score_total = 0
@@ -97,6 +99,8 @@ def score_word(word):
         score_total = score_total + IN_DICT_SCORE
     elif in_dict_lower(dictionary, word):
             score_total = score_total + IN_DICT_LOWER_SCORE
+    elif is_greek_string(word):
+            score_total = score_total + IS_GREEK_WORD_SCORE
     if score_total > 0:
         if word.istitle():
             score_total = score_total + CAMEL_CASE_SCORE
