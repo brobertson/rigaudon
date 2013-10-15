@@ -99,7 +99,7 @@ def score_word(word):
         score_total = score_total + IN_DICT_SCORE
     elif in_dict_lower(dictionary, word):
             score_total = score_total + IN_DICT_LOWER_SCORE
-    elif is_greek_string(word):
+    elif len(word) > 5 and is_greek_string(word):
             score_total = score_total + IS_GREEK_WORD_SCORE
     if score_total > 0:
         if word.istitle():
