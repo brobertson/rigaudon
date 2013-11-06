@@ -145,10 +145,10 @@ qsub -N $SUMMARY_SPLIT_JOB_NAME -p -800 -hold_jid  $LYNX_DUMP_JOB_NAME  -b y -o 
 
 # this does a array job to blend all HOCRs that pertain to a given page image, selecting words that
 # appear in our dictionary over ones that do not
-qsub -N $BLEND_JOB_NAME -p -700 -hold_jid $SUMMARY_SPLIT_JOB_NAME -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_blend_hocrs.sh
+#qsub -N $BLEND_JOB_NAME -p -700 -hold_jid $SUMMARY_SPLIT_JOB_NAME -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -t 1-$FILE_COUNT -V $RIGAUDON_HOME/SGE_Scripts/SGE_Gamera_Collection/qsubed_blend_hocrs.sh
 
 #non-array version. SLOOOOW
-#qsub -N $BLEND_JOB_NAME -p -600  -hold_jid $SUMMARY_SPLIT_JOB_NAME -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash  -V $RIGAUDON_HOME/Scripts/blend_hocrs.sh
+qsub -N $BLEND_JOB_NAME -p -600  -hold_jid $SUMMARY_SPLIT_JOB_NAME -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash  -V $RIGAUDON_HOME/Scripts/blend_hocrs.sh
 
 # spellchecking 
 qsub -N $SPELLCHECK_JOB_NAME -p -500 -hold_jid  $BLEND_JOB_NAME -b y -pe make 10 -o $OUTPUT_DIR -e $ERROR_DIR -S /bin/bash -V /usr/bin/python $RIGAUDON_HOME/Scripts/read_dict5.py $DICTIONARY_FILE $TEXT_BLENDED/output*  $SPELLCHECK_FILE
