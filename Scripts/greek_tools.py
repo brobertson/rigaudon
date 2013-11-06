@@ -48,6 +48,11 @@ def is_greek_char(char):
                 return bool(re.match(ur'([\u0373-\u03FF]|[\u1F00-\u1FFF]|\u0300|\u0301|\u0313|\u0314|\u0345|\u0342|\u0308)',char,re.UNICODE))
 
 @memoize
+def is_hebrew_char(char):
+		import re
+		return bool(re.match(ur'([\u05D0-\u05F2])',char,re.UNICODE))
+
+@memoize
 def is_greek_capital(char):
 	import re
 	return bool(re.match(ur'([\u0391-\u03A9])',char,re.UNICODE))
@@ -94,7 +99,7 @@ def is_greek_string(string_in):
         if string_in == None or len(string_in) < 1:
                 return False
         for char in string_in:
-                if is_greek_char(char):
+                if is_greek_char(char) or is_hebrew_char(char):
                         count = count + 1
         factor = float(count) / float(len(string_in))
         #print "factor: ", factor
