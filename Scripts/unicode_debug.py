@@ -29,7 +29,7 @@ for line in f:
         while x <  len(word) -1:
             x = x + 1
             char = word[x]
-            print '\t\t'  + unicodedata.name(char).encode('utf-8') + u" (" + unicodedata.category(char).encode('utf-8') + u")"
+            print '\t\t'  + unicodedata.name(char).encode('utf-8') + " " + str(ord(char)) + " " + u" (" + unicodedata.category(char).encode('utf-8') + u")"
             set_of_chars = char
             for char in word[x+1:]:
                 try:
@@ -44,7 +44,7 @@ for line in f:
             if len(set_of_chars) > 1:
                 a = recursive_combine(set_of_chars,'')
                 print '\t\t combined', a[0]
-                print '\t\t rejecte3d', a[1]
+                print '\t\t rejected', a[1]
                 output = output + a[0] + a[1]
             else:
                 output = output + char
