@@ -44,7 +44,7 @@ if [ ! -d "$4" ]; then
   usage
 fi
 
-if [ ! -d "$3" ]; then
+if [ ! -f "$3" ]; then
   echo "Metadata file not found"
   usage
 fi
