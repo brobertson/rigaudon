@@ -48,5 +48,5 @@ if [ "$HOCR" = "ABBYY" ]; then
     echo "executing HOCR with command \'$HOCR_COMMAND\'"
 fi
 
-python /usr/local/bin/greekocr4gamera.py -x $CLASSIFIER_FILE/classifier_glyphs.xml  --settings $CLASSIFIER_FILE/optimized_settings.xml -s ${GAMERA_CMDS}${HOCR_COMMAND} --hocrout -u $HOCR_OUTPUT/output-${OUTPUT_STUB} $IMAGE_FILENAME 
+python /usr/local/bin/greekocr4gamera.py -x $CLASSIFIER_FILE/classifier_glyphs.xml  --settings $CLASSIFIER_FILE/optimized_settings.xml -s ${GAMERA_CMDS}${HOCR_COMMAND} --hocrout -u $HOCR_OUTPUT/output-${OUTPUT_STUB} $IMAGE_FILENAME > /dev/null 
 fi
