@@ -23,6 +23,7 @@ teubner_serif_weights = [
     ['replace', rough_breathing_replacement, grave_accent_replacement, 1],
     ['replace',ur'0', ur'Ο',1],#zero to capital omicron
     ['replace',ur'0',ur'οΘθ',2],#zero to small omicron and thetas
+    ['replace',ur'8',ur'δ',3],
     ['replace', ur'ΟοOo', ur'ΟοOo', 2],
     ['replace', ur'Λλ', ur'Λλ', 1],
     ['replace', ur'A', ur'Α', 1],
@@ -60,7 +61,7 @@ teubner_serif_weights = [
   #  ['replace', ur'ι'+iota_subscript_replacement, ur'ι'+iota_subscript_replacement, 3]
 ]
 
-debug =True
+debug =False
 
 """
 A generator function for chopping up a given list into chunks of
@@ -226,6 +227,7 @@ def spellcheck_urls(dict_file, urls, output_file_name, max_weight=9, debug=False
     vocab = [word for word in vocab if not is_uc_word(word)]
     vocab = [word.rstrip() for word in vocab]
     vocab = [word for word in vocab if not  word[-1] == '-']
+    vocab = [word for word in vocab if not len(word) == 1 ]
     print "non-capital words: ", len(vocab)
     if debug:
       print "Are they capitalized?"
