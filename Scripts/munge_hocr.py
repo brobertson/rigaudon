@@ -229,6 +229,11 @@ def grecify_left(right_lines):
                     #we need to remove these 
                     for match in left_match[1:]:
                             match.element.getparent().remove(match.element)
+                #we don't think this is a Greek word. Nonetheless, let's store the Greek output
+                else:
+		    left_match[0].element.set('data-rigaudon-output',unicodedata.normalize('NFD',unicode(right_test_word)))
+		    
+
         #maybe there isn't a line_matches attribute. In which case, keep the left
         #value
         except AttributeError, e:
