@@ -21,7 +21,7 @@ class SpanLister(HTMLParser):
                 	print foo[0]
 			#print self.get_starttag_text()
                 	self.spans.extend(bar)
-def drawParser(parser,color,image,image_name, invert = False):
+def drawParser(parser,color,image,image_name, invert = True):
 	import os
 	file_number = 0
 	image_basename = os.path.splitext(image_name)[0]
@@ -34,7 +34,7 @@ def drawParser(parser,color,image,image_name, invert = False):
 	    y2 = int(boxes[4]) -1
 	    x1 = int(boxes[1]) - 1
 	    x2 = int(boxes[3])-1
-	    #P1 = P2 = None
+	    P1 = P2 = None
 	    if invert:
 	        y1 = image.nrows - y1
 	        y2 = image.nrows - y2
@@ -47,10 +47,10 @@ def drawParser(parser,color,image,image_name, invert = False):
 	    print "P2", P2
 	    subimg = SubImage(image, P1, P2)
 	    subimg.save_PNG(image_basename + '_' + str(file_number) + '.bin.png')
-	    file_number = file_number +1
+	    file_number = file_number +1 
 	    print 'now on file num', file_number
-
-
+        
+        
 lineParser = SpanLister('ocr_line')
 #wordParser  = SpanLister('ocr_word')
 #wordXParser = SpanLister('ocrx_word')
